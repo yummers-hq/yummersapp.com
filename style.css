@@ -724,11 +724,9 @@ em {
 }
 
 .brand-image {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    margin-right: 12px;
-    object-fit: cover
+    width: 58px;
+    height: 32px;
+    margin-right: 12px
 }
 
 .brand {
@@ -755,10 +753,9 @@ em {
 
 .footer .brand:before {
     content: "";
-    width: 36px;
-    height: 36px;
-    background: url('assets/logo.png') center/cover;
-    border-radius: 9px;
+    width: 44px;
+    height: 24px;
+    background: url('assets/raccoon.png') center/contain no-repeat;
     margin-right: 10px
 }
 
@@ -768,8 +765,8 @@ em {
     }
 
     .brand-image {
-        width: 39px;
-        height: 39px;
+        width: 47px;
+        height: 26px;
         margin-right: 8px
     }
 
@@ -792,8 +789,8 @@ em {
     }
 
     .brand-image {
-        width: 33px;
-        height: 33px
+        width: 40px;
+        height: 22px
     }
 }
 
