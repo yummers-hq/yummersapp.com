@@ -3,8 +3,8 @@
 // anon key; row-level security returns it only if its owner made it public.
 // Everything user-written is inserted as text, never as HTML.
 (function () {
-  var SUPABASE = "https://mbuxxkchudopmpihrakk.supabase.co";
-  var ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1idXh4a2NodWRvcG1waWhyYWtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzNTUxOTUsImV4cCI6MjEwMzkzMTE5NX0.9V1WYNlMkm0v8Fg3Z9Lj7Pi_QzfdrVqCKk1bmOCUWTs";
+  var SUPABASE = "https://uobskavqhilnqakbdutt.supabase.co";
+  var ANON = "sb_publishable_lHMGFti9a7-RxGHVj2Iz-g_wXFZoMC7";
   var $ = function (id) { return document.getElementById(id); };
   function slugify(t) {
     var s = t.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/['’]/g, "")

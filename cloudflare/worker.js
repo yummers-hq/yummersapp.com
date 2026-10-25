@@ -305,14 +305,14 @@ function page(lang, title, text, button) {
 // own files, Cloudflare's Turnstile (the sign-up's bot check), Cloudflare Web
 // Analytics' script (the zone's automatic setup injects it; it reports to our own
 // /cdn-cgi/rum, so 'self' covers that; until PostHog, #51), and the Supabase
-// project that 404.html's share links read (update it when they move to beta, #224).
+// project that 404.html's share links read (beta since #73).
 // Inline styles stay allowed for 404.html's <style> and page() below.
 const SECURITY_HEADERS = {
     "Content-Security-Policy": [
         "default-src 'self'",
         "script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com",
         "frame-src https://challenges.cloudflare.com",
-        "connect-src 'self' https://mbuxxkchudopmpihrakk.supabase.co",
+        "connect-src 'self' https://uobskavqhilnqakbdutt.supabase.co",
         "style-src 'self' 'unsafe-inline'",
         "object-src 'none'",
         "base-uri 'self'",
