@@ -133,6 +133,7 @@ nav>a:hover {
 }
 
 .hero {
+    border-bottom: 1px solid var(--line);
     min-height: 750px;
     display: grid;
     grid-template-columns: 1.04fr 1fr;
@@ -1254,10 +1255,4 @@ html:lang(fr) .footer-links {
 .cookie-banner button:focus-visible {
     outline: 3px solid var(--orange);
     outline-offset: 2px
-}
-
-.divider {
-    border: 0;
-    border-top: 1px solid var(--line);
-    margin: 0
 }
