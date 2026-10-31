@@ -3,6 +3,8 @@
 // "not found" page; POST /api/signup takes a beta sign-up, and /api/confirm and
 // /api/unsubscribe answer the links in its emails; everything else passes
 // through unchanged.
+import { guides, sitemap } from "./guides.js";
+
 const NOT_FOUND = `# Page not found
 
 There's no page at this address on yummersapp.com.
@@ -498,6 +500,10 @@ async function route(request, env, ctx) {
     if (cached) return catalogue(request, cached[1], ctx);
     const list = url.pathname.match(/^\/l\/([0-9A-Za-z]{8})(?:\/[^/]*)?\/?$/);
     if (list && ["GET", "HEAD"].includes(request.method)) return sharedList(url, list[1]);
+    if (/^\/(guides|places)(\/|$)/.test(url.pathname) && ["GET", "HEAD"].includes(request.method)) {
+        const page = await guides(url, ctx);
+        if (page) return page;
+    }
     const wantsMarkdown = (request.headers.get("Accept") || "").includes("text/markdown");
 
     if (wantsMarkdown && url.pathname === "/") {
@@ -506,6 +512,7 @@ async function route(request, env, ctx) {
     }
 
     const res = await fetch(request);
+    if (url.pathname === "/sitemap.xml") return sitemap(res);
     // Share links (/l/...) are rendered by 404.html, so they arrive as 404s
     // but are real pages.
     if (wantsMarkdown && res.status === 404 && !url.pathname.startsWith("/l/")) {
