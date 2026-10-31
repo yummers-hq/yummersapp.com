@@ -27,6 +27,7 @@
       // Private and missing read the same, so this page never confirms a list exists.
       if (!l) { show("This list is private or doesn't exist", "Its owner may have made it private."); return; }
       show(l.title);
+      if (window.posthog) posthog.capture("shared_list_viewed", { share_id: id });
       var slug = slugify(l.title), want = "/l/" + id + "/" + slug;
       if (location.pathname !== want) history.replaceState(null, "", want);
       var owner = l.profiles || {};

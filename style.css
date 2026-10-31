@@ -1283,3 +1283,58 @@ html:lang(fr) .footer-links {
 .footer-lang:empty {
     display: none
 }
+
+/* Cookie banner (analytics.js): fixed at the bottom; the script pads the page by its height so nothing sits underneath. */
+.cookie-banner {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 50;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px 24px;
+    padding: 16px;
+    background: var(--white);
+    border-top: 1px solid var(--line);
+    font-size: 14px
+}
+
+.cookie-banner[hidden] {
+    display: none
+}
+
+.cookie-banner p {
+    margin: 0;
+    flex: 1 1 280px;
+    max-width: 60ch
+}
+
+.cookie-actions {
+    display: flex;
+    gap: 12px;
+    flex: 1 1 240px;
+    justify-content: center
+}
+
+.cookie-banner button {
+    flex: 1;
+    max-width: 160px;
+    min-height: 44px;
+    padding: 0 20px;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font: 600 14px Poppins, 'Noto Sans Khmer', sans-serif;
+    cursor: pointer
+}
+
+.cookie-banner button:hover {
+    background: var(--panel)
+}
+
+.cookie-banner button:focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 2px
+}
