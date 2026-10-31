@@ -23,7 +23,7 @@ body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
-    font: 16px/1.6 'DM Sans', 'Noto Sans Khmer', sans-serif
+    font: 16px/1.6 Poppins, 'Noto Sans Khmer', sans-serif
 }
 
 ::selection {
@@ -432,8 +432,10 @@ em {
     gap: 20px
 }
 
-.footer .brand {
-    font-size: 24px
+.footer-logo {
+    display: block;
+    width: 188px;
+    height: auto
 }
 
 .footer>span {
@@ -724,11 +726,9 @@ em {
 }
 
 .brand-image {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    margin-right: 12px;
-    object-fit: cover
+    width: 58px;
+    height: 32px;
+    margin-right: 12px
 }
 
 .brand {
@@ -753,23 +753,14 @@ em {
     border-radius: 4px
 }
 
-.footer .brand:before {
-    content: "";
-    width: 36px;
-    height: 36px;
-    background: url('assets/logo.png') center/cover;
-    border-radius: 9px;
-    margin-right: 10px
-}
-
 @media(max-width:700px) {
     .header .brand {
         font-size: 23px
     }
 
     .brand-image {
-        width: 39px;
-        height: 39px;
+        width: 47px;
+        height: 26px;
         margin-right: 8px
     }
 
@@ -792,8 +783,8 @@ em {
     }
 
     .brand-image {
-        width: 33px;
-        height: 33px
+        width: 40px;
+        height: 22px
     }
 }
 
@@ -884,11 +875,6 @@ html {
     display: flex;
     flex-direction: column;
     gap: 4px
-}
-
-.footer-tag {
-    font-size: 13px;
-    color: var(--muted)
 }
 
 .footer-links {
@@ -1156,7 +1142,7 @@ html {
 }
 
 .lang-switch button {
-    font: 600 13px/1 'Noto Sans Khmer', 'DM Sans', sans-serif;
+    font: 600 13px/1 'Noto Sans Khmer', Poppins, sans-serif;
     color: var(--muted);
     background: none;
     border: 0;
