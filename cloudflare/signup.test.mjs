@@ -42,7 +42,7 @@ const signupForm = (email) => {
 assert.equal((await call("POST", "/api/signup", signupForm("Sophea@Example.com"))).status, 204);
 assert.equal(emails.length, 1);
 assert.equal(emails[0].to, "sophea@example.com");
-assert.equal(emails[0].subject, "Confirmez votre e-mail pour la bêta Yummers");
+assert.equal(emails[0].subject, "Confirmez votre e-mail pour la bêta yummers");
 const link = emails[0].text.match(/https:\/\/yummersapp\.com\/api\/confirm\?\S+/)[0];
 assert.equal(contacts.size, 0);
 
@@ -61,7 +61,7 @@ assert.match(await joined.text(), /vous êtes sur la liste/);
 await Promise.all(waits);
 assert.ok(contacts.has("sophea@example.com"));
 assert.equal(emails.length, 2);
-assert.equal(emails[1].subject, "Merci d'avoir rejoint la bêta Yummers");
+assert.equal(emails[1].subject, "Merci d'avoir rejoint la bêta yummers");
 const unsub = emails[1].text.match(/https:\/\/yummersapp\.com(\/api\/unsubscribe\?\S+)/)[1];
 assert.equal(unsub, `/api/unsubscribe?id=${contacts.get("sophea@example.com")}&lang=fr`);
 

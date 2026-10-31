@@ -7,8 +7,8 @@ const NOT_FOUND = `# Page not found
 
 There's no page at this address on yummersapp.com.
 
-- [Yummers home](https://yummersapp.com/)
-- [What Yummers is, for AI assistants](https://yummersapp.com/llms.txt)
+- [yummers home](https://yummersapp.com/)
+- [What yummers is, for AI assistants](https://yummersapp.com/llms.txt)
 - [Sitemap](https://yummersapp.com/sitemap.xml)
 `;
 
@@ -30,29 +30,29 @@ function markdown(body, status) {
 const CONTACT = "hello@yummersapp.com";
 const CONFIRM = {
     en: {
-        subject: "Thanks for joining the Yummers beta",
+        subject: "Thanks for joining the yummers beta",
         note: [
             "Hi,",
-            "Thanks for signing up for the Yummers beta. I'm Sovithyea, one of a team of seven building Yummers for Cambodia: an app to rate the places you've eaten, keep lists of where to go next, and see where your friends are eating.",
+            "Thanks for signing up for the yummers beta. I'm Sovithyea, one of a team of seven building yummers for Cambodia: an app to rate the places you've eaten, keep lists of where to go next, and see where your friends are eating.",
             "We're testing it with a small group on iPhone first. The beta opens in November, and we'll email you an invite as soon as there's a spot for you.",
             "If there's a place you think everyone should try, hit reply and tell me. I read every email.",
         ],
         regards: "Warm regards,",
-        role: "Founder & Lead Engineer, Yummers",
+        role: "Founder & Lead Engineer, yummers",
         offList: "Didn't sign up, or changed your mind? {unsubscribe}",
         unsubscribe: "Take me off the list",
         leaveTitle: "Leave the beta list?",
         leaveText: "We'll delete your email address and won't write to you again.",
         leftTitle: "You're off the list.",
         leftText: "Your email address is deleted. Changed your mind? You can sign up again on yummersapp.com.",
-        verifySubject: "Confirm your email for the Yummers beta",
+        verifySubject: "Confirm your email for the yummers beta",
         verifyNote: [
             "Hi,",
-            "Thanks for signing up for the Yummers beta. Press the link below to confirm it's your email, and you're on the list.",
+            "Thanks for signing up for the yummers beta. Press the link below to confirm it's your email, and you're on the list.",
         ],
         verifyButton: "Confirm my email",
         verifyIgnore: "Didn't sign up? Just ignore this email and we won't add you to the list.",
-        joinTitle: "Join the Yummers beta list?",
+        joinTitle: "Join the yummers beta list?",
         joinText: "Press the button to confirm your email.",
         joinedTitle: "You're on the list!",
         joinedText: "We've sent you a short welcome note, and we'll write again when your invite is ready.",
@@ -60,29 +60,29 @@ const CONFIRM = {
         expiredText: "Sign up again on yummersapp.com and we'll send you a new one.",
     },
     km: {
-        subject: "អរគុណដែលបានចូលរួមសាកល្បង Yummers",
+        subject: "អរគុណដែលបានចូលរួមសាកល្បង yummers",
         note: [
             "សួស្តី,",
-            "អរគុណដែលបានចុះឈ្មោះសាកល្បង Yummers។ ខ្ញុំឈ្មោះ Sovithyea ជាសមាជិកម្នាក់ក្នុងក្រុមប្រាំពីរនាក់ ដែលកំពុងបង្កើត Yummers សម្រាប់ប្រទេសកម្ពុជា៖ កម្មវិធីសម្រាប់វាយតម្លៃកន្លែងដែលអ្នកបានញ៉ាំ កត់ចំណាំកន្លែងដែលចង់ទៅលើកក្រោយ និងមើលថាមិត្តភក្តិរបស់អ្នកកំពុងញ៉ាំនៅឯណា។",
+            "អរគុណដែលបានចុះឈ្មោះសាកល្បង yummers។ ខ្ញុំឈ្មោះ Sovithyea ជាសមាជិកម្នាក់ក្នុងក្រុមប្រាំពីរនាក់ ដែលកំពុងបង្កើត yummers សម្រាប់ប្រទេសកម្ពុជា៖ កម្មវិធីសម្រាប់វាយតម្លៃកន្លែងដែលអ្នកបានញ៉ាំ កត់ចំណាំកន្លែងដែលចង់ទៅលើកក្រោយ និងមើលថាមិត្តភក្តិរបស់អ្នកកំពុងញ៉ាំនៅឯណា។",
             "យើងកំពុងសាកល្បងវាជាមួយក្រុមតូចមួយលើ iPhone សិន។ កម្មវិធីសាកល្បងនឹងបើកនៅខែវិច្ឆិកា ហើយយើងនឹងផ្ញើអ៊ីមែលអញ្ជើញទៅអ្នក ភ្លាមៗនៅពេលមានកន្លែងសម្រាប់អ្នក។",
             "បើមានកន្លែងណាដែលអ្នកគិតថាគ្រប់គ្នាគួរតែសាកល្បង សូមឆ្លើយតបមកប្រាប់ខ្ញុំ។ ខ្ញុំអានរាល់អ៊ីមែល។",
         ],
         regards: "ដោយក្តីរាប់អាន,",
-        role: "ស្ថាបនិក និងប្រធានវិស្វករ Yummers",
+        role: "ស្ថាបនិក និងប្រធានវិស្វករ yummers",
         offList: "មិនបានចុះឈ្មោះ ឬប្ដូរចិត្ត? {unsubscribe}",
         unsubscribe: "ដកឈ្មោះខ្ញុំចេញពីបញ្ជី",
         leaveTitle: "ចាកចេញពីបញ្ជីសាកល្បង?",
         leaveText: "យើងនឹងលុបអាសយដ្ឋានអ៊ីមែលរបស់អ្នក ហើយនឹងមិនផ្ញើអ៊ីមែលទៅអ្នកទៀតទេ។",
         leftTitle: "អ្នកបានចាកចេញពីបញ្ជីហើយ។",
         leftText: "អាសយដ្ឋានអ៊ីមែលរបស់អ្នកត្រូវបានលុបហើយ។ ប្ដូរចិត្តវិញ? អ្នកអាចចុះឈ្មោះម្ដងទៀតនៅ yummersapp.com។",
-        verifySubject: "បញ្ជាក់អ៊ីមែលរបស់អ្នក សម្រាប់ការសាកល្បង Yummers",
+        verifySubject: "បញ្ជាក់អ៊ីមែលរបស់អ្នក សម្រាប់ការសាកល្បង yummers",
         verifyNote: [
             "សួស្តី,",
-            "អរគុណដែលបានចុះឈ្មោះសាកល្បង Yummers។ សូមចុចតំណខាងក្រោម ដើម្បីបញ្ជាក់ថាជាអ៊ីមែលរបស់អ្នក ហើយអ្នកនឹងមានឈ្មោះក្នុងបញ្ជី។",
+            "អរគុណដែលបានចុះឈ្មោះសាកល្បង yummers។ សូមចុចតំណខាងក្រោម ដើម្បីបញ្ជាក់ថាជាអ៊ីមែលរបស់អ្នក ហើយអ្នកនឹងមានឈ្មោះក្នុងបញ្ជី។",
         ],
         verifyButton: "បញ្ជាក់អ៊ីមែលរបស់ខ្ញុំ",
         verifyIgnore: "មិនបានចុះឈ្មោះទេ? គ្រាន់តែមិនអើពើនឹងអ៊ីមែលនេះ យើងនឹងមិនដាក់ឈ្មោះអ្នកក្នុងបញ្ជីទេ។",
-        joinTitle: "ចូលក្នុងបញ្ជីសាកល្បង Yummers?",
+        joinTitle: "ចូលក្នុងបញ្ជីសាកល្បង yummers?",
         joinText: "ចុចប៊ូតុងខាងក្រោម ដើម្បីបញ្ជាក់អ៊ីមែលរបស់អ្នក។",
         joinedTitle: "អ្នកមានឈ្មោះក្នុងបញ្ជីហើយ!",
         joinedText: "យើងបានផ្ញើសារស្វាគមន៍ខ្លីមួយទៅអ្នកហើយ។ យើងនឹងផ្ញើអ៊ីមែលម្ដងទៀត នៅពេលការអញ្ជើញរបស់អ្នករួចរាល់។",
@@ -90,29 +90,29 @@ const CONFIRM = {
         expiredText: "សូមចុះឈ្មោះម្ដងទៀតនៅ yummersapp.com ហើយយើងនឹងផ្ញើតំណថ្មីទៅអ្នក។",
     },
     fr: {
-        subject: "Merci d'avoir rejoint la bêta Yummers",
+        subject: "Merci d'avoir rejoint la bêta yummers",
         note: [
             "Bonjour,",
-            "Merci de vous être inscrit à la bêta de Yummers. Je m'appelle Sovithyea et je fais partie de l'équipe de sept personnes qui construit Yummers pour le Cambodge : une appli pour noter les endroits où vous avez mangé, garder des listes de vos prochaines adresses et voir où mangent vos amis.",
+            "Merci de vous être inscrit à la bêta de yummers. Je m'appelle Sovithyea et je fais partie de l'équipe de sept personnes qui construit yummers pour le Cambodge : une appli pour noter les endroits où vous avez mangé, garder des listes de vos prochaines adresses et voir où mangent vos amis.",
             "Nous la testons d'abord sur iPhone avec un petit groupe. La bêta ouvre en novembre, et nous vous enverrons une invitation dès qu'il y aura une place pour vous.",
             "S'il y a un endroit que tout le monde devrait essayer selon vous, répondez à cet e-mail pour me le dire. Je lis tous les e-mails.",
         ],
         regards: "Bien chaleureusement,",
-        role: "Fondateur et ingénieur principal, Yummers",
+        role: "Fondateur et ingénieur principal, yummers",
         offList: "Vous ne vous êtes pas inscrit, ou vous avez changé d'avis ? {unsubscribe}",
         unsubscribe: "Me retirer de la liste",
         leaveTitle: "Quitter la liste de la bêta ?",
         leaveText: "Nous supprimerons votre adresse e-mail et ne vous écrirons plus.",
         leftTitle: "C'est fait, vous n'êtes plus sur la liste.",
         leftText: "Votre adresse e-mail est supprimée. Vous avez changé d'avis ? Vous pouvez vous réinscrire sur yummersapp.com.",
-        verifySubject: "Confirmez votre e-mail pour la bêta Yummers",
+        verifySubject: "Confirmez votre e-mail pour la bêta yummers",
         verifyNote: [
             "Bonjour,",
-            "Merci de vous être inscrit à la bêta de Yummers. Appuyez sur le lien ci-dessous pour confirmer votre adresse e-mail, et vous serez sur la liste.",
+            "Merci de vous être inscrit à la bêta de yummers. Appuyez sur le lien ci-dessous pour confirmer votre adresse e-mail, et vous serez sur la liste.",
         ],
         verifyButton: "Confirmer mon e-mail",
         verifyIgnore: "Vous ne vous êtes pas inscrit ? Ignorez simplement cet e-mail : nous ne vous ajouterons pas à la liste.",
-        joinTitle: "Rejoindre la liste de la bêta Yummers ?",
+        joinTitle: "Rejoindre la liste de la bêta yummers ?",
         joinText: "Appuyez sur le bouton pour confirmer votre e-mail.",
         joinedTitle: "C'est noté, vous êtes sur la liste !",
         joinedText: "Nous vous avons envoyé un petit mot de bienvenue. Nous vous écrirons dès que votre invitation sera prête.",
@@ -160,7 +160,7 @@ ${t.note.map(s => p(s)).join("\n")}
 <img src="https://yummersapp.com/assets/email-signature.png" width="160" alt="${NAME}" style="display:block;margin:4px 0;border:0;">
 ${p(`${NAME}<br><span style="color:#75685C;">${t.role}</span>`)}
 <div style="margin-top:28px;padding:16px;background:#F4EFE8;border-radius:12px;text-align:center;">
-<a href="https://yummersapp.com"><img src="https://yummersapp.com/assets/email-banner.png" width="280" alt="Yummers" style="display:block;margin:0 auto 10px;max-width:100%;height:auto;border:0;border-radius:8px;"></a>
+<a href="https://yummersapp.com"><img src="https://yummersapp.com/assets/email-banner.png" width="280" alt="yummers" style="display:block;margin:0 auto 10px;max-width:100%;height:auto;border:0;border-radius:8px;"></a>
 ${p(socials, "margin-bottom:10px;font-size:14px;")}
 ${p(t.offList.replace("{unsubscribe}", `<a href="${unsub}" style="${link}">${t.unsubscribe}</a>`), "margin:0;font-size:13px;color:#8A7D70;")}
 </div>
@@ -177,7 +177,7 @@ function resendApi(env, method, path, body) {
     });
 }
 
-const FROM = "Sovithyea from Yummers <sovithyea@mail.yummersapp.com>";
+const FROM = "Sovithyea from yummers <sovithyea@mail.yummersapp.com>";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 // The strings for a form's or link's lang, falling back to English.
@@ -293,7 +293,7 @@ function page(lang, title, text, button) {
 <html lang="${lang}">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>${title}</title></head>
 <body style="margin:0;padding:48px 16px;background:#F5F0E8;font-family:${font};color:#2C2420;text-align:center;">
-  <img src="/assets/logo.png" width="64" height="64" alt="Yummers" style="border-radius:16px;">
+  <img src="/assets/logo.png" width="64" height="64" alt="yummers" style="border-radius:16px;">
   <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:28px;line-height:1.4;margin:20px 0 8px;">${title}</h1>
   <p style="font-size:16px;line-height:1.5;color:#665A4E;max-width:420px;margin:0 auto 24px;">${text}</p>
   ${button ? `<form method="post"><button style="font:600 15px ${font};background:#A83618;color:#fff;border:0;border-radius:999px;padding:13px 24px;cursor:pointer;">${button}</button></form>` : `<a href="/" style="color:#A83618;font-weight:600;text-decoration:none;">yummersapp.com</a>`}
