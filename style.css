@@ -292,27 +292,8 @@ em {
     color: var(--accent)
 }
 
-.ticker {
-    overflow: hidden;
-    background: var(--orange);
-    color: var(--paper);
-    padding: 19px 16px
-}
 
-.ticker>div {
-    white-space: nowrap;
-    display: flex;
-    gap: 42px;
-    flex-wrap: wrap;
-    justify-content: center;
-    font-family: Fraunces, 'Noto Serif Khmer', serif;
-    font-size: 24px;
-    letter-spacing: -.02em
-}
 
-.ticker span {
-    font-size: 25px
-}
 
 
 
@@ -594,18 +575,8 @@ em {
         font-size: 24px
     }
 
-    .ticker {
-        padding: 15px 16px
-    }
 
-    .ticker svg {
-        display: none
-    }
 
-    .ticker>div {
-        font-size: 20px;
-        gap: 6px 24px
-    }
 
 
 
@@ -724,11 +695,6 @@ em {
     }
 }
 
-.ticker svg {
-    width: 19px;
-    height: 19px;
-    align-self: center
-}
 
 .brand-image {
     width: 58px;
@@ -1077,7 +1043,6 @@ html {
 .pinned .screen-pin { position: sticky; }
 .pinned .onboarding-screens { overflow-x: hidden; scroll-snap-type: none; }
 
-.ticker .ticker-star { fill: currentColor; stroke: none; }
 
 .footer-follow img { display: block; }
 
@@ -1155,7 +1120,6 @@ html:lang(km) body {
 html:lang(km) h1,
 html:lang(km) h2,
 html:lang(km) h3,
-html:lang(km) .ticker,
 html:lang(km) .small-note,
 html:lang(km) figcaption {
     letter-spacing: normal;
@@ -1290,4 +1254,10 @@ html:lang(fr) .footer-links {
 .cookie-banner button:focus-visible {
     outline: 3px solid var(--orange);
     outline-offset: 2px
+}
+
+.divider {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 0
 }
