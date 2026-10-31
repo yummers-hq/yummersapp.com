@@ -23,7 +23,7 @@ body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
-    font: 16px/1.6 'DM Sans', 'Noto Sans Khmer', sans-serif
+    font: 16px/1.6 Poppins, 'Noto Sans Khmer', sans-serif
 }
 
 ::selection {
@@ -1142,7 +1142,7 @@ html {
 }
 
 .lang-switch button {
-    font: 600 13px/1 'Noto Sans Khmer', 'DM Sans', sans-serif;
+    font: 600 13px/1 'Noto Sans Khmer', Poppins, sans-serif;
     color: var(--muted);
     background: none;
     border: 0;

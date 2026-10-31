@@ -17,7 +17,7 @@ Run `npx serve` here and visit http://localhost:3000. Links use clean addresses 
 | File | What it is |
 |---|---|
 | `index.html`, `style.css` | The page |
-| `fonts.css`, `assets/font-*.woff2` | DM Sans and Fraunces, from Google Fonts (SIL Open Font License) |
+| `fonts.css`, `assets/poppins-*.woff2`, `assets/font-4.woff2`, `assets/font-5.woff2` | Poppins (text, from the brandbook, 31 Oct 2026) and Fraunces (headings), Latin only, from Google Fonts (SIL Open Font License) |
 | `assets/logo.png` | The app icon from Khen's brandbook (31 Oct 2026) at 180 px: the iPhone home-screen icon, Google's logo and the sign-up email's logo, which all need a square, solid picture |
 | `assets/logo-horizontal.svg` | The brandbook's horizontal logo (raccoon, "yummers", RESTAURANT LISTS APP on the brown bowl) in every page's footer. Traced from the brandbook, with the text as outlines, so it needs no fonts |
 | `assets/raccoon.png` | The brandbook's peeking raccoon, see-through, at three times its 58 × 32 size in the header and footer |

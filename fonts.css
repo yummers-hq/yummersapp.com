@@ -1,33 +1,33 @@
 @font-face {
-  font-family: 'DM Sans';
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(assets/font-0.woff2) format('woff2');
+  src: url(assets/poppins-400.woff2) format('woff2');
 }
 
 @font-face {
-  font-family: 'DM Sans';
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url(assets/font-1.woff2) format('woff2');
+  src: url(assets/poppins-500.woff2) format('woff2');
 }
 
 @font-face {
-  font-family: 'DM Sans';
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url(assets/font-2.woff2) format('woff2');
+  src: url(assets/poppins-600.woff2) format('woff2');
 }
 
 @font-face {
-  font-family: 'DM Sans';
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url(assets/font-3.woff2) format('woff2');
+  src: url(assets/poppins-700.woff2) format('woff2');
 }
 
 @font-face {
