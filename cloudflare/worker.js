@@ -330,6 +330,11 @@ async function route(request, env, ctx) {
     if (url.pathname === "/api/signup" && request.method === "POST") return signup(request, env);
     if (url.pathname === "/api/confirm") return confirm(request, env, ctx, url);
     if (url.pathname === "/api/unsubscribe") return unsubscribe(request, env, url);
+    // The app starts Google sign-in here so iPhone's "wants to use … to Sign In"
+    // names yummersapp.com, not the database (yummers#543). Only our two
+    // projects, so it can't send anyone anywhere else.
+    const signin = url.pathname.match(/^\/signin\/(mbuxxkchudopmpihrakk|uobskavqhilnqakbdutt)$/);
+    if (signin) return Response.redirect(`https://${signin[1]}.supabase.co/auth/v1/authorize${url.search}`, 302);
     const wantsMarkdown = (request.headers.get("Accept") || "").includes("text/markdown");
 
     if (wantsMarkdown && url.pathname === "/") {
