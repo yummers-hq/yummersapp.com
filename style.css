@@ -874,12 +874,7 @@ html {
 .footer-brand {
     display: flex;
     flex-direction: column;
-    gap: 10px
-}
-
-.footer-tag {
-    font-size: 13px;
-    color: var(--muted)
+    gap: 4px
 }
 
 .footer-links {
