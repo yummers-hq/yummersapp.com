@@ -1,6 +1,6 @@
 // Shared lists (D40): GitHub Pages serves this page for any path it doesn't
 // have, so /l/{shareId}/{slug} lands here. The list is read with the PUBLIC
-// anon key; row-level security returns it only if its owner made it public.
+// anon key, through shared_list(), which returns it only if its owner made it public.
 // Everything user-written is inserted as text, never as HTML.
 (function () {
   var SUPABASE = "https://mbuxxkchudopmpihrakk.supabase.co";
@@ -18,11 +18,12 @@
   var m = /^\/l\/([0-9A-Za-z]{8})(?:\/[^/]*)?\/?$/.exec(location.pathname);
   if (!m) { show("Page not found", "That page doesn't exist. Head back to the home page."); return; }
   var id = m[1];
-  var select = "title,description,share_id,profiles!lists_user_id_fkey(username,display_name),list_restaurants(note,position,restaurants(name,district,cuisine_type))";
-  fetch(SUPABASE + "/rest/v1/lists?select=" + encodeURIComponent(select) + "&share_id=eq." + id, { headers: { apikey: ANON, Authorization: "Bearer " + ANON } })
+  // shared_list() (app migration 0066) returns one public list by its share id,
+  // in the shape below, or null. It also opens lists by people who approve who
+  // follows them, whose lists the plain table read no longer returns (D107).
+  fetch(SUPABASE + "/rest/v1/rpc/shared_list", { method: "POST", headers: { apikey: ANON, Authorization: "Bearer " + ANON, "Content-Type": "application/json" }, body: JSON.stringify({ p_share_id: id }) })
     .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
-    .then(function (rows) {
-      var l = rows && rows[0];
+    .then(function (l) {
       // Private and missing read the same, so this page never confirms a list exists.
       if (!l) { show("This list is private or doesn't exist", "Its owner may have made it private."); return; }
       show(l.title);
