@@ -19,6 +19,7 @@ Run `npx serve` here and visit http://localhost:3000. Links use clean addresses 
 | `index.html`, `style.css` | The page |
 | `fonts.css`, `assets/font-*.woff2` | DM Sans and Fraunces, from Google Fonts (SIL Open Font License) |
 | `assets/logo.png` | The app icon from Khen's brandbook (31 Oct 2026) at 180 px: the iPhone home-screen icon, Google's logo and the sign-up email's logo, which all need a square, solid picture |
+| `assets/logo-horizontal.svg` | The brandbook's horizontal logo (raccoon, "yummers", RESTAURANT LISTS APP on the brown bowl) in every page's footer. Traced from the brandbook, with the text as outlines, so it needs no fonts |
 | `assets/raccoon.png` | The brandbook's peeking raccoon, see-through, at three times its 58 × 32 size in the header and footer |
 | `assets/favicon-192.png` | The browser-tab and Google search icon: the brandbook's app icon at 192 px, because Google only uses icons whose size is a multiple of 48 px and `logo.png` is 180 (#13) |
 | `assets/app-*.webp` | Screenshots of the app taken on 19 October 2026 in the iOS Simulator (Expo Go, test database), signed in as made-up demo accounts (`@sophea_eats` and friends) so no real person's data is shown (#33). Resized to 828 px wide. The sign-in screen (`app-signin.webp`) is the owner's own iPhone screenshot from a TestFlight build, because Expo Go can't show Continue with Apple; its status bar was swapped for the Simulator's, and on 31 Oct its old app icon for the brandbook's |

@@ -12,7 +12,7 @@
     return s || "list";
   }
   function show(title, message) {
-    $("title").textContent = title; document.title = title + " · Yummers";
+    $("title").textContent = title; document.title = title + " · yummers";
     if (message) { $("state").textContent = message; $("state").hidden = false; }
   }
   var m = /^\/l\/([0-9A-Za-z]{8})(?:\/[^/]*)?\/?$/.exec(location.pathname);

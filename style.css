@@ -432,8 +432,10 @@ em {
     gap: 20px
 }
 
-.footer .brand {
-    font-size: 24px
+.footer-logo {
+    display: block;
+    width: 188px;
+    height: auto
 }
 
 .footer>span {
@@ -751,14 +753,6 @@ em {
     border-radius: 4px
 }
 
-.footer .brand:before {
-    content: "";
-    width: 44px;
-    height: 24px;
-    background: url('assets/raccoon.png') center/contain no-repeat;
-    margin-right: 10px
-}
-
 @media(max-width:700px) {
     .header .brand {
         font-size: 23px
@@ -880,7 +874,7 @@ html {
 .footer-brand {
     display: flex;
     flex-direction: column;
-    gap: 4px
+    gap: 10px
 }
 
 .footer-tag {
