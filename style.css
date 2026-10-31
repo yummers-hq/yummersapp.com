@@ -296,13 +296,14 @@ em {
     overflow: hidden;
     background: var(--orange);
     color: var(--paper);
-    padding: 19px 0
+    padding: 19px 16px
 }
 
 .ticker>div {
     white-space: nowrap;
     display: flex;
     gap: 42px;
+    flex-wrap: wrap;
     justify-content: center;
     font-family: Fraunces, 'Noto Serif Khmer', serif;
     font-size: 24px;
@@ -594,12 +595,16 @@ em {
     }
 
     .ticker {
-        padding: 15px 0
+        padding: 15px 16px
+    }
+
+    .ticker svg {
+        display: none
     }
 
     .ticker>div {
         font-size: 20px;
-        gap: 24px
+        gap: 6px 24px
     }
 
 
@@ -795,58 +800,6 @@ em {
 
 .food-photo figcaption {
     display: none
-}
-
-/* Ticker: scrolls right to left. Two identical groups, moved left by exactly one group, loop without a seam. */
-.ticker>.ticker-track {
-    display: flex;
-    width: max-content;
-    gap: 0;
-    justify-content: flex-start;
-    animation: ticker-scroll 45s linear infinite
-}
-
-.ticker:hover>.ticker-track {
-    animation-play-state: paused
-}
-
-.ticker-group {
-    display: flex;
-    align-items: center;
-    gap: 42px;
-    padding-right: 42px;
-    flex-shrink: 0
-}
-
-.ticker-group span {
-    font-size: inherit
-}
-
-@keyframes ticker-scroll {
-    from {
-        transform: translateX(0)
-    }
-
-    to {
-        transform: translateX(-50%)
-    }
-}
-
-@media(max-width:700px) {
-    .ticker-group {
-        gap: 24px;
-        padding-right: 24px
-    }
-
-    .ticker>.ticker-track {
-        animation-duration: 35s
-    }
-}
-
-@media(prefers-reduced-motion:reduce) {
-    .ticker>.ticker-track {
-        animation: none
-    }
 }
 
 /* Anchor links (Meet the app, On the menu, Take a look around, Back to the top) glide instead of jumping. */
