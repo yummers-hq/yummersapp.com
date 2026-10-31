@@ -133,6 +133,7 @@ nav>a:hover {
 }
 
 .hero {
+    border-bottom: 1px solid var(--line);
     min-height: 750px;
     display: grid;
     grid-template-columns: 1.04fr 1fr;
@@ -292,26 +293,8 @@ em {
     color: var(--accent)
 }
 
-.ticker {
-    overflow: hidden;
-    background: var(--orange);
-    color: var(--paper);
-    padding: 19px 0
-}
 
-.ticker>div {
-    white-space: nowrap;
-    display: flex;
-    gap: 42px;
-    justify-content: center;
-    font-family: Fraunces, 'Noto Serif Khmer', serif;
-    font-size: 24px;
-    letter-spacing: -.02em
-}
 
-.ticker span {
-    font-size: 25px
-}
 
 
 
@@ -593,14 +576,8 @@ em {
         font-size: 24px
     }
 
-    .ticker {
-        padding: 15px 0
-    }
 
-    .ticker>div {
-        font-size: 20px;
-        gap: 24px
-    }
+
 
 
 
@@ -719,11 +696,6 @@ em {
     }
 }
 
-.ticker svg {
-    width: 19px;
-    height: 19px;
-    align-self: center
-}
 
 .brand-image {
     width: 58px;
@@ -795,58 +767,6 @@ em {
 
 .food-photo figcaption {
     display: none
-}
-
-/* Ticker: scrolls right to left. Two identical groups, moved left by exactly one group, loop without a seam. */
-.ticker>.ticker-track {
-    display: flex;
-    width: max-content;
-    gap: 0;
-    justify-content: flex-start;
-    animation: ticker-scroll 45s linear infinite
-}
-
-.ticker:hover>.ticker-track {
-    animation-play-state: paused
-}
-
-.ticker-group {
-    display: flex;
-    align-items: center;
-    gap: 42px;
-    padding-right: 42px;
-    flex-shrink: 0
-}
-
-.ticker-group span {
-    font-size: inherit
-}
-
-@keyframes ticker-scroll {
-    from {
-        transform: translateX(0)
-    }
-
-    to {
-        transform: translateX(-50%)
-    }
-}
-
-@media(max-width:700px) {
-    .ticker-group {
-        gap: 24px;
-        padding-right: 24px
-    }
-
-    .ticker>.ticker-track {
-        animation-duration: 35s
-    }
-}
-
-@media(prefers-reduced-motion:reduce) {
-    .ticker>.ticker-track {
-        animation: none
-    }
 }
 
 /* Anchor links (Meet the app, On the menu, Take a look around, Back to the top) glide instead of jumping. */
@@ -1124,7 +1044,6 @@ html {
 .pinned .screen-pin { position: sticky; }
 .pinned .onboarding-screens { overflow-x: hidden; scroll-snap-type: none; }
 
-.ticker .ticker-star { fill: currentColor; stroke: none; }
 
 .footer-follow img { display: block; }
 
@@ -1202,7 +1121,6 @@ html:lang(km) body {
 html:lang(km) h1,
 html:lang(km) h2,
 html:lang(km) h3,
-html:lang(km) .ticker,
 html:lang(km) .small-note,
 html:lang(km) figcaption {
     letter-spacing: normal;
