@@ -304,15 +304,16 @@ function page(lang, title, text, button) {
 // Sent with every answer (#48). The policy allows only what the pages use: their
 // own files, Cloudflare's Turnstile (the sign-up's bot check), Cloudflare Web
 // Analytics' script (the zone's automatic setup injects it; it reports to our own
-// /cdn-cgi/rum, so 'self' covers that; until PostHog, #51), and the Supabase
+// /cdn-cgi/rum, so 'self' covers that; until PostHog, #51), PostHog's script and
+// EU endpoint (analytics.js, #2), and the Supabase
 // project that 404.html's share links read (beta since #73).
 // Inline styles stay allowed for 404.html's <style> and page() below.
 const SECURITY_HEADERS = {
     "Content-Security-Policy": [
         "default-src 'self'",
-        "script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com",
+        "script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://eu-assets.i.posthog.com",
         "frame-src https://challenges.cloudflare.com",
-        "connect-src 'self' https://uobskavqhilnqakbdutt.supabase.co",
+        "connect-src 'self' https://uobskavqhilnqakbdutt.supabase.co https://eu.i.posthog.com",
         "style-src 'self' 'unsafe-inline'",
         "object-src 'none'",
         "base-uri 'self'",
