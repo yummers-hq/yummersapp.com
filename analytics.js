@@ -9,9 +9,9 @@
 (function () {
     var CHOICE = "yummers-cookies"; // our own remembered choice: "accepted" or "declined"
     var text = {
-        en: { msg: "We use cookies to see how people use this site.", accept: "Accept", decline: "Decline", label: "Cookies", settings: "Cookie settings" },
-        km: { msg: "យើងប្រើខូគីដើម្បីមើលថាមនុស្សប្រើគេហទំព័រនេះយ៉ាងដូចម្តេច។", accept: "យល់ព្រម", decline: "បដិសេធ", label: "ខូគី", settings: "ការកំណត់ខូគី" },
-        fr: { msg: "Nous utilisons des cookies pour voir comment ce site est utilisé.", accept: "Accepter", decline: "Refuser", label: "Cookies", settings: "Paramètres des cookies" }
+        en: { msg: "We count visits to improve yummers. Accept lets us recognise you next time; Decline stores nothing.", privacy: "Privacy", accept: "Accept", decline: "Decline", label: "Cookies", settings: "Cookie settings" },
+        km: { msg: "យើងរាប់ចំនួនអ្នកចូលមើល ដើម្បីកែលម្អ yummers។ ការយល់ព្រមអនុញ្ញាតឱ្យយើងស្គាល់អ្នកនៅលើកក្រោយ ការបដិសេធមិនរក្សាទុកអ្វីទាំងអស់។", privacy: "ភាពឯកជន", accept: "យល់ព្រម", decline: "បដិសេធ", label: "ខូគី", settings: "ការកំណត់ខូគី" },
+        fr: { msg: "Nous comptons les visites pour améliorer yummers. Accepter nous permet de vous reconnaître la prochaine fois ; Refuser ne stocke rien.", privacy: "Confidentialité", accept: "Accepter", decline: "Refuser", label: "Cookies", settings: "Paramètres des cookies" }
     };
     var root = document.documentElement, banner;
 
@@ -55,7 +55,8 @@
     function render() {
         var t = text[lang()];
         banner.setAttribute("aria-label", t.label);
-        banner.querySelector("p").textContent = t.msg;
+        banner.querySelector("span").textContent = t.msg;
+        banner.querySelector("a").textContent = t.privacy;
         banner.querySelector("[data-accept]").textContent = t.accept;
         banner.querySelector("[data-decline]").textContent = t.decline;
         document.querySelectorAll("[data-cookie-settings]").forEach(function (a) { a.textContent = t.settings; });
@@ -85,7 +86,7 @@
         banner = document.createElement("div");
         banner.className = "cookie-banner";
         banner.setAttribute("role", "region");
-        banner.innerHTML = '<p></p><div class="cookie-actions"><button type="button" data-accept></button><button type="button" data-decline></button></div>';
+        banner.innerHTML = '<p><span></span> <a href="/privacy"></a></p><div class="cookie-actions"><button type="button" data-accept></button><button type="button" data-decline></button></div>';
         banner.hidden = !!get();
         document.body.appendChild(banner);
         banner.querySelector("[data-accept]").addEventListener("click", function () { close("accepted"); });

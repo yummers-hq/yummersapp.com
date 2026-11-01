@@ -1228,6 +1228,10 @@ html:lang(fr) .footer-links {
     max-width: 60ch
 }
 
+.cookie-banner a {
+    text-decoration: underline
+}
+
 .cookie-actions {
     display: flex;
     gap: 12px;
