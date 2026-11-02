@@ -949,8 +949,12 @@ html {
 /* App previews are drawn as iPhones: black bezel, metal rim, Dynamic Island
    and side buttons. cqw is the phone's width, so every size matches. */
 .device-figure,
-.onboarding-screens figure { container-type: inline-size; isolation: isolate; }
-.onboarding-screens figure { position: relative; }
+.onboarding-screens figure,
+.peek-strip figure,
+.peek-duo figure { container-type: inline-size; isolation: isolate; }
+.onboarding-screens figure,
+.peek-strip figure,
+.peek-duo figure { position: relative; }
 .preview-device,
 .screen-link {
     position: relative;
@@ -990,7 +994,9 @@ html {
 /* Action and volume buttons on the left, the side button on the right: one
    button plus three copies of it as shadows, tucked behind the frame. */
 .device-figure::before,
-.onboarding-screens figure::before {
+.onboarding-screens figure::before,
+.peek-strip figure::before,
+.peek-duo figure::before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -1046,6 +1052,23 @@ html {
 
 
 .footer-follow img { display: block; }
+
+/* The homepage's phone strip with its Light/Dark switch, then the light-and-dark pair. */
+.peek { padding-block: 112px 64px; }
+.peek h2 { font-size: clamp(38px, 4.2vw, 58px); }
+.peek-lede { max-width: 42ch; margin: 24px 0; color: var(--muted); font-size: 18px; }
+.peek-switch button { padding: 8px 20px; }
+.peek-strip { display: flex; gap: 26px; margin-top: 32px; padding: 8px 12px 24px; overflow-x: auto; scroll-snap-type: x mandatory; }
+.peek-strip figure { flex: 0 0 230px; scroll-snap-align: start; }
+.peek-strip figcaption { padding-top: 24px; }
+.peek-strip h3 { font: 600 20px/1.2 Fraunces, 'Noto Serif Khmer', Georgia, serif; letter-spacing: -.02em; }
+.peek-strip figcaption p { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.peek-duo { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; padding-inline: 12px; }
+.peek-duo figcaption { padding-top: 16px; text-align: center; font-size: 14px; color: var(--muted); }
+@media (max-width: 700px) {
+    .peek { padding-block: 64px 32px; }
+    .peek-strip figure { flex-basis: 64%; }
+}
 
 /* "Take a peek inside" lands on the section itself. The page-wide 35px
    scroll-padding would otherwise leave a cut-off strip of the ticker above it. */
