@@ -68,10 +68,10 @@
     });
 })();
 
-// On narrow screens each row of phones swipes sideways; the dots under it show
+// On narrow screens each row of phones (the friends and search rows, the peek strip and the light/dark pair) swipes sideways; the dots under it show
 // which phone is in view (hidden by CSS on wider screens, where nothing scrolls).
 (function () {
-    document.querySelectorAll(".onboarding-screens").forEach(function (row) {
+    document.querySelectorAll(".onboarding-screens, .peek-strip, .peek-duo").forEach(function (row) {
         var figures = row.querySelectorAll("figure");
         var dots = document.createElement("div");
         dots.className = "screen-dots";
