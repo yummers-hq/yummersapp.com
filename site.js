@@ -128,17 +128,3 @@
         layout();
     }
 })();
-
-// Light/Dark switch over the phone strip. The dark screens only download once
-// someone asks for them.
-(function () {
-    var group = document.querySelector(".peek-switch");
-    if (!group) return;
-    var shots = document.querySelectorAll(".peek-strip img");
-    group.addEventListener("click", function (e) {
-        var pick = e.target.closest("button");
-        if (!pick) return;
-        group.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", b === pick); });
-        shots.forEach(function (img) { img.src = img.dataset[pick.dataset.mode]; });
-    });
-})();

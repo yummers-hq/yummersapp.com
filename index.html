@@ -24,6 +24,7 @@
         type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"yummers","alternateName":["yummers app","HungryRaccoon","Hungry Raccoon"],"url":"https://yummersapp.com/"},{"@type":"Organization","name":"yummers","url":"https://yummersapp.com/","logo":"https://yummersapp.com/assets/logo.png","description":"yummers is a social food app for Cambodia: rate the places you've eaten, make and share lists of where to eat, and follow your friends' taste.","email":"hello@yummersapp.com","contactPoint":{"@type":"ContactPoint","contactType":"customer support","email":"hello@yummersapp.com","url":"https://yummersapp.com/contact","availableLanguage":["English"]},"areaServed":"Cambodia","sameAs":["https://www.instagram.com/yummersapp/","https://www.facebook.com/profile.php?id=61594898428255","https://www.linkedin.com/company/hungryraccoon/","https://www.tiktok.com/@hungryraccoonapp"]}]}</script>
     <link rel="icon" href="/assets/favicon-192.png" sizes="192x192">
     <link rel="apple-touch-icon" href="assets/logo.png">
+    <script src="theme.js"></script>
     <link rel="stylesheet" href="fonts.css">
     <link rel="stylesheet" href="style.css">
     <script src="i18n.js" defer></script>
@@ -35,7 +36,7 @@
     <header class="header wrap"><a href="#" class="brand" aria-label="yummers home" data-i18n-aria="brandHome"><img class="brand-image"
                 src="assets/raccoon.png" alt="" width="58" height="32"><span class="brand-name">yummers<span class="brand-tag"> | Restaurant Lists App</span></span></a>
         <nav aria-label="Main navigation" data-i18n-aria="navMain"><a href="#preview" data-i18n="navHow">How it works</a><a
-                class="nav-status" href="#launch" data-i18n="navStatus">Join the iPhone beta</a><div class="lang-switch" role="group" aria-label="Language" data-i18n-aria="langGroup"><button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button><button type="button" data-lang="km" lang="km" aria-label="ខ្មែរ (Khmer)" aria-pressed="false">KH</button><button type="button" data-lang="fr" lang="fr" aria-label="Français (French)" aria-pressed="false">FR</button></div></nav>
+                class="nav-status" href="#launch" data-i18n="navStatus">Join the iPhone beta</a><div class="lang-switch" role="group" aria-label="Language" data-i18n-aria="langGroup"><button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button><button type="button" data-lang="km" lang="km" aria-label="ខ្មែរ (Khmer)" aria-pressed="false">KH</button><button type="button" data-lang="fr" lang="fr" aria-label="Français (French)" aria-pressed="false">FR</button></div><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode" data-i18n-aria="themeLabel"></button></nav>
     </header>
     <main id="main">
         <section class="hero wrap">
@@ -61,7 +62,6 @@
         <section id="preview" class="peek wrap" aria-labelledby="preview-title">
             <h2 id="preview-title" data-i18n="peekTitle">Take a peek<br><em>inside.</em></h2>
             <p class="peek-lede" data-i18n="peekLede">Rate the places you’ve eaten in Phnom Penh, make lists and follow friends. Swipe through the app.</p>
-            <div class="lang-switch peek-switch" role="group" aria-label="Appearance" data-i18n-aria="peekMode"><button type="button" data-mode="light" aria-pressed="true" data-i18n="peekLight">Light</button><button type="button" data-mode="dark" aria-pressed="false" data-i18n="peekDark">Dark</button></div>
             <div class="peek-strip">
                 <figure>
                     <div class="screen-link">
