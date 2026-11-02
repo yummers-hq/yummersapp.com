@@ -326,6 +326,33 @@ const SECURITY_HEADERS = {
     "X-Frame-Options": "DENY",
 };
 
+// The app's place list (yummers#731). Straight from the database it is 4 MB a
+// phone, and six phones opening a build together queued the whole project.
+// Cloudflare keeps one copy per project for ten minutes. Only our two projects,
+// no parameters, so a caller can't make the database do anything else.
+const inflight = new Map();
+async function catalogue(request, ref, ctx) {
+    const key = new Request(`https://yummersapp.com/catalogue/${ref}`);
+    const hit = await caches.default.match(key);
+    if (hit) return hit;
+    // Phones that miss together share one trip to the database.
+    if (!inflight.has(ref)) {
+        const trip = fetch(`https://${ref}.supabase.co/rest/v1/rpc/catalogue_rows`, {
+            headers: { apikey: request.headers.get("apikey") || "" },
+        }).then(async (res) => {
+            const body = await res.text();
+            const out = new Response(body, { status: res.status, headers: { "Content-Type": "application/json" } });
+            if (res.ok) {
+                out.headers.set("Cache-Control", "public, max-age=600");
+                ctx.waitUntil(caches.default.put(key, out.clone()));
+            }
+            return out;
+        }).finally(() => inflight.delete(ref));
+        inflight.set(ref, trip);
+    }
+    return (await inflight.get(ref)).clone();
+}
+
 async function route(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/signup" && request.method === "POST") return signup(request, env);
@@ -336,6 +363,8 @@ async function route(request, env, ctx) {
     // projects, so it can't send anyone anywhere else.
     const signin = url.pathname.match(/^\/signin\/(mbuxxkchudopmpihrakk|uobskavqhilnqakbdutt)$/);
     if (signin) return Response.redirect(`https://${signin[1]}.supabase.co/auth/v1/authorize${url.search}`, 302);
+    const cached = url.pathname.match(/^\/catalogue\/(mbuxxkchudopmpihrakk|uobskavqhilnqakbdutt)$/);
+    if (cached) return catalogue(request, cached[1], ctx);
     const wantsMarkdown = (request.headers.get("Accept") || "").includes("text/markdown");
 
     if (wantsMarkdown && url.pathname === "/") {
