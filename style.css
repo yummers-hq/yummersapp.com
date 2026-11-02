@@ -1064,7 +1064,9 @@ html {
 .screen-dots { display: none; }
 /* site.js: on phones the row is pinned and scrolling down moves it, so no sideways swipe or snap. */
 .pinned .screen-pin { position: sticky; }
-.pinned .onboarding-screens { overflow-x: hidden; scroll-snap-type: none; }
+.pinned .onboarding-screens,
+.pinned .peek-strip,
+.pinned .peek-duo { overflow-x: hidden; scroll-snap-type: none; }
 
 
 .footer-follow img { display: block; }
@@ -1085,6 +1087,9 @@ html {
     /* Same size, gap and edge as the friends row's swipe (.onboarding-screens). */
     .peek-strip { gap: 18px; padding: 8px 6px 12px; }
     .peek-strip figure { flex-basis: 64%; }
+    /* The pair is a row like the others on phones: same phone size, one at a time. */
+    .peek-duo { display: flex; gap: 18px; padding: 0 6px 12px; overflow-x: auto; scroll-snap-type: x mandatory; }
+    .peek-duo figure { flex: 0 0 64%; scroll-snap-align: start; }
 }
 
 /* "Take a peek inside" lands on the section itself. The page-wide 35px
