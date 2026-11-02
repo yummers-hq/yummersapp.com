@@ -500,8 +500,10 @@ em {
 }
 
 @media(max-width:700px) {
+    :root { --gutter: 24px }
+
     .wrap {
-        padding-inline: 24px
+        padding-inline: var(--gutter)
     }
 
     .header {
@@ -648,8 +650,10 @@ em {
 }
 
 @media(max-width:360px) {
+    :root { --gutter: 18px }
+
     .wrap {
-        padding-inline: 18px
+        padding-inline: var(--gutter)
     }
 
     .brand {
@@ -1053,7 +1057,7 @@ html {
     .onboarding h2 { max-width: 12ch; }
     .onboarding-copy > p { max-width: 42ch; }
     /* Three phones side by side are too small on a phone, so they swipe. */
-    .onboarding-screens { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 64%; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 6px 12px; }
+    .onboarding-screens { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 64%; overflow-x: auto; scroll-snap-type: x mandatory; padding-block: 0 12px; }
     .onboarding-screens figure { scroll-snap-align: start; }
     .onboarding-screens h3 { font-size: 21px; }
     .onboarding-screens figure:nth-child(2) { margin-top: 0; }
@@ -1085,11 +1089,13 @@ html {
 @media (max-width: 700px) {
     .peek { padding-block: 64px 32px; }
     /* Same size, gap and edge as the friends row's swipe (.onboarding-screens). */
-    .peek-strip { gap: 18px; padding: 8px 6px 12px; }
+    .peek-strip { gap: 18px; padding-block: 8px 12px; }
     .peek-strip figure { flex-basis: 64%; }
     /* The pair is a row like the others on phones: same phone size, one at a time. */
-    .peek-duo { display: flex; gap: 18px; padding: 0 6px 12px; overflow-x: auto; scroll-snap-type: x mandatory; }
+    .peek-duo { display: flex; gap: 18px; padding-block: 0 12px; overflow-x: auto; scroll-snap-type: x mandatory; }
     .peek-duo figure { flex: 0 0 64%; scroll-snap-align: start; }
+    /* Sliding rows run to the screen edge: the phone keeps the text's left edge (plus 6px), the next one isn't cut at the page padding. */
+    .onboarding-screens, .peek-strip, .peek-duo { margin-inline: calc(-1 * var(--gutter)); padding-inline: calc(var(--gutter) + 6px); scroll-padding-inline: calc(var(--gutter) + 6px); }
 }
 
 /* "Take a peek inside" lands on the section itself. The page-wide 35px
