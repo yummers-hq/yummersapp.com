@@ -121,6 +121,30 @@ const CONFIRM = {
     },
 };
 
+// The Melbourne waitlist (yummers#786): English only, and its own segment. Its
+// strings replace the beta's where they differ; the rest (leave*, left*, expired*,
+// verifyButton, regards, role) are shared.
+const MELBOURNE = {
+    suburbs: ["CBD", "Carlton", "Fitzroy", "Collingwood", "Richmond", "Brunswick", "South Yarra", "Footscray", "Sunshine",
+        "St Albans", "Springvale", "Noble Park", "Dandenong", "Clayton", "Box Hill", "Somewhere else in Melbourne"],
+    subject: "You're on the yummers Melbourne list",
+    note: [
+        "Hi,",
+        "Thanks for joining the yummers Melbourne list. I'm Sovithyea, one of a team of seven building yummers: an app to rate the places you've eaten, keep lists of where to go next, and see where your friends are eating.",
+        "We're starting in Phnom Penh, and Melbourne is next. We'll email you when there's news. The more people who ask for it, the sooner it comes.",
+    ],
+    verifySubject: "Confirm your email for the yummers Melbourne list",
+    verifyNote: [
+        "Hi,",
+        "Thanks for joining the yummers Melbourne list. Press the link below to confirm it's your email, and you're on the list.",
+    ],
+    joinTitle: "Join the yummers Melbourne list?",
+    joinedTitle: "You're on the Melbourne list!",
+    joinedText: "We'll write when there's news. Want it here sooner? Send your invite link to friends who'd use it.",
+    invite: "Want yummers in Melbourne sooner? Send friends your invite link:",
+    share: "Share my invite link",
+};
+
 const NAME = "Sovithyea Prach";
 const SOCIALS = [
     ["Instagram", "https://www.instagram.com/yummersapp/"],
@@ -180,6 +204,15 @@ function resendApi(env, method, path, body) {
 const FROM = "Sovithyea from yummers <sovithyea@mail.yummersapp.com>";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
+// An invite code: 8 lowercase letters and digits. It is not the Resend contact id,
+// which is the unsubscribe key.
+const CODE = /^[a-z0-9]{8}$/;
+const newCode = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => "0123456789abcdefghijklmnopqrstuvwxyz"[b % 36]).join("");
+const inviteLink = (code) => `https://yummersapp.com/melbourne?ref=${code}`;
+
+// English with the Melbourne strings laid over it.
+const melbourneStrings = () => ({ t: { ...CONFIRM.en, ...MELBOURNE }, lang: "en" });
+
 // The strings for a form's or link's lang, falling back to English.
 function language(lang) {
     const known = Object.hasOwn(CONFIRM, lang);
@@ -196,6 +229,13 @@ async function signup(request, env) {
         return new Response(null, { status: 400 });
     }
 
+    const melbourne = form.get("list") === "melbourne";
+    const suburb = String(form.get("suburb") || "");
+    // The Melbourne form's extra fields are checked here, not trusted from the page.
+    if (melbourne && (!MELBOURNE.suburbs.includes(suburb) || !form.get("adult"))) return new Response(null, { status: 400 });
+    // A malformed ref is dropped, so the sign-up still goes through.
+    const ref = String(form.get("ref") || "");
+
     const check = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
         method: "POST",
         body: new URLSearchParams({
@@ -210,11 +250,12 @@ async function signup(request, env) {
 
     // One confirm email a day per address, so the form can't flood an inbox. The
     // answer is the same either way, so it doesn't show who has signed up.
-    const sent = `sent:${email}`;
+    const sent = `sent:${melbourne ? "melbourne:" : ""}${email}`;
     if (await env.SIGNUPS.get(sent)) return new Response(null, { status: 204 });
     const token = crypto.randomUUID();
-    await env.SIGNUPS.put(`confirm:${token}`, email, { expirationTtl: 7 * 86400 });
-    const { t, lang } = language(String(form.get("lang")));
+    const pending = { email, ...(melbourne && { list: "melbourne", suburb, ref: CODE.test(ref) ? ref : "" }) };
+    await env.SIGNUPS.put(`confirm:${token}`, JSON.stringify(pending), { expirationTtl: 7 * 86400 });
+    const { t, lang } = melbourne ? melbourneStrings() : language(String(form.get("lang")));
     const link = `https://yummersapp.com/api/confirm?token=${token}&lang=${lang}`;
     // The same plain note as the welcome one, with the link as its last paragraph.
     const note = (last) => ({ ...t, subject: t.verifySubject, note: [...t.verifyNote, last], offList: t.verifyIgnore });
@@ -237,23 +278,42 @@ async function signup(request, env) {
 async function confirm(request, env, ctx, url) {
     const { t, lang } = language(url.searchParams.get("lang"));
     const token = url.searchParams.get("token") || "";
-    const email = UUID.test(token) && await env.SIGNUPS.get(`confirm:${token}`);
-    if (!email) return page(lang, t.expiredTitle, t.expiredText);
-    if (request.method !== "POST") return page(lang, t.joinTitle, t.joinText, t.verifyButton);
-    if (!(await join(env, ctx, email, t, lang))) return new Response(null, { status: 502 });
-    return page(lang, t.joinedTitle, t.joinedText);
+    const raw = UUID.test(token) && await env.SIGNUPS.get(`confirm:${token}`);
+    if (!raw) return page(lang, t.expiredTitle, t.expiredText);
+    // Sign-ups pending from before the Melbourne list are plain email strings.
+    const pending = raw.startsWith("{") ? JSON.parse(raw) : { email: raw };
+    const m = pending.list === "melbourne";
+    const s = m ? melbourneStrings() : { t, lang };
+    if (request.method !== "POST") return page(s.lang, s.t.joinTitle, s.t.joinText, s.t.verifyButton);
+    const code = await join(env, ctx, pending, s.t, s.lang);
+    if (!code) return new Response(null, { status: 502 });
+    return page(s.lang, s.t.joinedTitle, s.t.joinedText, null, m ? inviteBlock(s.t, code) : "");
 }
 
-// Saves a confirmed email as a Resend contact in the beta sign-up segment, and
-// sends a new contact the welcome note.
-async function join(env, ctx, email, t, lang) {
+// Saves a confirmed email as a Resend contact in the beta sign-up segment (or the
+// Melbourne one, with its suburb, invite code and inviter as contact properties),
+// and sends a new contact the welcome note. Answers true, or for Melbourne the
+// contact's invite code, or false when Resend refused.
+async function join(env, ctx, { email, list, suburb, ref }, t, lang) {
+    const m = list === "melbourne";
     const resend = (path, body) => resendApi(env, "POST", path, body);
+    const to = encodeURIComponent(email);
     // Resend's create also answers OK for an existing contact (same id), so look the
     // address up first: an existing one is only added to the segment, and not emailed.
-    const exists = (await resendApi(env, "GET", `/contacts/${encodeURIComponent(email)}`)).ok;
-    const res = exists
-        ? await resend(`/contacts/${encodeURIComponent(email)}/segments/${env.SEGMENT_ID}`, {})
-        : await resend("/contacts", { email, segments: [{ id: env.SEGMENT_ID }] });
+    const found = await resendApi(env, "GET", `/contacts/${to}`);
+    const exists = found.ok;
+    // An existing contact keeps the code (and inviter) it already has.
+    const had = m && exists ? (await found.json()).properties?.invite_code?.value : null;
+    const code = m && (had || newCode());
+    const segment = m ? env.MELBOURNE_SEGMENT_ID : env.SEGMENT_ID;
+    const properties = m && { suburb, ...(!had && { invite_code: code, ...(ref && { invited_by: ref }) }) };
+    let res;
+    if (exists) {
+        res = await resend(`/contacts/${to}/segments/${segment}`, {});
+        if (res.ok && m) res = await resendApi(env, "PATCH", `/contacts/${to}`, { properties });
+    } else {
+        res = await resend("/contacts", { email, segments: [{ id: segment }], ...(m && { properties }) });
+    }
     const created = !exists && res.ok;
     // Only a new contact is emailed, so joining again can't send them repeat mail.
     // The send runs after the reply, and a failed send doesn't fail joining.
@@ -265,11 +325,11 @@ async function join(env, ctx, email, t, lang) {
             to: email,
             reply_to: CONTACT,
             subject: t.subject,
-            html: confirmHtml(t, lang, unsub),
-            text: confirmText(t, unsub),
+            html: confirmHtml(m ? { ...t, note: [...t.note, `${t.invite}<br><a href="${inviteLink(code)}" style="color:#A83618;">${inviteLink(code)}</a>`] } : t, lang, unsub),
+            text: confirmText(m ? { ...t, note: [...t.note, `${t.invite}\n${inviteLink(code)}`] } : t, unsub),
         });
     }));
-    return res.ok;
+    return res.ok && (code || true);
 }
 
 // The welcome note's unsubscribe link. Opening it (GET) only asks, because
@@ -287,7 +347,7 @@ async function unsubscribe(request, env, url) {
 }
 
 // The small page the emails' links open. A button, if given, POSTs back to the same address.
-function page(lang, title, text, button) {
+function page(lang, title, text, button, extra = "") {
     const font = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
     return new Response(`<!doctype html>
 <html lang="${lang}">
@@ -296,9 +356,18 @@ function page(lang, title, text, button) {
   <img src="/assets/logo.png" width="64" height="64" alt="yummers" style="border-radius:16px;">
   <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:28px;line-height:1.4;margin:20px 0 8px;">${title}</h1>
   <p style="font-size:16px;line-height:1.5;color:#665A4E;max-width:420px;margin:0 auto 24px;">${text}</p>
+  ${extra}
   ${button ? `<form method="post"><button style="font:600 15px ${font};background:#A83618;color:#fff;border:0;border-radius:999px;padding:13px 24px;cursor:pointer;">${button}</button></form>` : `<a href="/" style="color:#A83618;font-weight:600;text-decoration:none;">yummersapp.com</a>`}
 </body>
 </html>`, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } });
+}
+
+// The invite link and its share button, which invite.js wires up (inline scripts are not allowed).
+function inviteBlock(t, code) {
+    const link = inviteLink(code);
+    return `<p style="font-size:16px;margin:0 0 16px;"><a href="${link}" style="color:#A83618;font-weight:600;word-break:break-all;">${link}</a></p>
+  <p><button id="invite-share" data-link="${link}" style="font:600 15px sans-serif;background:#A83618;color:#fff;border:0;border-radius:999px;padding:13px 24px;cursor:pointer;">${t.share}</button></p>
+  <script src="/invite.js" defer></script>`;
 }
 
 // Sent with every answer (#48). The policy allows only what the pages use: their

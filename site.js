@@ -40,12 +40,14 @@
     }
 })();
 
-// Beta sign-up: sends the form to the Worker (/api/signup) and shows the
+// Beta and Melbourne sign-up: sends the form to the Worker (/api/signup) and shows the
 // answer in place. The Turnstile bot check needs JavaScript anyway.
 (function () {
     var form = document.getElementById("signup");
     if (!form) return;
     var error = form.querySelector(".signup-error");
+    // The Melbourne page: an invite link's ?ref= goes along with the sign-up.
+    if (form.elements.ref) form.elements.ref.value = new URLSearchParams(location.search).get("ref") || "";
     form.addEventListener("submit", function (e) {
         e.preventDefault();
         var button = form.querySelector("button");
