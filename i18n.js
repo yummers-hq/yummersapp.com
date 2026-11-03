@@ -44,10 +44,10 @@
         themeLabel: "របៀបងងឹត",
         peekLight: "ភ្លឺ",
         peekDark: "ងងឹត",
-        notifTitle: "ការស្នើសុំតាមដាន និងការជូនដំណឹង",
-        notifText: "ការស្នើសុំតាមដាន និងព័ត៌មានថ្មីៗពីមិត្តភក្តិ",
-        homeTitle: "ការវាយតម្លៃរបស់មិត្តភក្តិលើទំព័រដើម",
-        homeText: "មើលថាមិត្តភក្តិអ្នកចូលចិត្តអ្វី",
+        notifTitle: "មតិ ការចូលចិត្ត និងអ្នកតាមដានថ្មី", // DRAFT (#129)
+        notifText: "មើលថានរណាបានឆ្លើយតបនឹងអ្វីដែលអ្នកបានញ៉ាំ", // DRAFT (#129)
+        homeTitle: "មគ្គុទ្ទេសក៍ និងមិត្តភក្តិលើទំព័រដើម", // DRAFT (#129)
+        homeText: "មគ្គុទ្ទេសក៍របស់យើងមុនគេ បន្ទាប់មកអ្វីដែលមនុស្សកំពុងញ៉ាំ", // DRAFT (#129)
         saveTitle: "រក្សាទុកក្នុងបញ្ជី",
         saveText: "រក្សាទុកកន្លែងមួយក្នុងបញ្ជីណាមួយរបស់អ្នក",
         notifAlt: "ការជូនដំណឹង៖ ការស្នើសុំតាមដានពីរសម្រាប់បញ្ជាក់ ឬលុប និងព័ត៌មានថ្មីៗពីមិត្តភក្តិថ្ងៃនេះ",
@@ -146,10 +146,10 @@
         themeLabel: "Mode sombre",
         peekLight: "Clair",
         peekDark: "Sombre",
-        notifTitle: "Demandes d’abonnement et notifications",
-        notifText: "Demandes d’abonnement et nouvelles de vos amis.",
-        homeTitle: "Les notes de vos amis sur l’accueil",
-        homeText: "Voyez ce que vos amis ont aimé.",
+        notifTitle: "Commentaires, j’aime et nouveaux abonnés", // DRAFT (#129)
+        notifText: "Voyez qui a réagi à ce que vous avez mangé.", // DRAFT (#129)
+        homeTitle: "Guides et amis sur l’accueil", // DRAFT (#129)
+        homeText: "Nos guides d’abord, puis ce que les gens mangent.", // DRAFT (#129)
         saveTitle: "Enregistrer dans une liste",
         saveText: "Enregistrez un lieu dans n’importe laquelle de vos listes.",
         notifAlt: "Notifications : deux demandes d’abonnement à confirmer ou à supprimer, et les nouvelles du jour de vos amis",
