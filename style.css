@@ -339,10 +339,15 @@ em {
     font-size: 68px
 }
 
-.closing>p:last-of-type {
+.closing>p:last-of-type,
+.signup-intro {
     color: var(--muted);
     margin-top: 25px;
     font-size: 17px
+}
+
+.signup-intro {
+    margin: 32px 0 22px
 }
 
 /* Cambodia or Australia, above the beta form (site.js hides the form until Cambodia). */
@@ -685,7 +690,8 @@ em {
         font-size: 49px
     }
 
-    .closing>p:last-of-type {
+    .closing>p:last-of-type,
+    .signup-intro {
         font-size: 16px
     }
 
