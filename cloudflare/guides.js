@@ -72,7 +72,8 @@ async function liveGuides() {
 }
 
 
-function layout(title, description, path, jsonld, body) {
+// opts: canonical (a path, default this page) and image (the chat card's picture, default share.jpg).
+function layout(title, description, path, jsonld, body, opts = {}) {
     return `<!doctype html>
 <html lang="en">
 <head>
@@ -80,15 +81,18 @@ function layout(title, description, path, jsonld, body) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="${SITE}${path}">
+<link rel="canonical" href="${SITE}${opts.canonical || path}">
 <meta name="theme-color" content="#b8401e">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="yummers">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:url" content="${SITE}${path}">
-<meta property="og:image" content="${SITE}/assets/share.jpg">
+<meta property="og:url" content="${SITE}${opts.canonical || path}">
+<meta property="og:image" content="${esc(opts.image || `${SITE}/assets/share.jpg`)}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="${esc(opts.image || `${SITE}/assets/share.jpg`)}">
 <link rel="icon" href="/assets/favicon-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="/assets/logo.png">
 <script src="/theme.js"></script>
@@ -139,6 +143,12 @@ function layout(title, description, path, jsonld, body) {
 .pl-in img{width:56px;height:56px;border-radius:12px}
 .pl-in b{font-weight:600}
 .wu{white-space:pre-line}
+.glance .open{color:var(--green);border-color:var(--green)}
+.rate{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:6px}
+.rate b{font:700 22px Fraunces,serif}
+.rate .big{font-size:40px;line-height:1;color:var(--accent)}
+.rate p{margin:0;color:var(--muted);font-size:14px}
+.dirbtn{display:flex;justify-content:center;margin-top:18px;font-weight:600;font-size:14px;background:var(--ink);color:var(--paper);border-radius:999px;padding:12px 18px}
 .more{margin-top:28px}
 .more h3{margin-bottom:12px}
 .more-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -305,16 +315,20 @@ async function render(pathname) {
 
 // The edge keeps a page for an hour, keyed to the deployed version so a deploy shows at once;
 // browsers keep it five minutes.
-export async function guides(url, ctx, version = "") {
-    const path = url.pathname.replace(/\/$/, "");
+async function edge(path, url, ctx, version, make) {
     const key = new Request(url.origin + path + (version ? "?v=" + version : ""));
     const hit = await caches.default.match(key);
-    const res = hit || await render(path);
+    const res = hit || await make();
     if (!res?.ok) return res;
     if (!hit) ctx.waitUntil(caches.default.put(key, res.clone()));
     const out = new Response(res.body, res);
     out.headers.set("Cache-Control", "public, max-age=300");
     return out;
+}
+
+export async function guides(url, ctx, version = "") {
+    const path = url.pathname.replace(/\/$/, "");
+    return edge(path, url, ctx, version, () => render(path));
 }
 
 // The static sitemap plus every live guide and the places in them, so adding a guide is one line.
@@ -325,4 +339,118 @@ export async function sitemap(res) {
     const paths = new Set(["/guides", ...live.map((g) => `/guides/${g.slug}`), ...live.flatMap((g) => g.items.map((it) => `/places/${it.slug}`))]);
     const urls = [...paths].map((p) => `  <url>\n    <loc>${SITE}${p}</loc>\n  </url>\n`).join("");
     return new Response((await res.text()).replace("</urlset>", `${urls}</urlset>`), res);
+}
+
+// Any restaurant (/p/{share_id}/{slug}, D126, yummers#784): shared_place() on beta. Until migration 0086 reaches beta
+// the function doesn't exist, which reads as "not found" (the site's 404), never an error.
+const photoUrl = (p) => `https://uobskavqhilnqakbdutt.supabase.co/storage/v1/object/public/photos/${encodeURIComponent(p.userId)}/${encodeURIComponent(p.id)}.jpg`;
+const minutes = (h, m, ap) => ((+h % 12) + (/p/i.test(ap) ? 12 : 0)) * 60 + +(m || 0);
+const clock = (t) => { const m = t % 1440; return `${(Math.floor(m / 60) + 11) % 12 + 1}${m % 60 ? ":" + String(m % 60).padStart(2, "0") : ""}${m < 720 ? "am" : "pm"}`; };
+// "11:00 AM – 2:30 PM, 5:30 – 9:00 PM" as [[660, 870], [1050, 1260]]; a close past midnight runs on beyond 1440.
+const ranges = (text) => [...text.matchAll(/(\d{1,2})(?::(\d\d))?\s*([AP]M)?\s*[–-]\s*(\d{1,2})(?::(\d\d))?\s*([AP]M)/gi)].map(([, h1, m1, a1, h2, m2, a2]) => {
+    const end = minutes(h2, m2, a2);
+    let start = minutes(h1, m1, a1 || a2);
+    if (!a1 && start > end) start -= 720; // "11:00 – 2:00 PM"
+    return [start, end <= start ? end + 1440 : end];
+});
+// "Open now · closes 10pm" or "Closed · opens 11am" (or "Closed · opens Tue 11am"), in Phnom Penh time; null when hours are unknown.
+// shortcut: Phnom Penh's clock for every place (beta is Phnom Penh only); use the place's city when Melbourne arrives.
+export function openStatus(hours, now = new Date()) {
+    const lines = hours?.weekday_text;
+    if (!lines?.length) return null;
+    const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Phnom_Penh", weekday: "long", hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(now).map((p) => [p.type, p.value]));
+    const day = lines.findIndex((l) => l.startsWith(parts.weekday + ":")), t = +parts.hour * 60 + +parts.minute;
+    if (day < 0) return null;
+    const on = (d) => (lines[(day + d + 7) % 7].split(/: (.*)/s)[1] || "");
+    if (/24 hours/i.test(on(0))) return { open: true, text: "Open 24 hours" };
+    const now0 = [...ranges(on(-1)).map(([a, b]) => [a - 1440, b - 1440]), ...ranges(on(0))].find(([a, b]) => a <= t && t < b);
+    if (now0) return { open: true, text: `Open now · closes ${clock(now0[1])}` };
+    for (let d = 0; d < 7; d++) {
+        const next = ranges(on(d)).find(([a]) => d > 0 || a > t);
+        if (next) return { open: false, text: `Closed · opens ${d ? lines[(day + d) % 7].slice(0, 3) + " " : ""}${clock(next[0])}` };
+    }
+    return { open: false, text: "Closed" };
+}
+
+// The place, or null when the id is unknown or beta has no shared_place() yet; throws when beta is unreachable.
+async function loadPlace(id) {
+    try {
+        return await rest("rpc/shared_place", { method: "POST", body: JSON.stringify({ p_share_id: id }) }).then((r) => r.json());
+    } catch (e) {
+        if (e.message === "404" || e.message === "400") return null;
+        throw e;
+    }
+}
+
+async function placeShare(id) {
+    const p = await loadPlace(id);
+    if (!p) return null;
+    // Guides the Worker publishes: the place's /places/ page is then the canonical one.
+    const slugs = Object.keys(GUIDES).filter((s) => (p.guides || []).some((g) => g.share_id === GUIDES[s]));
+    const inGuides = (await Promise.all(slugs.map(load))).filter(Boolean);
+    const item = inGuides[0]?.items.find((it) => it.slug === placeSlug(p));
+    const fact = PLACES[item?.d.id] || {};
+    const name = fact.name || p.name, area = p.neighbourhood || p.district;
+    const kind = fact.kind || cuisineOf(p), line = [kind, area].filter(Boolean).join(" · ");
+    const sub = inGuides.length ? `in ${inGuides.length} yummers ${inGuides.length === 1 ? "guide" : "guides"}` : "on yummers";
+    const picture = p.picture?.kind === "cover" ? { url: coverOf({ picture: p.picture }) } : p.picture?.kind === "photo" ? { url: photoUrl(p.picture), by: p.picture.by } : null;
+    const total = p.liked + p.disliked, status = openStatus(p.opening_hours);
+    const rate = total < 5
+        ? `<b>Not rated on yummers yet</b><p>Been here? Rate it in the app, and see what your friends think.</p>`
+        : `<b class="big">${Math.round((p.liked / total) * 100)}%</b><b>liked it</b><p>from ${total} ratings on yummers</p>`;
+    const slug = slugify(p.name).slice(0, 60).replace(/-+$/, "") || "place";
+    const path = `/p/${id}/${slug}`, canonical = item ? `/places/${item.slug}` : path;
+    const hours = (p.opening_hours?.weekday_text || []).map((l) => l.split(/: (.*)/s)).filter((x) => x[1]);
+    const today = new Date().toLocaleDateString("en-US", { weekday: "long", timeZone: "Asia/Phnom_Penh" });
+    const where = p.latitude != null && p.longitude != null ? `${p.latitude},${p.longitude}` : `${name} Phnom Penh`;
+    const description = `${line ? line + " · " : ""}${sub}`;
+    const jsonld = JSON.stringify({
+        "@context": "https://schema.org", "@type": "Restaurant", name, url: SITE + canonical,
+        ...(kind && { servesCuisine: kind }),
+        address: { "@type": "PostalAddress", ...(p.address && { streetAddress: cleanAddress(p.address) }), addressLocality: "Phnom Penh", addressCountry: "KH" },
+        ...(p.latitude != null && { geo: { "@type": "GeoCoordinates", latitude: p.latitude, longitude: p.longitude } }),
+    });
+    const chips = [kind && `<span>${esc(kind)}</span>`, status && `<span${status.open ? ' class="open"' : ""}>${esc(status.text)}</span>`].filter(Boolean).join("");
+    const body = `${cover(picture?.url, line, name, `${sub[0].toUpperCase()}${sub.slice(1)}${picture?.by ? ` · Photo by @${picture.by}` : ""}`)}
+<div class="in"><div class="pl">
+${chips ? `<div class="glance">${chips}</div>` : ""}
+<div class="rate">${rate}</div>
+<a class="dirbtn" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(where)}" rel="noopener">Directions</a>
+<div class="facts">${p.address ? `<section class="box"><h3>Find it</h3><div>${esc(cleanAddress(p.address))}</div></section>` : ""}
+${hours.length ? `<section class="box"><h3>Opening hours</h3><dl class="hours">${hours.map(([day, h]) => { const c = day === today ? ' class="today"' : ""; return `<dt${c}>${esc(day)}</dt><dd${c}>${esc(shortHours(h))}</dd>`; }).join("")}</dl></section>` : ""}
+${inGuides.length ? `<section class="box"><h3>In these guides</h3>${inGuides.map((x) => `<a class="pl-in" href="/guides/${x.slug}">${img(guideCover(x), 112, 112)}<div><b>${esc(x.title)}</b><div class="meta">${x.items.length} places</div></div></a>`).join("")}</section>` : ""}</div>
+</div></div>`;
+    const res = html(layout(`${name}${area ? `, ${area}` : ""} | yummers`, description, path, jsonld, body, { canonical, image: picture?.url }));
+    res.headers.set("X-Slug", slug);
+    return res;
+}
+
+// /p/{share_id}/{slug}: the right slug is in the answer, so a wrong or missing one is a 301, as for /l/.
+// Also /sitemap-places.xml, every place's /p/ address (the static sitemap can't hold ~5,000; robots.txt names this file).
+export async function places(url, ctx, version = "") {
+    try {
+        if (url.pathname === "/sitemap-places.xml") {
+            return await edge(url.pathname, url, ctx, version, async () => {
+                const rows = [];
+                try {
+                    let page;
+                    do rows.push(...(page = await rest(`restaurants?select=share_id,name&order=share_id&limit=1000&offset=${rows.length}`).then((r) => r.json())));
+                    while (page.length === 1000);
+                } catch (e) {
+                    if (e.message !== "400") throw e; // no share_id column on beta yet: an empty list
+                }
+                const urls = rows.map((r) => `  <url><loc>${SITE}/p/${r.share_id}/${esc(slugify(r.name).slice(0, 60).replace(/-+$/, "") || "place")}</loc></url>\n`).join("");
+                return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}</urlset>\n`, { headers: { "Content-Type": "application/xml; charset=utf-8" } });
+            });
+        }
+        const [, id, slug] = url.pathname.match(/^\/p\/([0-9A-Za-z]{8})(?:\/([^/]*))?\/?$/) || [];
+        if (!id) return null;
+        const res = await edge(`/p/${id}`, url, ctx, version, async () => await placeShare(id));
+        if (!res?.ok) return res;
+        const want = res.headers.get("X-Slug");
+        res.headers.delete("X-Slug");
+        return slug === want ? res : Response.redirect(`${SITE}/p/${id}/${want}`, 301);
+    } catch {
+        return new Response("This page is unavailable right now. Try again in a minute.", { status: 503, headers: { "Retry-After": "60" } });
+    }
 }
