@@ -2,15 +2,18 @@
 import assert from "node:assert/strict";
 import worker from "./worker.js";
 import { GUIDES } from "./guides.js";
+import { PLACES, COVERS } from "./guide-places.js";
 
 for (const k of Object.keys(GUIDES)) delete GUIDES[k];
 GUIDES["korean"] = "KOREAN01"; GUIDES["bbq"] = "BBQ00001"; GUIDES["mine"] = "OTHER001"; GUIDES["empty"] = "EMPTY001"; GUIDES["private"] = "PRIVATE1";
+PLACES.rid1 = { name: "Clean One", kind: "Korean BBQ", price: "$12–20", when: "Dinner" }; // place 2 is not in the map: database name and cuisine
+COVERS.korean = "rid2";
 const row = (n, extra = {}) => ({
     note: `Order the ${n} <b>`, position: n,
     picture: { kind: "cover", url: `https://lh3.googleusercontent.com/p${n}` },
     restaurants: { name: `Place ${n} & Co`, district: "BKK", cuisine_type: ["International", "Korean"] }, ...extra,
 });
-const det = (n) => ({ position: n, restaurants: { id: `rid${n}`, address: `${n} Street <1>`, latitude: 11.5, longitude: 104.9, opening_hours: { weekday_text: ["Monday: 9:00 AM – 9:00 PM", "Tuesday: Closed"] } } });
+const det = (n) => ({ position: n, restaurants: { id: `rid${n}`, address: `${n} Street <1>`, latitude: 11.5, longitude: 104.9, opening_hours: { weekday_text: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((d) => `${d}: 9:00 AM – 9:00 PM`) } } });
 const lists = {
     KOREAN01: { title: "Korean restaurants in Phnom Penh", description: "Korean food is easy to find here. Start with the BBQ.", share_id: "KOREAN01", profiles: { username: "yummers" }, list_restaurants: [row(1), row(2, { picture: { kind: "photo", id: "pid", userId: "uid", by: "someone" } })] },
     BBQ00001: { title: "BBQ", share_id: "BBQ00001", profiles: { username: "yummers" }, list_restaurants: [row(1)] },
@@ -42,22 +45,29 @@ const get = async (path) => { store.clear(); return worker.fetch(new Request("ht
 let r = await get("/guides/korean");
 let t = await r.text();
 assert.equal(r.status, 200);
-for (const s of ["Korean restaurants in Phnom Penh | yummers", "Place 1 &amp; Co", "Place 2 &amp; Co", "Order the 1 &lt;b&gt;", "Korean · BKK", '"@type":"ItemList"', '"@type":"Restaurant"',
+for (const s of ["Korean restaurants in Phnom Penh | yummers", "Clean One", "Place 2 &amp; Co", "Order the 1 &lt;b&gt;", "Korean BBQ · BKK", "Korean · BKK", "Guide · Phnom Penh", "2 places · by the yummers team", ">01<", ">02<", '"name":"Clean One"', '"@type":"ItemList"', '"@type":"Restaurant"',
     'rel="canonical" href="https://yummersapp.com/guides/korean"', 'href="/places/place-1-co-bkk"', "https://lh3.googleusercontent.com/p1", 'href="/guides"']) assert.ok(t.includes(s), s);
 assert.ok(!t.includes("<b>"), "notes are escaped");
+assert.ok(!t.includes("Place 1 &amp; Co"), "the clean name replaces the database name");
+assert.ok(t.indexOf("lh3.googleusercontent.com/p2") < t.indexOf("lh3.googleusercontent.com/p1"), "the guide cover is the chosen place's photo, first on the page");
 assert.ok(!t.includes("/photos/") && !t.includes("someone"), "a person's photo and name stay off");
 
 // Restaurant page
 r = await get("/places/place-1-co-bkk");
 t = await r.text();
 assert.equal(r.status, 200);
-for (const s of ["Place 1 &amp; Co, BKK | yummers", "From the yummers team", "Get the short rib &lt;script&gt;. Worth the queue.", "7 people liked it on yummers", "1 Street &lt;1&gt;",
+for (const s of ["Clean One, BKK | yummers", "Korean BBQ", "About $12–20 a person", "<span>Dinner</span>", "In Korean restaurants in Phnom Penh", "More in Korean restaurants in Phnom Penh", "See all 2 places", "From the yummers team", "Get the short rib &lt;script&gt;. Worth the queue.", "7 people liked it on yummers", "1 Street &lt;1&gt;",
     "Monday", "9:00 AM – 9:00 PM", "query=11.5%2C104.9", '"@type":"Restaurant"', 'href="/guides/korean"', 'href="/guides/bbq"', 'rel="canonical" href="https://yummersapp.com/places/place-1-co-bkk"', 'content="Get the short rib &lt;script&gt;.']) assert.ok(t.includes(s), s);
 assert.ok(!t.includes("<script>"), "the review is escaped");
+const today = new Date().toLocaleDateString("en-US", { weekday: "long", timeZone: "Asia/Phnom_Penh" });
+assert.equal(t.match(/class="today"/g).length, 2, "today's row, in Phnom Penh time, is bold");
+assert.ok(t.includes(`<dt class="today">${today}</dt>`));
 assert.ok(!/want to try/i.test(t));
+assert.ok(t.includes('href="/places/place-2-co-bkk"') && t.includes(">Place 2 &amp; Co<"), "more from the same guide");
 review = ""; liked = "*/0";
 t = await (await get("/places/place-2-co-bkk")).text();
 assert.ok(!t.includes("From the yummers team") && !t.includes("liked it on yummers"), "no review or likes: the blocks are left out");
+assert.ok(!t.includes("About $") && !t.includes("<span>Dinner</span>"), "no facts for a place missing from the map: no chips invented");
 assert.ok(t.includes("picked by the yummers team for Korean restaurants in Phnom Penh"));
 assert.ok(!t.includes("someone") && !t.includes("/photos/"), "a person's photo stays off");
 
@@ -66,6 +76,7 @@ for (const p of ["/guides/mine", "/guides/empty", "/guides/private", "/guides/no
 
 // Index and sitemap
 t = await (await get("/guides")).text();
+assert.ok(t.includes("2 guides from the yummers team") && t.includes("Guide · 2 places") && t.includes("Guide · 1 places"));
 assert.ok(t.includes("/guides/korean") && t.includes("/guides/bbq") && !t.includes("/guides/mine") && !t.includes("/guides/empty"));
 t = await (await get("/sitemap.xml")).text();
 assert.equal(t.match(/<loc>/g).length, 5, "index, 2 guides, 2 places (Place 1 is in both guides, once)");
