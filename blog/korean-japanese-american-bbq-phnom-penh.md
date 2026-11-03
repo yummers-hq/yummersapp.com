@@ -1,7 +1,7 @@
 ---
 title: "Korean, Japanese or American: a beginner's guide to BBQ in Phnom Penh"
 slug: korean-japanese-american-bbq-phnom-penh
-date: 2026-11-04T10:00:00+07:00
+date: 2026-11-03T13:00:00+07:00
 description: "Korean, Japanese or American BBQ in Phnom Penh? See how the three styles differ, what to order in each, and where to try them."
 author: "the yummers team"
 guide: bbq-phnom-penh

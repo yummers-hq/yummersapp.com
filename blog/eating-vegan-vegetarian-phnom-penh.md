@@ -1,7 +1,7 @@
 ---
 title: "Eating vegan and vegetarian in Phnom Penh"
 slug: eating-vegan-vegetarian-phnom-penh
-date: 2026-11-04T11:00:00+07:00
+date: 2026-11-03T14:00:00+07:00
 description: "How to eat vegan or vegetarian in Phnom Penh: the fish sauce catch, how to ask, and six places to start, from a vegan cafe to dosas."
 author: "the yummers team"
 guide: vegan-vegetarian-phnom-penh

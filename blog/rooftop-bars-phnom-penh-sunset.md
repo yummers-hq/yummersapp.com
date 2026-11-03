@@ -1,7 +1,7 @@
 ---
 title: "Rooftop bars in Phnom Penh: where to watch the sunset"
 slug: rooftop-bars-phnom-penh-sunset
-date: 2026-11-04T12:00:00+07:00
+date: 2026-11-03T15:00:00+07:00
 description: "Where to watch the sunset in Phnom Penh: riverside bars, hotel lounges and a revolving sky bar, plus simple tips for timing and choosing."
 author: "the yummers team"
 guide: rooftop-bars-phnom-penh
