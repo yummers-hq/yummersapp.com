@@ -107,6 +107,11 @@
         backTop: "ត្រឡប់ទៅខាងលើ",
         footerNav: "បាតទំព័រ",
         footerLang: "English",
+        footExplore: "រុករក", // DRAFT (#129)
+        footLegal: "ច្បាប់", // DRAFT (#129)
+        footBeta: "ចូលរួមសាកល្បង", // DRAFT (#129)
+        footTag: "វាយតម្លៃកន្លែងដែលអ្នកបានញ៉ាំ រក្សាបញ្ជី និងចែករំលែកជាមួយមិត្តភក្តិ។", // DRAFT (#129)
+        footMade: "ធ្វើនៅភ្នំពេញ", // DRAFT (#129)
         privacy: "ឯកជនភាព",
         terms: "លក្ខខណ្ឌ",
         about: "អំពីយើង",
@@ -218,6 +223,11 @@
         backTop: "Retour en haut",
         footerNav: "Pied de page",
         footerLang: "English",
+        footExplore: "Explorer", // DRAFT (#129)
+        footLegal: "Mentions légales", // DRAFT (#129)
+        footBeta: "Rejoindre la bêta", // DRAFT (#129)
+        footTag: "Notez les endroits où vous avez mangé, gardez des listes, partagez-les avec vos amis.", // DRAFT (#129)
+        footMade: "Fait à Phnom Penh", // DRAFT (#129)
         privacy: "Confidentialité",
         terms: "Conditions",
         about: "À propos",
