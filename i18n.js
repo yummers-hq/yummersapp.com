@@ -83,6 +83,7 @@
         guidesP1: "បញ្ជីកន្លែងញ៉ាំរបស់យើងផ្ទាល់នៅភ្នំពេញ ៖ កូរ៉េ ខ្មែរ សាច់អាំង អាហារតាមផ្លូវ បារលើដំបូល និងអាហារបួស។ អ្នកឃើញវាមុនគេលើទំព័រដើម ហើយអាចអានវានៅទីនេះផងដែរ។", // DRAFT (#129)
         guidesButton: "មើលមគ្គុទ្ទេសក៍", // DRAFT (#129)
         navGuides: "មគ្គុទ្ទេសក៍", // DRAFT (#129)
+        navBlog: "ប្លក់", // DRAFT (#135)
         guidesAlt: "ទំព័រដើម៖ Start with our guides ជាមួយកាត Street Foods of Phnom Penh និង Coffee and bakeries រួចហើយ People to follow",
         guidesTitle1: "កន្លែងចាប់ផ្តើម",
         guidesText1: "បញ្ជីពីក្រុម yummers នៅលើទំព័រដើម",
@@ -190,6 +191,7 @@
         guidesP1: "Nos propres adresses à Phnom Penh, : coréen, khmer, barbecue, cuisine de rue, bars en rooftop, et végétarien et vegan. Elles s’affichent en premier sur l’accueil, et vous pouvez les lire ici aussi.", // DRAFT (#129)
         guidesButton: "Voir les guides", // DRAFT (#129)
         navGuides: "Guides", // DRAFT (#129)
+        navBlog: "Blog", // DRAFT (#135)
         guidesAlt: "L’accueil : Start with our guides, avec des cartes pour Street Foods of Phnom Penh et Coffee and bakeries, puis People to follow",
         guidesTitle1: "Par où commencer.",
         guidesText1: "Des listes de l’équipe yummers, sur l’accueil.",
