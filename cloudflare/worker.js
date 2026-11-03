@@ -3,7 +3,7 @@
 // "not found" page; POST /api/signup takes a beta sign-up, and /api/confirm and
 // /api/unsubscribe answer the links in its emails; everything else passes
 // through unchanged.
-import { guides, sitemap } from "./guides.js";
+import { guides, places, sitemap } from "./guides.js";
 
 const NOT_FOUND = `# Page not found
 
@@ -513,6 +513,10 @@ async function route(request, env, ctx) {
     if (cached) return catalogue(request, cached[1], ctx);
     const list = url.pathname.match(/^\/l\/([0-9A-Za-z]{8})(?:\/[^/]*)?\/?$/);
     if (list && ["GET", "HEAD"].includes(request.method)) return sharedList(url, list[1]);
+    if (/^\/(p\/|sitemap-places\.xml$)/.test(url.pathname) && ["GET", "HEAD"].includes(request.method)) {
+        const page = await places(url, ctx, env.CF_VERSION_METADATA?.id);
+        if (page) return page;
+    }
     if (/^\/(guides|places)(\/|$)/.test(url.pathname) && ["GET", "HEAD"].includes(request.method)) {
         const page = await guides(url, ctx, env.CF_VERSION_METADATA?.id);
         if (page) return page;
