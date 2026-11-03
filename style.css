@@ -356,7 +356,9 @@ em {
     margin-bottom: 10px
 }
 
-.signup input[type=email] {
+.signup input[type=email],
+.signup input[type=text],
+.signup select {
     width: 100%;
     font: inherit;
     font-size: 16px;
@@ -367,26 +369,35 @@ em {
     padding: 15px 20px
 }
 
-/* The Melbourne form's suburb picker and age tick (melbourne.html). */
+/* The Melbourne form (melbourne.html): the suburb picker gets its own chevron
+   (two gradients, so it follows the theme), then the optional suburb box and the age tick. */
 .signup select {
-    width: 100%;
-    margin-top: 12px;
-    font: inherit;
-    font-size: 16px;
-    color: var(--ink);
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 50px;
-    padding: 15px 20px
+    appearance: none;
+    padding-right: 48px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 26px) 50%, calc(100% - 20px) 50%;
+    background-size: 6px 6px;
+    background-repeat: no-repeat
+}
+
+.signup-label~.signup-label,
+.signup-other {
+    margin-top: 16px
 }
 
 .signup-adult {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     align-items: center;
-    justify-content: center;
-    margin-top: 14px;
-    font-size: 15px
+    min-height: 44px;
+    margin-top: 8px;
+    font-size: 16px
+}
+
+.signup-adult input {
+    width: 22px;
+    height: 22px;
+    accent-color: var(--orange)
 }
 
 .signup select:focus-visible,

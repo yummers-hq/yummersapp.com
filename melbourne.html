@@ -32,7 +32,7 @@
                     <input type="hidden" name="ref" value="">
                     <label for="signup-email" class="signup-label">Your email</label>
                     <input id="signup-email" name="email" type="email" required maxlength="254" autocomplete="email">
-                    <label for="signup-suburb" class="signup-label" style="margin-top:16px">Where do you eat out most?</label>
+                    <label for="signup-suburb" class="signup-label">Where do you eat out most?</label>
                     <select id="signup-suburb" name="suburb" required>
                         <option value="" disabled selected>Choose a suburb</option>
                         <optgroup label="Inner"><option>CBD</option><option>Carlton</option><option>Fitzroy</option><option>Collingwood</option><option>Richmond</option><option>Brunswick</option><option>South Yarra</option></optgroup>
@@ -41,6 +41,10 @@
                         <optgroup label="East"><option>Box Hill</option></optgroup>
                         <option>Somewhere else in Melbourne</option>
                     </select>
+                    <div class="signup-other" hidden>
+                        <label for="signup-other" class="signup-label">Which suburb?</label>
+                        <input id="signup-other" name="suburb_other" type="text" maxlength="60" autocomplete="off">
+                    </div>
                     <label class="signup-adult"><input type="checkbox" name="adult" value="yes" required> I’m 18 or over</label>
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAAFbDpWQLmCnXiUkz" data-size="flexible" data-theme="light" data-appearance="always"></div>
                     <button class="button" type="submit">Join the Melbourne list</button>
