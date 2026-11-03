@@ -56,7 +56,6 @@ async function liveGuides() {
     return (await Promise.all(Object.keys(GUIDES).map(load))).filter(Boolean);
 }
 
-const FOLLOW = `<div class="follow"><a href="https://www.instagram.com/yummersapp/" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@hungryraccoonapp" rel="noopener">TikTok</a><a href="/">About the app</a></div>`;
 
 function layout(title, description, path, jsonld, body) {
     return `<!doctype html>
@@ -109,12 +108,6 @@ a.name:hover{color:var(--accent)}
 .dir{display:inline-block;margin-top:10px;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 .panel ul{margin:8px 0 0;padding-left:20px}
 .panel li a{text-decoration:underline;text-underline-offset:3px}
-.get{background:var(--panel);border-radius:20px;padding:28px;margin-top:40px}
-.get h2{font-size:30px}
-.get p{color:var(--muted);margin-top:10px}
-.get .button{margin-top:18px}
-.get .follow{display:flex;gap:18px;margin-top:18px;font-weight:600}
-.get .follow a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
 </style>
 <script type="application/ld+json">${jsonld.replace(/</g, "\\u003c")}</script>
 </head>
@@ -123,12 +116,6 @@ a.name:hover{color:var(--accent)}
 <nav aria-label="Main navigation"><a href="/guides">Guides</a><a href="/#preview">How it works</a><a class="nav-status" href="/#launch">Join the iPhone beta</a><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode" data-i18n-aria="themeLabel"></button></nav></header>
 <main id="main" class="g wrap">
 ${body}
-<section class="get">
-<h2>Make your own lists</h2>
-<p>yummers is a social food diary for Cambodia: rate places, keep lists and share them. It isn't out yet. Join the iPhone beta, or follow along while it simmers.</p>
-<a class="button" href="/#launch">Join the iPhone beta</a>
-${FOLLOW}
-</section>
 </main>
 <footer class="footer site-footer wrap">
 <div class="footer-brand"><a class="brand" href="/"><img class="footer-logo" src="/assets/logo-horizontal.svg" alt="yummers" width="188" height="50"></a></div>
