@@ -41,7 +41,6 @@ function parse(file) {
 const posts = readdirSync("blog").filter((f) => f.endsWith(".md")).map(parse).sort((a, b) => b.date.localeCompare(a.date));
 const day = (p) => new Date(p.date.slice(0, 10) + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 
-const NAV = `<nav aria-label="Main navigation"><a href="/guides">Guides</a><a href="/blog">Blog</a><a href="/#preview">How it works</a><a class="nav-status" href="/#launch">Join the iPhone beta</a><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode" data-i18n-aria="themeLabel"></button></nav>`;
 const FOOTER = readFileSync("contact.html", "utf8").match(/<footer[\s\S]*?<\/footer>/)[0].replace(/\n\s*/g, " ");
 
 function page({ title, description, path, type, jsonld, main }) {
@@ -74,8 +73,9 @@ function page({ title, description, path, type, jsonld, main }) {
 <script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, "\\u003c")}</script>
 </head>
 <body><a class="skip" href="#main">Skip to content</a>
-<header class="header wrap"><a href="/" class="brand" aria-label="yummers home"><img class="brand-image" src="/assets/raccoon.png" alt="" width="58" height="32"><span class="brand-name">yummers</span></a>
-${NAV}</header>
+<header class="header wrap"><a href="/" class="brand" aria-label="yummers home"><img class="brand-image" src="/assets/raccoon.png" alt="" width="58" height="32"><span class="brand-name">yummers<span class="brand-tag"> | Restaurant Lists App</span></span></a>
+<nav aria-label="Main navigation"><a class="nav-status" href="/#launch">Join the iPhone beta</a><button type="button" class="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button></nav></header>
+<div class="menu" id="menu"><ul class="menu-links"><li><a href="/guides">Guides</a></li><li><a href="/blog">Blog</a></li><li><a href="/#preview">How it works</a></li><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li></ul><div class="menu-side"><p>yummers is a social food diary for Cambodia: rate places, keep lists and share them with friends.</p><div class="menu-extras"><button type="button" class="theme-toggle" aria-pressed="false"><span>Dark mode</span></button></div></div></div>
 <main id="main" class="blog wrap">
 ${main}
 </main>

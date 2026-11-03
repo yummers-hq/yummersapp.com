@@ -21,10 +21,43 @@
     try { saved = localStorage.getItem(KEY); } catch (e) { }
     root.dataset.theme = saved === "light" || saved === "dark" ? saved : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     document.addEventListener("DOMContentLoaded", function () { set(root.dataset.theme); });
+    root.classList.add("js");
     document.addEventListener("click", function (e) {
         if (!e.target.closest(".theme-toggle")) return;
         var next = root.dataset.theme === "dark" ? "light" : "dark";
         set(next);
         try { localStorage.setItem(KEY, next); } catch (e) { }
+    });
+
+    // The round menu button (style.css, .menu): the circle grows from the button; Esc and links close it,
+    // Tab stays inside it, focus goes to the first link and back to the button, and the page behind can't scroll.
+    document.addEventListener("DOMContentLoaded", function () {
+        var btn = document.querySelector(".burger"), menu = document.getElementById("menu");
+        if (!btn || !menu) return;
+        var label = btn.getAttribute("aria-label");
+        function focusables() { return Array.prototype.slice.call(document.querySelectorAll(".header a, .header button, .menu a, .menu button")); }
+        function toggle(open, refocus) {
+            if (open) {
+                var r = btn.getBoundingClientRect();
+                menu.style.setProperty("--cx", r.left + r.width / 2 + "px");
+                menu.style.setProperty("--cy", r.top + r.height / 2 + "px");
+            }
+            root.classList.toggle("menu-open", open);
+            btn.setAttribute("aria-expanded", open);
+            btn.setAttribute("aria-label", open ? "Close menu" : label);
+            if (open) menu.querySelector("a").focus({ preventScroll: true });
+            else if (refocus) btn.focus({ preventScroll: true });
+        }
+        btn.addEventListener("click", function () { toggle(!root.classList.contains("menu-open"), true); });
+        // A link closes the menu and goes on to its page (or, for a #section, scrolls the page behind).
+        document.addEventListener("click", function (e) { if (e.target.closest(".header a, .menu a")) toggle(false); });
+        document.addEventListener("keydown", function (e) {
+            if (!root.classList.contains("menu-open")) return;
+            if (e.key === "Escape") return toggle(false, true);
+            if (e.key !== "Tab") return;
+            var f = focusables(), first = f[0], last = f[f.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        });
     });
 })();

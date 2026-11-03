@@ -84,6 +84,9 @@
         guidesButton: "មើលមគ្គុទ្ទេសក៍", // DRAFT (#129)
         navGuides: "មគ្គុទ្ទេសក៍", // DRAFT (#129)
         navBlog: "ប្លក់", // DRAFT (#135)
+        navAbout: "អំពីយើង", // DRAFT (#129)
+        navContact: "ទំនាក់ទំនង", // DRAFT (#129)
+        menuTag: "yummers គឺជាសៀវភៅកត់ត្រាអាហារសង្គមសម្រាប់កម្ពុជា ៖ វាយតម្លៃកន្លែងញ៉ាំ រក្សាបញ្ជី និងចែករំលែកជាមួយមិត្តភក្តិ។", // DRAFT (#129)
         guidesAlt: "ទំព័រដើម៖ Start with our guides ជាមួយកាត Street Foods of Phnom Penh និង Coffee and bakeries រួចហើយ People to follow",
         guidesTitle1: "កន្លែងចាប់ផ្តើម",
         guidesText1: "បញ្ជីពីក្រុម yummers នៅលើទំព័រដើម",
@@ -192,6 +195,9 @@
         guidesButton: "Voir les guides", // DRAFT (#129)
         navGuides: "Guides", // DRAFT (#129)
         navBlog: "Blog", // DRAFT (#135)
+        navAbout: "À propos", // DRAFT (#129)
+        navContact: "Contact", // DRAFT (#129)
+        menuTag: "yummers est un carnet gourmand social pour le Cambodge : notez des adresses, gardez des listes et partagez-les avec vos amis.", // DRAFT (#129)
         guidesAlt: "L’accueil : Start with our guides, avec des cartes pour Street Foods of Phnom Penh et Coffee and bakeries, puis People to follow",
         guidesTitle1: "Par où commencer.",
         guidesText1: "Des listes de l’équipe yummers, sur l’accueil.",
