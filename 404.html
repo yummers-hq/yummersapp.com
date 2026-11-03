@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/style.css">
   <style>
     .shared {
-      max-width: 760px;
+      max-width: 640px;
       padding-top: 56px;
       padding-bottom: 72px
     }
@@ -34,7 +34,125 @@
     }
 
     .shared h1 {
-      font-size: clamp(40px, 6vw, 60px)
+      font-size: clamp(28px, 6vw, 44px);
+      overflow-wrap: anywhere
+    }
+
+    .cover[hidden],
+    .owner[hidden] {
+      display: none
+    }
+
+    .top {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start
+    }
+
+    .top>div:last-child {
+      min-width: 0
+    }
+
+    .cover {
+      flex: none;
+      width: 112px;
+      height: 112px;
+      border-radius: 16px;
+      background: var(--panel);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: #fff
+    }
+
+    .cover.tile:not([style]) {
+      background: var(--accent);
+      font-family: Fraunces, serif;
+      font-weight: 700
+    }
+
+    .cover.mosaic {
+      display: grid;
+      grid: 1fr 1fr / 1fr 1fr;
+      align-items: stretch;
+      gap: 2px
+    }
+
+    .cover.mosaic span {
+      background: var(--line);
+      position: relative
+    }
+
+    .cover img,
+    .thumb img,
+    .face img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .owner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      font-weight: 600;
+      font-size: 15px
+    }
+
+    .face {
+      position: relative;
+      overflow: hidden;
+      flex: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .rich .by {
+      margin-top: 4px
+    }
+
+    .rich .places li {
+      align-items: flex-start
+    }
+
+    .places .thumb {
+      flex: none;
+      position: relative;
+      overflow: hidden;
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: var(--panel);
+      color: var(--muted);
+      font-family: Fraunces, serif;
+      font-weight: 700;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .places li>div {
+      min-width: 0
+    }
+
+    .places .credit {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px
     }
 
     .places {
@@ -120,8 +238,14 @@
         class="nav-status" href="/#launch">Join the iPhone beta</a><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode" data-i18n-aria="themeLabel"></button></nav>
   </header>
   <main id="main" class="shared wrap">
-    <h1 id="title">Loading…</h1>
-    <p id="by" class="by"></p>
+    <div class="top">
+      <div id="cover" class="cover" hidden></div>
+      <div>
+        <h1 id="title">Loading…</h1>
+        <p id="owner" class="owner" hidden></p>
+        <p id="by" class="by"></p>
+      </div>
+    </div>
     <p id="desc" class="desc" hidden></p>
     <p id="state" class="state" hidden></p>
     <ol id="places" class="places" hidden></ol>
