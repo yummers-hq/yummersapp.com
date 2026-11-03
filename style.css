@@ -1227,6 +1227,22 @@ html:lang(km) .onboarding h2 {
     outline-offset: 2px
 }
 
+/* The switch (theme.js): the new theme grows from the toggle on the menu's circle and curve. */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal
+}
+
+::view-transition-new(root) {
+    animation: theme-in .6s cubic-bezier(.7, 0, .2, 1)
+}
+
+@keyframes theme-in {
+    from { clip-path: circle(0 at var(--tx) var(--ty)) }
+    to { clip-path: circle(150% at var(--tx) var(--ty)) }
+}
+
 .invited {
     display: inline-block;
     margin: 0 0 14px;

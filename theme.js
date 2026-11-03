@@ -23,10 +23,17 @@
     document.addEventListener("DOMContentLoaded", function () { set(root.dataset.theme); });
     root.classList.add("js");
     document.addEventListener("click", function (e) {
-        if (!e.target.closest(".theme-toggle")) return;
+        var btn = e.target.closest(".theme-toggle");
+        if (!btn) return;
         var next = root.dataset.theme === "dark" ? "light" : "dark";
-        set(next);
         try { localStorage.setItem(KEY, next); } catch (e) { }
+        // Like the menu, the new theme grows in a circle from the button (style.css, ::view-transition).
+        // Without View Transitions, or with reduced motion, it switches at once.
+        if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) return set(next);
+        var r = btn.getBoundingClientRect();
+        root.style.setProperty("--tx", r.left + r.width / 2 + "px");
+        root.style.setProperty("--ty", r.top + r.height / 2 + "px");
+        document.startViewTransition(function () { set(next); });
     });
 
     // The round menu button (style.css, .menu): the circle grows from the button; Esc and links close it,
