@@ -179,7 +179,19 @@ env.SIGNUPS.put("confirm:" + "00000000-0000-4000-8000-000000000001", JSON.string
 await call("POST", "/api/confirm?token=00000000-0000-4000-8000-000000000001");
 assert.equal(props.get("sophea@example.com").invite_code.value, kept);
 assert.equal(props.get("sophea@example.com").suburb.value, "Clayton");
-assert.equal(emails.length, sent + 1); // only the confirm email
+// The first Melbourne join also sent one Melbourne welcome note, with the invite link and their existing contact id.
+await Promise.all(waits);
+assert.equal(emails.length, sent + 2); // the confirm email and that welcome
+const welcome = emails.at(-1);
+assert.equal(welcome.subject, "You're on the yummers Melbourne list");
+assert.ok(welcome.text.includes(`https://yummersapp.com/melbourne?ref=${kept}`));
+assert.match(welcome.text, new RegExp(`/api/unsubscribe\\?id=${contacts.get("sophea@example.com")}&lang=en`));
+
+// An existing contact joining the beta list is not emailed.
+kv.set("confirm:00000000-0000-4000-8000-000000000003", "m2@example.com");
+await call("POST", "/api/confirm?token=00000000-0000-4000-8000-000000000003&lang=en");
+await Promise.all(waits);
+assert.equal(emails.length, sent + 2);
 
 // A beta sign-up still goes to the beta segment, with no properties; and a pending token
 // saved before the Melbourne list (a plain email string) still confirms there.
