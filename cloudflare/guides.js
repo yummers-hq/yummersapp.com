@@ -143,7 +143,7 @@ function guidePage(g) {
         const r = it.restaurants;
         return `<li class="card"><span class="n">${i + 1}</span><div><a class="name" href="/places/${it.slug}">${esc(r.name)}</a><div class="meta">${esc([cuisineOf(r), r.district].filter(Boolean).join(" · "))}</div>${it.note ? `<div class="note">“${esc(it.note)}”</div>` : ""}</div><span class="thumb">${img(coverOf(it))}</span></li>`;
     }).join("");
-    return layout(`${g.title} | yummers`, description, path, jsonld, `<p class="by"><a href="/guides">Guides</a><a href="/blog">Blog</a> / Phnom Penh</p>
+    return layout(`${g.title} | yummers`, description, path, jsonld, `<p class="by"><a href="/guides">Guides</a> / Phnom Penh</p>
 <h1>${esc(g.title)}</h1>
 <p class="by">${g.items.length} places · By the yummers team</p>
 ${g.description ? `<p class="desc">${esc(g.description)}</p>` : ""}
@@ -184,7 +184,7 @@ async function placePage(slug, all) {
         address: { "@type": "PostalAddress", ...(d.address && { streetAddress: d.address }), addressLocality: "Phnom Penh", addressCountry: "KH" },
         ...(d.latitude != null && { geo: { "@type": "GeoCoordinates", latitude: d.latitude, longitude: d.longitude } }),
     });
-    const body = `<p class="by"><a href="/guides">Guides</a><a href="/blog">Blog</a> / <a href="/guides/${g.slug}">${esc(g.title)}</a></p>
+    const body = `<p class="by"><a href="/guides">Guides</a> / <a href="/guides/${g.slug}">${esc(g.title)}</a></p>
 <h1>${esc(r.name)}</h1>
 <p class="by">${esc([cuisine, r.district].filter(Boolean).join(" · "))}</p>
 ${coverOf(it) ? `<div class="pic">${img(coverOf(it), 800, 450)}</div>` : ""}
