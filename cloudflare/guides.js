@@ -133,6 +133,22 @@ function layout(title, description, path, jsonld, body) {
 .more-grid b{display:block;font:600 14px/1.2 Fraunces,serif;margin-top:8px;overflow-wrap:anywhere}
 .more-grid span.m{font-size:12.5px;color:var(--muted)}
 .more-all{display:inline-block;margin-top:14px;font-weight:600;font-size:14px;color:var(--accent)}
+/* Motion: the cover settles, text and index covers rise in, sections ease up on scroll (rise, in style.css), photos zoom on hover. Rests fully visible; off with reduced motion. */
+.cover{overflow:hidden}
+@media(prefers-reduced-motion:no-preference){
+@keyframes g-in{from{opacity:0;transform:translateY(14px)}}
+@keyframes g-settle{from{transform:scale(1.06)}}
+.cover img{animation:g-settle 1.2s ease-out both}
+.cover .txt,.ixh{animation:g-in .6s .15s ease-out both}
+.lead,.lede,.glance{animation:g-in .6s .3s ease-out both}
+.ixg li{animation:g-in .5s ease-out both}
+.ixg li:nth-child(1){animation-delay:.2s}.ixg li:nth-child(2){animation-delay:.28s}.ixg li:nth-child(3){animation-delay:.36s}.ixg li:nth-child(n+4){animation-delay:.44s}
+.cov img,.photo img,.more-grid .ph img,.pl-in img{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.cov:hover img,.cov:focus-visible img,.photo:hover img,.photo:focus-visible img,.more-grid a:hover img,.more-grid a:focus-visible img{transform:scale(1.04)}
+}
+@supports(animation-timeline:view()){@media(prefers-reduced-motion:no-preference){
+.item,.facts .box,.more{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}}
 @media(min-width:900px){
 .in{padding-inline:28px}
 .cover{aspect-ratio:auto;height:440px}
