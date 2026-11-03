@@ -7,3 +7,7 @@ routes = [{ pattern = "yummersapp.com/*", zone_name = "yummersapp.com" }]
 [[kv_namespaces]]
 binding = "SIGNUPS"
 id = "157dc8c549e34279818d859d0fa05640"
+
+# The deployed version id, so the guide pages' edge cache starts fresh after each deploy
+[version_metadata]
+binding = "CF_VERSION_METADATA"
