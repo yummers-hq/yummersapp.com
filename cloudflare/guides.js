@@ -120,6 +120,7 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .lead{font-size:15px;margin-top:16px;white-space:pre-line}
 .items,.ixg{list-style:none;margin:0;padding:0}
 .item{display:grid;gap:10px;padding:22px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
 .head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline}
 .num{font:700 34px/1 Fraunces,serif;color:var(--accent)}
 .g h2.name{font-size:22px;line-height:1.15;overflow-wrap:anywhere}

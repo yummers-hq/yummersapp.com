@@ -1228,6 +1228,7 @@ html:lang(km) .onboarding h2 {
 .b-rule { border: 0; border-top: 2px solid var(--ink); margin: 18px 0 0; transform-origin: left }
 .b-list { list-style: none; margin: 0; padding: 0 }
 .b-item { display: grid; grid-template-columns: minmax(0, 1fr) 96px; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: start }
+.b-item:last-child { border-bottom: 0 }
 .b-n { display: none; font: 700 44px/1 Fraunces, Georgia, serif; color: var(--accent) }
 .b-item h2 { font-size: 22px; line-height: 1.15; letter-spacing: -.02em; font-weight: 700; margin: 4px 0 6px; transition: color .2s }
 .b-item:is(:hover, :focus-visible) h2 { color: var(--accent) }
@@ -1524,7 +1525,6 @@ html:lang(km) .onboarding h2 {
     gap: 28px;
     padding-top: 34px;
     padding-bottom: 22px;
-    border-top: 1px solid var(--line)
 }
 
 .footer-brand {
