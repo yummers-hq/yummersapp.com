@@ -113,13 +113,13 @@ a.name:hover{color:var(--accent)}
 </head>
 <body><a class="skip" href="#main">Skip to content</a>
 <header class="header wrap"><a href="/" class="brand" aria-label="yummers home"><img class="brand-image" src="/assets/raccoon.png" alt="" width="58" height="32"><span class="brand-name">yummers<span class="brand-tag"> | Restaurant Lists App</span></span></a>
-<nav aria-label="Main navigation"><a href="/guides">Guides</a><a href="/#preview">How it works</a><a class="nav-status" href="/#launch">Join the iPhone beta</a><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode" data-i18n-aria="themeLabel"></button></nav></header>
+<nav aria-label="Main navigation"><a href="/guides">Guides</a><a href="/blog">Blog</a><a href="/#preview">How it works</a><a class="nav-status" href="/#launch">Join the iPhone beta</a><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode" data-i18n-aria="themeLabel"></button></nav></header>
 <main id="main" class="g wrap">
 ${body}
 </main>
 <footer class="footer site-footer wrap">
 <div class="footer-brand"><a class="brand" href="/"><img class="footer-logo" src="/assets/logo-horizontal.svg" alt="yummers" width="188" height="50"></a></div>
-<nav class="footer-links" aria-label="Footer"><a href="/guides">Guides</a><a href="/about">About</a><a href="/privacy">Privacy policy</a><a href="/terms">Terms of service</a><a href="/contact">Contact us</a><a href="#cookies" role="button" data-cookie-settings>Cookie settings</a></nav>
+<nav class="footer-links" aria-label="Footer"><a href="/guides">Guides</a><a href="/blog">Blog</a><a href="/about">About</a><a href="/privacy">Privacy policy</a><a href="/terms">Terms of service</a><a href="/contact">Contact us</a><a href="#cookies" role="button" data-cookie-settings>Cookie settings</a></nav>
 <div class="footer-follow"><a href="https://www.instagram.com/yummersapp/" target="_blank" rel="noopener" aria-label="yummers on Instagram"><img src="/assets/social/instagram.svg" alt="" width="21" height="21"></a><a href="https://www.facebook.com/profile.php?id=61594898428255" target="_blank" rel="noopener" aria-label="yummers on Facebook"><img src="/assets/social/facebook.svg" alt="" width="21" height="21"></a><a href="https://www.linkedin.com/company/hungryraccoon/" target="_blank" rel="noopener" aria-label="yummers on LinkedIn"><img src="/assets/social/linkedin.svg" alt="" width="21" height="21"></a><a href="https://www.tiktok.com/@hungryraccoonapp" target="_blank" rel="noopener" aria-label="yummers on TikTok"><img src="/assets/social/tiktok.svg" alt="" width="21" height="21"></a></div><span class="footer-copy">© 2026 yummers</span>
 </footer>
 <script src="/analytics.js"></script>
@@ -143,7 +143,7 @@ function guidePage(g) {
         const r = it.restaurants;
         return `<li class="card"><span class="n">${i + 1}</span><div><a class="name" href="/places/${it.slug}">${esc(r.name)}</a><div class="meta">${esc([cuisineOf(r), r.district].filter(Boolean).join(" · "))}</div>${it.note ? `<div class="note">“${esc(it.note)}”</div>` : ""}</div><span class="thumb">${img(coverOf(it))}</span></li>`;
     }).join("");
-    return layout(`${g.title} | yummers`, description, path, jsonld, `<p class="by"><a href="/guides">Guides</a> / Phnom Penh</p>
+    return layout(`${g.title} | yummers`, description, path, jsonld, `<p class="by"><a href="/guides">Guides</a><a href="/blog">Blog</a> / Phnom Penh</p>
 <h1>${esc(g.title)}</h1>
 <p class="by">${g.items.length} places · By the yummers team</p>
 ${g.description ? `<p class="desc">${esc(g.description)}</p>` : ""}
@@ -184,7 +184,7 @@ async function placePage(slug, all) {
         address: { "@type": "PostalAddress", ...(d.address && { streetAddress: d.address }), addressLocality: "Phnom Penh", addressCountry: "KH" },
         ...(d.latitude != null && { geo: { "@type": "GeoCoordinates", latitude: d.latitude, longitude: d.longitude } }),
     });
-    const body = `<p class="by"><a href="/guides">Guides</a> / <a href="/guides/${g.slug}">${esc(g.title)}</a></p>
+    const body = `<p class="by"><a href="/guides">Guides</a><a href="/blog">Blog</a> / <a href="/guides/${g.slug}">${esc(g.title)}</a></p>
 <h1>${esc(r.name)}</h1>
 <p class="by">${esc([cuisine, r.district].filter(Boolean).join(" · "))}</p>
 ${coverOf(it) ? `<div class="pic">${img(coverOf(it), 800, 450)}</div>` : ""}
