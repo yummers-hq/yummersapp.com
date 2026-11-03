@@ -335,7 +335,7 @@ em {
     color: var(--muted)
 }
 
-.closing h2 {
+.closing :is(h1, h2) {
     font-size: 68px
 }
 
@@ -367,6 +367,29 @@ em {
     padding: 15px 20px
 }
 
+/* The Melbourne form's suburb picker and age tick (melbourne.html). */
+.signup select {
+    width: 100%;
+    margin-top: 12px;
+    font: inherit;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 50px;
+    padding: 15px 20px
+}
+
+.signup-adult {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+    font-size: 15px
+}
+
+.signup select:focus-visible,
 .signup input:focus-visible,
 .signup button:focus-visible {
     outline: 3px solid var(--orange);
@@ -610,7 +633,7 @@ em {
         padding-bottom: 58px
     }
 
-    .closing h2 {
+    .closing :is(h1, h2) {
         font-size: 49px
     }
 
