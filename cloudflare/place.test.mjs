@@ -41,7 +41,7 @@ let t = await r.text();
 assert.equal(r.status, 200);
 assert.equal(r.headers.get("Cache-Control"), "public, max-age=300");
 assert.ok(!r.headers.has("X-Slug"));
-for (const s of ["Pho &lt;b&gt; &amp; Co", "Vietnamese · BKK1", "Not rated on yummers yet", "Been here? Rate it in the app", "Street 352, BKK1, Phnom Penh", "query=11.5%2C104.9", ">Directions<", "9am – 9pm", "https://lh3.googleusercontent.com/pho", '"@type":"Restaurant"',
+for (const s of ["Pho &lt;b&gt; &amp; Co", "Vietnamese ·\u00a0BKK1", "Not rated on yummers yet", "Been here? Rate it in the app", "Street 352, BKK1, Phnom Penh", "query=11.5%2C104.9", ">Directions<", "9am – 9pm", "https://lh3.googleusercontent.com/pho", '"@type":"Restaurant"',
     'rel="canonical" href="https://yummersapp.com/p/AAAAAAAA/pho-b-co"']) assert.ok(t.includes(s), s);
 assert.ok(!t.includes("Pho <b>") && !t.includes("In these guides") && !t.includes("Keep a list"), "escaped, no guides box, no pitch box");
 assert.equal(t.match(/class="today"/g).length, 2, "today's row is bold");
@@ -57,7 +57,7 @@ JSON.parse(t.match(/ld\+json">(.*?)<\/script>/)[1].replace(/\\u003c/g, "<"));
 
 // A place in a guide, rated by 12: clean name, /places/ canonical, a person's photo credited
 t = await (await get("/p/BBBBBBBB/place-1-co")).text();
-for (const s of ["Clean One", "Korean BBQ · BKK1", "75%", "liked it", "from 12 ratings on yummers", "In 1 yummers guide", "In these guides", 'href="/guides/korean"', "1 places",
+for (const s of ["Clean One", "Korean BBQ ·\u00a0BKK1", "75%", "liked it", "from 12 ratings on yummers", "In 1 yummers guide", "In these guides", 'href="/guides/korean"', "1 places",
     'rel="canonical" href="https://yummersapp.com/places/place-1-co-bkk"', "Photo by @someone", "/storage/v1/object/public/photos/uid/pid.jpg"]) assert.ok(t.includes(s), s);
 assert.equal(meta(t, "og:description"), "Korean BBQ in BKK1, Phnom Penh. Open 9am – 9pm every day. In our guide: Korean. See what people think on yummers.");
 assert.equal(meta(t, "og:url"), "https://yummersapp.com/places/place-1-co-bkk");
@@ -70,6 +70,12 @@ t = await r.text();
 assert.equal(r.status, 200);
 assert.equal(meta(t, "og:image"), "https://yummersapp.com/assets/share.jpg");
 assert.ok(!t.includes("Opening hours") && !t.includes("Find it"));
+
+// A Street View link as the cover (beta holds 210) is no picture: the generic card, no <img>
+places.DDDDDDDD = { ...base, share_id: "DDDDDDDD", name: "Dee", picture: { kind: "cover", url: "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=w800-h600-k-no" } };
+t = await (await get("/p/DDDDDDDD/dee")).text();
+assert.equal(meta(t, "og:image"), "https://yummersapp.com/assets/share.jpg");
+assert.ok(!t.includes("streetviewpixels") && !t.includes("<img src=\"https://lh3") , "no broken picture");
 
 // Wrong or missing slug: 301 to the right one
 for (const p of ["/p/AAAAAAAA", "/p/AAAAAAAA/", "/p/AAAAAAAA/wrong"]) {
@@ -112,7 +118,7 @@ console.log("place ok");
 places.AAAAAAAA = { ...base, cuisine_type: ["International", "Asian", "Thai"], opening_hours: { weekday_text: hours.weekday_text.map((l, i) => i ? l : "Monday: 10:00 AM – 6:00 PM") } };
 t = await (await get("/p/AAAAAAAA/pho-b-co")).text();
 assert.equal(meta(t, "og:description"), "Thai in BKK1, Phnom Penh. See what people think on yummers.", "first useful tag; hours differ, so left out");
-assert.ok(t.includes(">Thai · BKK1<") || t.includes("Thai · BKK1"));
+assert.ok(t.includes(">Thai ·\u00a0BKK1<") || t.includes("Thai ·\u00a0BKK1"));
 places.AAAAAAAA = { ...base, cuisine_type: ["International"], neighbourhood: null, district: null };
 t = await (await get("/p/AAAAAAAA/pho-b-co")).text();
 assert.equal(meta(t, "og:description"), "Restaurant in Phnom Penh. Open 9am – 9pm every day. See what people think on yummers.");

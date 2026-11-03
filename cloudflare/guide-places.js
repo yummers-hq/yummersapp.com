@@ -276,6 +276,6 @@ export const COVERS = {
  "khmer-food-phnom-penh": "c66a8540-0190-4374-a9b0-8af507fb88c5",
  "bbq-phnom-penh": "52fc04b1-07c8-4c5e-a310-85b5f5dcf78b",
  "street-food-phnom-penh": "b72dd709-992e-404b-b71f-6b25065be5c5",
- "rooftop-bars-phnom-penh": "bf6b9c61-34ec-400f-be5f-76c5c824da33",
+ "rooftop-bars-phnom-penh": "9a7b2602-202e-4d7f-a057-3ed23b725475",
  "vegan-vegetarian-phnom-penh": "f3e8af13-5fab-4391-8b7f-aa291a63e895"
 };

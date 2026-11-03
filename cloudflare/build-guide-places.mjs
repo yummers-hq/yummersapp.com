@@ -17,7 +17,7 @@ const short = (w) => { // at most 3 words, cut at a clause
 
 const places = {}, covers = {};
 for (const f of files) for (const g of JSON.parse(readFileSync(f, "utf8"))) {
-    covers[g.slug] = g.slug.startsWith("korean") ? g.places.at(-1).id : g.slug.startsWith("khmer") ? g.places[2].id : g.places[0].id;
+    covers[g.slug] = g.slug.startsWith("korean") ? g.places.at(-1).id : g.slug.startsWith("khmer") || g.slug.startsWith("rooftop") ? g.places[2].id : g.places[0].id;
     for (const p of g.places) {
         if (places[p.id]) continue; // a place in two guides keeps its first name
         let a = {};

@@ -3,7 +3,7 @@
 // "not found" page; POST /api/signup takes a beta sign-up, and /api/confirm and
 // /api/unsubscribe answer the links in its emails; everything else passes
 // through unchanged.
-import { guides, places, sitemap } from "./guides.js";
+import { guides, places, sitemap, usable } from "./guides.js";
 
 const NOT_FOUND = `# Page not found
 
@@ -459,7 +459,7 @@ function listImage(l) {
     const photo = first?.kind === "photo" && first.userId && first.id
         ? `${SUPABASE}/storage/v1/object/public/photos/${encodeURIComponent(first.userId)}/${encodeURIComponent(first.id)}.jpg` : null;
     const url = l.cover_url || photo || (first?.kind === "cover" && first.url);
-    return /^https:\/\//.test(url || "") ? url : null;
+    return usable(url);
 }
 
 async function sharedList(url, id) {
@@ -505,6 +505,8 @@ async function route(request, env, ctx) {
     if (url.pathname === "/api/signup" && request.method === "POST") return signup(request, env);
     if (url.pathname === "/api/confirm") return confirm(request, env, ctx, url);
     if (url.pathname === "/api/unsubscribe") return unsubscribe(request, env, url);
+    // Browsers ask for /favicon.ico whatever the pages say; the tab icon is the 192 px one.
+    if (url.pathname === "/favicon.ico") return Response.redirect("https://yummersapp.com/assets/favicon-192.png", 301);
     // The app starts Google sign-in here so iPhone's "wants to use … to Sign In"
     // names yummersapp.com, not the database (yummers#543). Only our two
     // projects, so it can't send anyone anywhere else.

@@ -41,7 +41,9 @@ export const cleanAddress = (a) => a
     .replace(/,\s*Cambodia$/, "").replace(/^,\s*|,\s*$/g, "").trim();
 
 // Google's place picture only: a person's photo, name or credit stays off these pages (spec criterion 8).
-const coverOf = (it) => (it.picture?.kind === "cover" && /^https:\/\//.test(it.picture.url) ? it.picture.url : null);
+// Only hosts the CSP lets through count as a picture: beta also holds Street View links (streetviewpixels-pa.googleapis.com) that never load.
+export const usable = (u) => (/^https:\/\/(?:[\w-]+\.)*googleusercontent\.com\/|^https:\/\/uobskavqhilnqakbdutt\.supabase\.co\/storage\//.test(u || "") ? u : null);
+const coverOf = (it) => (it.picture?.kind === "cover" ? usable(it.picture.url) : null);
 const firstSentence = (t) => (t.split(/(?<=[.!?])\s/)[0] || "").slice(0, 300);
 // A meta description: whole sentences from the list, as many as fit in ~155 characters (the first always).
 const fit = (parts, max = 2) => { let out = ""; for (const s of parts.slice(0, max)) { if (out && out.length + s.length + 1 > 155) break; out = out ? `${out} ${s}` : s; } return out; };
@@ -108,11 +110,11 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 <style>
 .g{padding-bottom:72px}
 .in{max-width:1040px;margin:0 auto;padding-inline:16px}
-.g h1,.g h2,.g h3,.g h4{letter-spacing:normal}
+.g h1{font-weight:700;letter-spacing:-.02em}.g h2,.g h3,.g h4{letter-spacing:normal}
 .cover{position:relative;aspect-ratio:4/3;background:var(--panel);color:#fffaf2}
 .cover img,.photo img,.more-grid img,.pl-in img{display:block;width:100%;height:100%;object-fit:cover}
-.cover:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,16,.85),rgba(28,20,16,0) 60%)}
-.cover .txt{position:absolute;left:0;right:0;bottom:14px;z-index:1}
+.cover:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,16,.9),rgba(28,20,16,.66) 50%,rgba(28,20,16,0) 85%)}
+.cover .txt{position:absolute;left:0;right:0;bottom:14px;z-index:1;text-shadow:0 1px 3px rgba(28,20,16,.6)}
 .eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,250,242,.85)}
 .g h1.t{font-size:30px;line-height:1.08;margin:4px 0;color:#fffaf2;text-wrap:balance;overflow-wrap:anywhere}
 .cover .meta{color:rgba(255,250,242,.85)}
@@ -120,6 +122,7 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .lead{font-size:15px;margin-top:16px;white-space:pre-line}
 .items,.ixg{list-style:none;margin:0;padding:0}
 .item{display:grid;gap:10px;padding:22px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
 .head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline}
 .num{font:700 34px/1 Fraunces,serif;color:var(--accent)}
 .g h2.name{font-size:22px;line-height:1.15;overflow-wrap:anywhere}
@@ -129,8 +132,8 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .ixg{display:grid;gap:14px;margin-top:18px}
 .cov{position:relative;display:block;aspect-ratio:16/11;border-radius:18px;overflow:hidden;background:var(--panel);color:#fffaf2}
 .cov img{display:block;width:100%;height:100%;object-fit:cover}
-.cov:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,16,.85),rgba(28,20,16,0) 62%)}
-.cov .txt{position:absolute;left:14px;right:14px;bottom:12px;z-index:1}
+.cov:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,16,.9),rgba(28,20,16,.66) 50%,rgba(28,20,16,0) 85%)}
+.cov .txt{position:absolute;left:14px;right:14px;bottom:12px;z-index:1;text-shadow:0 1px 3px rgba(28,20,16,.6)}
 .cov h2{font-size:23px;line-height:1.1;margin-top:2px;color:#fffaf2}
 .ixh{padding-top:28px}
 .ixh h1{font-size:34px;line-height:1.1}
@@ -141,8 +144,7 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .facts{display:grid;gap:14px;margin-top:18px;align-content:start}
 .box{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:6px;margin-top:18px}
 .facts .box{margin-top:0}
-.box h3,.more h3{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:Poppins,sans-serif}
-.box a.dir{color:var(--accent);font-weight:600}
+.g .box h2,.g .more h2{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;line-height:1.6;color:var(--muted);font-family:Poppins,sans-serif}
 .hours{display:grid;grid-template-columns:auto 1fr;gap:2px 16px;font-size:14px;font-variant-numeric:tabular-nums;margin:0}
 .hours dt,.hours dd{margin:0}
 .hours .today{font-weight:600}
@@ -157,7 +159,7 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .rate p{margin:0;color:var(--muted);font-size:14px}
 .dirbtn{display:flex;justify-content:center;margin-top:18px;font-weight:600;font-size:14px;background:var(--ink);color:var(--paper);border-radius:999px;padding:12px 18px}
 .more{margin-top:28px}
-.more h3{margin-bottom:12px}
+.more h2{margin-bottom:12px}
 .more-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .more-grid .ph{display:block;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:var(--panel)}
 .more-grid b{display:block;font:600 14px/1.2 Fraunces,serif;margin-top:8px;overflow-wrap:anywhere}
@@ -231,7 +233,9 @@ ${body}
 const img = (url, w, h, eager) => (url ? `<img src="${esc(url)}" alt="" loading="${eager ? "eager" : "lazy"}" referrerpolicy="no-referrer" width="${w}" height="${h}">` : "");
 // Display name and kind come from guide-places.js; a place missing there shows its database name and cuisine.
 const nameOf = (it) => PLACES[it.d.id]?.name || it.restaurants.name;
-const metaOf = (it) => [PLACES[it.d.id]?.kind || cuisineOf(it.restaurants), it.d.neighbourhood || it.restaurants.district].filter(Boolean).join(" · ");
+// The no-break space after the dot keeps it with the part that follows, so a caption wraps before "·", never after it.
+const dotted = (parts) => parts.filter(Boolean).join(" ·\u00a0");
+const metaOf = (it) => dotted([PLACES[it.d.id]?.kind || cuisineOf(it.restaurants), it.d.neighbourhood || it.restaurants.district]);
 const guideCover = (g) => coverOf(g.items.find((i) => i.d.id === COVERS[g.slug]) || {}) || g.items.map(coverOf).find(Boolean);
 const cover = (photo, eyebrow, title, meta) => `<div class="cover">${img(photo, 1040, 780, true)}<div class="txt"><div class="in"><div class="eyebrow">${esc(eyebrow)}</div><h1 class="t">${esc(title)}</h1><div class="meta">${esc(meta)}</div></div></div></div>`;
 
@@ -291,11 +295,12 @@ async function placePage(slug, all) {
 <div class="in"><div class="pl">
 ${it.note ? `<p class="lede">${esc(it.note)}</p>` : ""}
 ${chips.length ? `<div class="glance">${chips.map((c) => `<span>${esc(c)}</span>`).join("")}</div>` : ""}
-${review ? `<section class="box"><h3>From the yummers team</h3><p class="wu">${esc(review)}</p></section>` : ""}
-<div class="facts"><section class="box"><h3>Find it</h3>${d.address ? `<div>${esc(cleanAddress(d.address))}</div>` : ""}<a class="dir" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(where)}" rel="noopener">Directions</a></section>
-${hours.length ? `<section class="box"><h3>Opening hours</h3><dl class="hours">${hours.map(([day, h]) => { const c = day === today ? ' class="today"' : ""; return `<dt${c}>${esc(day)}</dt><dd${c}>${esc(shortHours(h))}</dd>`; }).join("")}</dl></section>` : ""}
-<section class="box"><h3>In these guides</h3>${inGuides.map((x) => `<a class="pl-in" href="/guides/${x.slug}">${img(guideCover(x), 112, 112)}<div><b>${esc(x.title)}</b><div class="meta">${x.items.length} places</div></div></a>`).join("")}</section></div>
-<section class="more"><h3>More in ${esc(g.title)}</h3><ul class="more-grid">${more.map((x) => `<li><a href="/places/${x.slug}"><span class="ph">${img(coverOf(x), 400, 300)}</span><b>${esc(nameOf(x))}</b><span class="m">${esc(metaOf(x))}</span></a></li>`).join("")}</ul><a class="more-all" href="/guides/${g.slug}">See all ${g.items.length} places →</a></section>
+${review ? `<section class="box"><h2>From the yummers team</h2><p class="wu">${esc(review)}</p></section>` : ""}
+<a class="dirbtn" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(where)}" rel="noopener">Directions</a>
+<div class="facts"><section class="box"><h2>Find it</h2>${d.address ? `<div>${esc(cleanAddress(d.address))}</div>` : ""}</section>
+${hours.length ? `<section class="box"><h2>Opening hours</h2><dl class="hours">${hours.map(([day, h]) => { const c = day === today ? ' class="today"' : ""; return `<dt${c}>${esc(day)}</dt><dd${c}>${esc(shortHours(h))}</dd>`; }).join("")}</dl></section>` : ""}
+<section class="box"><h2>In these guides</h2>${inGuides.map((x) => `<a class="pl-in" href="/guides/${x.slug}">${img(guideCover(x), 112, 112)}<div><b>${esc(x.title)}</b><div class="meta">${x.items.length} places</div></div></a>`).join("")}</section></div>
+<section class="more"><h2>More in ${esc(g.title)}</h2><ul class="more-grid">${more.map((x) => `<li><a href="/places/${x.slug}"><span class="ph">${img(coverOf(x), 400, 300)}</span><b>${esc(nameOf(x))}</b><span class="m">${esc(metaOf(x))}</span></a></li>`).join("")}</ul><a class="more-all" href="/guides/${g.slug}">See all ${g.items.length} places →</a></section>
 </div></div>`;
     return layout(`${name}${area ? `, ${area}` : ""} | yummers`, description, path, jsonld, body);
 }
@@ -398,7 +403,7 @@ async function placeShare(id) {
     const item = inGuides[0]?.items.find((it) => it.slug === placeSlug(p));
     const fact = PLACES[item?.d.id] || {};
     const name = fact.name || p.name, area = p.neighbourhood || p.district;
-    const kind = fact.kind || cuisineOf(p), line = [kind, area].filter(Boolean).join(" · ");
+    const kind = fact.kind || cuisineOf(p), line = dotted([kind, area]);
     const sub = inGuides.length ? `in ${inGuides.length} yummers ${inGuides.length === 1 ? "guide" : "guides"}` : "on yummers";
     const picture = p.picture?.kind === "cover" ? { url: coverOf({ picture: p.picture }) } : p.picture?.kind === "photo" ? { url: photoUrl(p.picture), by: p.picture.by } : null;
     const total = p.liked + p.disliked, status = openStatus(p.opening_hours);
@@ -423,9 +428,9 @@ async function placeShare(id) {
 ${chips ? `<div class="glance">${chips}</div>` : ""}
 <div class="rate">${rate}</div>
 <a class="dirbtn" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(where)}" rel="noopener">Directions</a>
-<div class="facts">${p.address ? `<section class="box"><h3>Find it</h3><div>${esc(cleanAddress(p.address))}</div></section>` : ""}
-${hours.length ? `<section class="box"><h3>Opening hours</h3><dl class="hours">${hours.map(([day, h]) => { const c = day === today ? ' class="today"' : ""; return `<dt${c}>${esc(day)}</dt><dd${c}>${esc(shortHours(h))}</dd>`; }).join("")}</dl></section>` : ""}
-${inGuides.length ? `<section class="box"><h3>In these guides</h3>${inGuides.map((x) => `<a class="pl-in" href="/guides/${x.slug}">${img(guideCover(x), 112, 112)}<div><b>${esc(x.title)}</b><div class="meta">${x.items.length} places</div></div></a>`).join("")}</section>` : ""}</div>
+<div class="facts">${p.address ? `<section class="box"><h2>Find it</h2><div>${esc(cleanAddress(p.address))}</div></section>` : ""}
+${hours.length ? `<section class="box"><h2>Opening hours</h2><dl class="hours">${hours.map(([day, h]) => { const c = day === today ? ' class="today"' : ""; return `<dt${c}>${esc(day)}</dt><dd${c}>${esc(shortHours(h))}</dd>`; }).join("")}</dl></section>` : ""}
+${inGuides.length ? `<section class="box"><h2>In these guides</h2>${inGuides.map((x) => `<a class="pl-in" href="/guides/${x.slug}">${img(guideCover(x), 112, 112)}<div><b>${esc(x.title)}</b><div class="meta">${x.items.length} places</div></div></a>`).join("")}</section>` : ""}</div>
 </div></div>`;
     const res = html(layout(`${name}${area ? `, ${area}` : ""} | yummers`, description, path, jsonld, body, { canonical, image: picture?.url }));
     res.headers.set("X-Slug", slug);

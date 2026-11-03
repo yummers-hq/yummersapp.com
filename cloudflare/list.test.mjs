@@ -36,6 +36,8 @@ assert.equal(meta(html, "og:image"), list.cover_url, "the cover wins");
 assert.equal(meta(html, "og:description"), "List by @tester1 · 2 places", "the list's own description isn't used");
 list.cover_url = "javascript:alert(1)"; list.list_restaurants = [];
 assert.equal(meta(await (await get("/l/stXQQCCT")).text(), "og:image"), "https://yummersapp.com/assets/share-square.jpg", "not https, no photo: the square picture");
+list.list_restaurants = [{ position: 0, picture: { kind: "cover", url: "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=w800-h600-k-no" } }];
+assert.equal(meta(await (await get("/l/stXQQCCT")).text(), "og:image"), "https://yummersapp.com/assets/share-square.jpg", "a Street View link is no picture");
 list.list_restaurants = [{ position: 0, picture: null }];
 assert.equal(meta(await (await get("/l/stXQQCCT")).text(), "og:description"), "List by @tester1 · 1 place");
 assert.equal(meta(await (await get("/l/stXQQCCT")).text(), "og:image:width"), "600");
@@ -57,3 +59,8 @@ globalThis.fetch = async () => new Response("page", { status: 404 });
 assert.equal((await get("/l/short/x")).status, 404);
 assert.equal((await get("/l/AbCd1234/x", "POST")).status, 404);
 console.log("list: ok");
+
+// Browsers ask for /favicon.ico: it goes to the 192 px tab icon.
+const fav = await get("/favicon.ico");
+assert.equal(fav.status, 301);
+assert.equal(fav.headers.get("Location"), "https://yummersapp.com/assets/favicon-192.png");
