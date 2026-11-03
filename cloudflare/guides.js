@@ -25,6 +25,19 @@ const slugify = (s) => s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLow
 // Name plus area, so branches differ; decided by the data, not the position in a list, so it never moves.
 const placeSlug = (r) => slugify(`${r.name} ${r.district || ""}`).slice(0, 70).replace(/-+$/, "") || "place";
 const cuisineOf = (r) => (r.cuisine_type || []).find((c) => c !== "International") || (r.cuisine_type || [])[0];
+// Google's "11:00 AM – 10:00 PM" as "11am – 10pm"; "Closed" and "Open 24 hours" pass through.
+export const shortHours = (h) => h
+    .replace(/(\d{1,2})(?::(\d\d))?\s*([AP])M/g, (_, hr, min, ap) => `${hr}${min && min !== "00" ? `:${min}` : ""}${ap.toLowerCase()}m`)
+    .replace(/\b(\d{1,2}):00\b/g, "$1");
+
+// Google's "Road352 BKK1, Phnom Penh 12302, Cambodia" as "Street 352, BKK1, Phnom Penh".
+// shortcut: only Road/Street/St/Saint plus a number are normalised, and 5-6 figure postcodes dropped; anything else (Khmer, plus codes, odd Google text) is left as Google wrote it.
+export const cleanAddress = (a) => a
+    .replace(/\s*\b\d{5,6}\b/g, "")
+    .replace(/\b(?:[Rr]oad|[Ss]aint|[Ss]t(?:reet|ree)?)\.?\s*(\d+)(\s+(?=[A-Z]))?/g, (_, n, sp) => `Street ${n}${sp ? ", " : ""}`)
+    .replace(/\s+/g, " ").replace(/\s+,/g, ",").replace(/(,\s*){2,}/g, ", ")
+    .replace(/,\s*Cambodia$/, "").replace(/^,\s*|,\s*$/g, "").trim();
+
 // Google's place picture only: a person's photo, name or credit stays off these pages (spec criterion 8).
 const coverOf = (it) => (it.picture?.kind === "cover" && /^https:\/\//.test(it.picture.url) ? it.picture.url : null);
 const firstSentence = (t) => (t.split(/(?<=[.!?])\s/)[0] || "").slice(0, 300);
@@ -39,12 +52,12 @@ async function rest(path, init = {}) {
 
 // The guide, or null when it is missing, private, empty or not the team's; throws when beta is unreachable.
 // shared_list() gives the title, notes and pictures; one embedded read adds what a place page needs
-// (restaurant id, address, position, hours) and the owner's id, matched to it by position.
+// (restaurant id, address, neighbourhood, position, hours) and the owner's id, matched to it by position.
 async function load(slug) {
     const id = GUIDES[slug];
     const [list, rows] = await Promise.all([
         rest("rpc/shared_list", { method: "POST", body: JSON.stringify({ p_share_id: id }) }).then((r) => r.json()),
-        rest(`lists?share_id=eq.${id}&select=user_id,list_restaurants(position,restaurants(id,address,latitude,longitude,opening_hours))`).then((r) => r.json()),
+        rest(`lists?share_id=eq.${id}&select=user_id,list_restaurants(position,restaurants(id,address,neighbourhood,latitude,longitude,opening_hours))`).then((r) => r.json()),
     ]);
     if (!list || !rows[0] || list.profiles?.username !== TEAM || !list.list_restaurants?.length) return null;
     const detail = new Map(rows[0].list_restaurants.map((x) => [x.position, x.restaurants]));
@@ -201,7 +214,7 @@ ${body}
 const img = (url, w, h, eager) => (url ? `<img src="${esc(url)}" alt="" loading="${eager ? "eager" : "lazy"}" referrerpolicy="no-referrer" width="${w}" height="${h}">` : "");
 // Display name and kind come from guide-places.js; a place missing there shows its database name and cuisine.
 const nameOf = (it) => PLACES[it.d.id]?.name || it.restaurants.name;
-const metaOf = (it) => [PLACES[it.d.id]?.kind || cuisineOf(it.restaurants), it.restaurants.district].filter(Boolean).join(" · ");
+const metaOf = (it) => [PLACES[it.d.id]?.kind || cuisineOf(it.restaurants), it.d.neighbourhood || it.restaurants.district].filter(Boolean).join(" · ");
 const guideCover = (g) => coverOf(g.items.find((i) => i.d.id === COVERS[g.slug]) || {}) || g.items.map(coverOf).find(Boolean);
 const cover = (photo, eyebrow, title, meta) => `<div class="cover">${img(photo, 1040, 780, true)}<div class="txt"><div class="in"><div class="eyebrow">${esc(eyebrow)}</div><h1 class="t">${esc(title)}</h1><div class="meta">${esc(meta)}</div></div></div></div>`;
 
@@ -252,7 +265,7 @@ async function placePage(slug, all) {
     const jsonld = JSON.stringify({
         "@context": "https://schema.org", "@type": "Restaurant", name, url: SITE + path, description,
         ...(cuisine && { servesCuisine: cuisine }),
-        address: { "@type": "PostalAddress", ...(d.address && { streetAddress: d.address }), addressLocality: "Phnom Penh", addressCountry: "KH" },
+        address: { "@type": "PostalAddress", ...(d.address && { streetAddress: cleanAddress(d.address) }), addressLocality: "Phnom Penh", addressCountry: "KH" },
         ...(d.latitude != null && { geo: { "@type": "GeoCoordinates", latitude: d.latitude, longitude: d.longitude } }),
     });
     const chips = [fact.kind, fact.price && `About ${fact.price} a person`, fact.when, liked && `${liked} ${liked === 1 ? "person" : "people"} liked it on yummers`].filter(Boolean);
@@ -262,8 +275,8 @@ async function placePage(slug, all) {
 ${it.note ? `<p class="lede">${esc(it.note)}</p>` : ""}
 ${chips.length ? `<div class="glance">${chips.map((c) => `<span>${esc(c)}</span>`).join("")}</div>` : ""}
 ${review ? `<section class="box"><h3>From the yummers team</h3><p class="wu">${esc(review)}</p></section>` : ""}
-<div class="facts"><section class="box"><h3>Find it</h3>${d.address ? `<div>${esc(d.address)}</div>` : ""}<a class="dir" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(where)}" rel="noopener">Directions</a></section>
-${hours.length ? `<section class="box"><h3>Opening hours</h3><dl class="hours">${hours.map(([day, h]) => { const c = day === today ? ' class="today"' : ""; return `<dt${c}>${esc(day)}</dt><dd${c}>${esc(h)}</dd>`; }).join("")}</dl></section>` : ""}
+<div class="facts"><section class="box"><h3>Find it</h3>${d.address ? `<div>${esc(cleanAddress(d.address))}</div>` : ""}<a class="dir" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(where)}" rel="noopener">Directions</a></section>
+${hours.length ? `<section class="box"><h3>Opening hours</h3><dl class="hours">${hours.map(([day, h]) => { const c = day === today ? ' class="today"' : ""; return `<dt${c}>${esc(day)}</dt><dd${c}>${esc(shortHours(h))}</dd>`; }).join("")}</dl></section>` : ""}
 <section class="box"><h3>In these guides</h3>${inGuides.map((x) => `<a class="pl-in" href="/guides/${x.slug}">${img(guideCover(x), 112, 112)}<div><b>${esc(x.title)}</b><div class="meta">${x.items.length} places</div></div></a>`).join("")}</section></div>
 <section class="more"><h3>More in ${esc(g.title)}</h3><ul class="more-grid">${more.map((x) => `<li><a href="/places/${x.slug}"><span class="ph">${img(coverOf(x), 400, 300)}</span><b>${esc(nameOf(x))}</b><span class="m">${esc(metaOf(x))}</span></a></li>`).join("")}</ul><a class="more-all" href="/guides/${g.slug}">See all ${g.items.length} places →</a></section>
 </div></div>`;
