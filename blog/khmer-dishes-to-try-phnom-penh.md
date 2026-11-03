@@ -4,6 +4,10 @@ slug: khmer-dishes-to-try-phnom-penh
 date: 2026-11-03T11:00:00+07:00
 description: "Ten Khmer dishes worth eating in Phnom Penh, from fish amok to kuy teav, and the restaurants from our guide where you can try them."
 author: "the yummers team"
+guide: khmer-food-phnom-penh
+guide_title: "Khmer food in Phnom Penh"
+guide_places: 8
+image: "https://lh3.googleusercontent.com/grass-cs/AABkmLce7vsk-LjOvFnkzHn2av4w9QFgKrZHVu_CAns2jGhtRRAPy-jw9HOW-8Xx0lFMA1zlthS2qbw7m9aCICMZmPMdkzT-U614hhpl4VmEoMrsutfUhZIgHnGdj0gGfKG0NacKT7BC=w800-h600-k-no"
 ---
 
 Khmer food is the quiet hero of Phnom Penh. It is herby, fragrant and less spicy than you might think. This is a short list for beginners: ten dishes, what they are, and where to start. Our full list of places is in the [Khmer food in Phnom Penh guide](/guides/khmer-food-phnom-penh).

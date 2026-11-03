@@ -1411,19 +1411,75 @@ html:lang(fr) .footer-links {
 
 .invited[hidden] { display: none }
 
-/* Blog (#135): the list and one post. build-blog.mjs writes the markup. */
-.blog { max-width: 760px; padding-top: 56px; padding-bottom: 80px }
-.blog h1 { font-size: clamp(34px, 6vw, 56px); overflow-wrap: anywhere }
-.blog-intro { color: var(--muted); font-size: 18px; line-height: 1.6; margin-top: 12px; max-width: 60ch }
-.crumbs, .post-meta { color: var(--muted); font-size: 15px; margin-top: 10px }
-.crumbs a { text-decoration: underline; text-underline-offset: 3px }
-.prose { margin-top: 28px }
-.prose p, .prose li { font-size: 18px; line-height: 1.75; max-width: 65ch }
-.prose p, .prose ul, .prose ol { margin-top: 16px }
-.prose ul, .prose ol { padding-left: 24px; margin-bottom: 0 }
+/* Blog (#135): build-blog.mjs writes the markup. The list (B, editorial) and a post (A, magazine). */
+.b-kicker { color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase }
+.b-index { max-width: 1080px; margin: 0 auto; padding: 28px max(16px, env(safe-area-inset-right)) 64px max(16px, env(safe-area-inset-left)) }
+.b-title { font-size: clamp(44px, 12vw, 88px); line-height: 1; letter-spacing: -.01em; font-weight: 700; margin-top: 4px }
+.b-rule { border: 0; border-top: 2px solid var(--ink); margin: 18px 0 0; transform-origin: left }
+.b-list { list-style: none; margin: 0; padding: 0 }
+.b-item { display: grid; grid-template-columns: minmax(0, 1fr) 96px; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: start }
+.b-n { display: none; font: 700 44px/1 Fraunces, Georgia, serif; color: var(--accent) }
+.b-item h2 { font-size: 22px; line-height: 1.15; letter-spacing: -.02em; font-weight: 700; margin: 4px 0 6px; transition: color .2s }
+.b-item:is(:hover, :focus-visible) h2 { color: var(--accent) }
+.b-desc { color: var(--muted); font-size: 14px; margin-bottom: 8px }
+.b-from { color: var(--muted); font-size: 12.5px }
+.b-ph { display: block; width: 96px; height: 96px; border-radius: 12px; overflow: hidden; background: var(--panel) }
+.b-ph img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease }
+.b-item:is(:hover, :focus-visible) .b-ph img { transform: scale(1.04) }
+.cover { position: relative; height: 380px; overflow: hidden; background: #3a2a20; color: #fffaf2 }
+.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(28, 20, 16, .88), rgba(28, 20, 16, 0) 62%) }
+.cover img { display: block; width: 100%; height: 100%; object-fit: cover }
+.cover .txt { position: absolute; z-index: 1; left: max(16px, env(safe-area-inset-left)); right: max(16px, env(safe-area-inset-right)); bottom: 18px }
+.cover .b-kicker, .cover .meta { color: rgba(255, 250, 242, .85) }
+.cover h1 { font-size: 32px; line-height: 1.06; letter-spacing: -.02em; font-weight: 700; color: #fffaf2; margin: 6px 0 8px; max-width: 18ch }
+.cover .meta { font-size: 12.5px }
+.prose { max-width: 680px; margin: 0 auto; padding: 22px max(16px, env(safe-area-inset-right)) 56px max(16px, env(safe-area-inset-left)) }
+.prose p, .prose li { font-size: 16px; line-height: 1.75 }
+.prose p { margin-bottom: 14px }
+.prose .stand { font-size: 18px; line-height: 1.6 }
+.prose ul, .prose ol { margin: 0 0 14px; padding-left: 24px }
 .prose li + li { margin-top: 6px }
-.prose h2 { font-size: clamp(24px, 4vw, 30px); margin-top: 44px; letter-spacing: -.02em }
-.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px }
+.prose h2 { font-size: 23px; line-height: 1.2; letter-spacing: -.02em; font-weight: 700; margin: 26px 0 8px }
+.prose a:not(.guidebox) { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px }
+.guidebox { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 14px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 12px; margin: 22px 0; font-size: 12.5px; color: var(--muted) }
+.guidebox img { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; background: var(--panel) }
+.guidebox b { display: block; font: 700 17px/1.3 Fraunces, Georgia, serif; color: var(--ink) }
+.read-bar { display: none }
+@media (min-width: 900px) {
+    .b-index { padding-top: 44px }
+    .b-item { grid-template-columns: 70px minmax(0, 1fr) 260px; gap: 28px; padding: 28px 0 }
+    .b-n { display: block }
+    .b-item h2 { font-size: 32px }
+    .b-desc { font-size: 16px }
+    .b-ph { width: 260px; height: 175px; border-radius: 14px }
+    .cover { height: 480px }
+    .cover .txt { left: 0; right: 0; max-width: 1080px; margin: 0 auto; padding: 0 32px; bottom: 36px }
+    .cover h1 { font-size: 54px }
+    .prose { padding-top: 44px }
+    .prose .stand { font-size: 21px }
+}
+/* Motion rests fully visible: without it, or with reduced motion, nothing moves or hides. */
+@media (prefers-reduced-motion: no-preference) {
+    @keyframes b-in { from { opacity: 0; transform: translateY(14px) } }
+    @keyframes b-draw { from { transform: scaleX(0) } }
+    @keyframes b-settle { from { transform: scale(1.06) } }
+    .b-index > .b-kicker, .b-title { animation: b-in .5s ease-out both }
+    .b-title { animation-delay: .05s }
+    .b-rule { animation: b-draw .6s .15s cubic-bezier(.2, .7, .2, 1) both }
+    .b-list li { animation: b-in .5s ease-out both }
+    .b-list li:nth-child(1) { animation-delay: .2s }
+    .b-list li:nth-child(2) { animation-delay: .3s }
+    .b-list li:nth-child(n+3) { animation-delay: .4s }
+    .cover img { animation: b-settle 1.2s ease-out both }
+    .cover .txt { animation: b-in .6s .15s ease-out both }
+}
+@supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+        @keyframes read { from { transform: scaleX(0) } }
+        .read-bar { display: block; position: fixed; z-index: 60; top: 0; left: 0; right: 0; height: 3px; background: var(--orange); transform-origin: left; animation: read linear both; animation-timeline: scroll(root) }
+        .prose :is(h2, p) { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 45% }
+    }
+}
 .posts { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 12px }
 .post-link { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px }
 .post-link:hover .post-title { color: var(--accent) }

@@ -4,6 +4,10 @@ slug: street-food-phnom-penh-for-beginners
 date: 2026-11-03T10:00:00+07:00
 description: "New to Phnom Penh street food? Here is what to eat, how to order without Khmer, and a few places to start, from night markets to noodle shops."
 author: "the yummers team"
+guide: street-food-phnom-penh
+guide_title: "Street food in Phnom Penh"
+guide_places: 7
+image: "https://lh3.googleusercontent.com/grass-cs/AABkmLcYUC9V-vAidNHOxp72MflxWlzDM7FxueBewopB0H6iRHzFIKiPsZk5wb7lG-tjT8pZt_jxBCL62-k95lu_Fiz6MUs-8vzal5tNXnOqrB9LwEIZ6AI8NWDCDYx4dW8M44xGUqKKRaQBjGU=w800-h600-k-no"
 ---
 
 Just arrived in Phnom Penh and nervous about street food? Relax. It is one of the easiest ways to eat well here. This post covers what to eat, how to order, and where to start. For a list of places, see our [street food in Phnom Penh guide](/guides/street-food-phnom-penh).
