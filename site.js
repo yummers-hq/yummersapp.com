@@ -1,4 +1,4 @@
-// In-page links (How it works, Take a peek inside, Back to the top, ...)
+// In-page links (How it works, Back to the top, ...)
 // scroll to their section without adding #preview, #launch and so on to the
 // address bar, so the link stays yummersapp.com/ (plus ?lang= when a
 // language is picked). Without this script the links still work as normal
@@ -68,11 +68,12 @@
     });
 })();
 
-// On narrow screens each row of phones (the friends and search rows, the peek strip and the light/dark pair) swipes sideways; the dots under it show
-// which phone is in view (hidden by CSS on wider screens, where nothing scrolls).
+// On narrow screens each row of phones (the story sections and the light/dark pair) swipes sideways; the dots under it show
+// which phone is in view (hidden by CSS on wider screens, where nothing scrolls). A row of one phone has nothing to slide.
 (function () {
-    document.querySelectorAll(".onboarding-screens, .peek-strip, .peek-duo").forEach(function (row) {
+    document.querySelectorAll(".onboarding-screens, .peek-duo").forEach(function (row) {
         var figures = row.querySelectorAll("figure");
+        if (figures.length < 2) return;
         var dots = document.createElement("div");
         dots.className = "screen-dots";
         dots.setAttribute("aria-hidden", "true");
