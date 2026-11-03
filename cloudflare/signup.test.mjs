@@ -145,6 +145,7 @@ assert.equal(emails.length, before);
 // and confirming adds the contact to the Melbourne segment with its properties.
 assert.equal((await call("POST", "/api/signup", signupForm("m1@example.com", melb({ ref: "../EVIL" })))).status, 204);
 assert.equal(emails.at(-1).subject, "Confirm your email for the yummers Melbourne list");
+assert.match(emails.at(-1).text, /Promotions tab/);
 let c = await confirmFrom(emails.length - 1);
 const html1 = await c.res.text();
 await Promise.all(waits);

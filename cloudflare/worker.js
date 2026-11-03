@@ -141,6 +141,7 @@ const MELBOURNE = {
     verifyNote: [
         "Hi,",
         "Thanks for joining the yummers Melbourne list. Press the link below to confirm it's your email, and you're on the list.",
+        "After that, we'll send your invite link in a second email. If you use Gmail, look in the Promotions tab.",
     ],
     joinTitle: "Join the yummers Melbourne list?",
     joinedTitle: "You're on the Melbourne list!",
