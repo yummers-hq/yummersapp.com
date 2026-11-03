@@ -12,6 +12,10 @@ const TEAM = "yummers";
 export const GUIDES = {
     "korean-restaurants-phnom-penh": "CFvYICHV",
     "khmer-food-phnom-penh": "hn35pV5d",
+    "bbq-phnom-penh": "OzG5s24K",
+    "street-food-phnom-penh": "9tZNChF4",
+    "rooftop-bars-phnom-penh": "mGkqaq21",
+    "vegan-vegetarian-phnom-penh": "FTCiOz4g",
 };
 
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -116,7 +120,7 @@ a.name:hover{color:var(--accent)}
 </head>
 <body><a class="skip" href="#main">Skip to content</a>
 <header class="header wrap"><a href="/" class="brand" aria-label="yummers home"><img class="brand-image" src="/assets/raccoon.png" alt="" width="58" height="32"><span class="brand-name">yummers<span class="brand-tag"> | Restaurant Lists App</span></span></a>
-<nav aria-label="Main navigation"><a href="/#preview">How it works</a><a class="nav-status" href="/#launch">Join the iPhone beta</a><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode" data-i18n-aria="themeLabel"></button></nav></header>
+<nav aria-label="Main navigation"><a href="/guides">Guides</a><a href="/#preview">How it works</a><a class="nav-status" href="/#launch">Join the iPhone beta</a><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode" data-i18n-aria="themeLabel"></button></nav></header>
 <main id="main" class="g wrap">
 ${body}
 <section class="get">
