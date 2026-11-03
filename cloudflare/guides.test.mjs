@@ -1,7 +1,7 @@
 // Runs the guide and restaurant pages through the Worker with beta faked. Usage: node cloudflare/guides.test.mjs
 import assert from "node:assert/strict";
 import worker from "./worker.js";
-import { GUIDES, shortHours, cleanAddress } from "./guides.js";
+import { GUIDES, shortHours, cleanAddress, usable } from "./guides.js";
 import { PLACES, COVERS } from "./guide-places.js";
 
 for (const k of Object.keys(GUIDES)) delete GUIDES[k];
@@ -53,7 +53,7 @@ assert.equal(r.headers.get("Cache-Control"), "public, max-age=300", "browsers ke
     await at("v2"); await new Promise((d) => setTimeout(d, 0));
     assert.ok([...store.keys()].some((k) => k.endsWith("?v=v2")), "a new deploy gets its own copy");
 }
-for (const s of ["Korean restaurants in Phnom Penh | yummers", "Clean One", "Place 2 &amp; Co", "Order the 1 &lt;b&gt;", "Korean BBQ · BKK1", "Korean · BKK", "Guide · Phnom Penh", "2 places · by the yummers team", ">01<", ">02<", '"name":"Clean One"', '"@type":"ItemList"', '"@type":"Restaurant"',
+for (const s of ["Korean restaurants in Phnom Penh | yummers", "Clean One", "Place 2 &amp; Co", "Order the 1 &lt;b&gt;", "Korean BBQ ·\u00a0BKK1", "Korean ·\u00a0BKK", "Guide · Phnom Penh", "2 places · by the yummers team", ">01<", ">02<", '"name":"Clean One"', '"@type":"ItemList"', '"@type":"Restaurant"',
     'rel="canonical" href="https://yummersapp.com/guides/korean"', 'href="/places/place-1-co-bkk"', "https://lh3.googleusercontent.com/p1", 'href="/guides"']) assert.ok(t.includes(s), s);
 assert.ok(!t.includes("<b>"), "notes are escaped");
 assert.ok(!t.includes("Place 1 &amp; Co"), "the clean name replaces the database name");
@@ -114,4 +114,6 @@ assert.ok(t.includes("/places/place-1-co-bkk") && t.includes("<loc>https://yumme
 down = true;
 assert.equal((await get("/guides/korean")).status, 503);
 assert.equal((await get("/places/place-1-co-bkk")).status, 503);
+for (const [u, ok] of [["https://lh3.googleusercontent.com/p/x=w800", true], ["https://lh5.googleusercontent.com/grass-cs/x", true], ["https://uobskavqhilnqakbdutt.supabase.co/storage/v1/object/public/photos/a.jpg", true],
+    ["https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=w800-h600-k-no", false], ["http://lh3.googleusercontent.com/x", false], ["https://evil.example/googleusercontent.com/x", false], [null, false]]) assert.equal(!!usable(u), ok, String(u));
 console.log("guides ok");
