@@ -316,8 +316,9 @@ async function join(env, ctx, { email, list, suburb, ref }, t, lang) {
     const found = await resendApi(env, "GET", `/contacts/${to}`);
     if (!found.ok && found.status !== 404) return false;
     const exists = found.ok;
+    const old = exists ? await found.json() : null;
     // An existing contact keeps the code (and inviter) it already has.
-    const had = m && exists ? (await found.json()).properties?.invite_code?.value : null;
+    const had = m && old?.properties?.invite_code?.value;
     const code = m && (had || newCode());
     const segment = m ? env.MELBOURNE_SEGMENT_ID : env.SEGMENT_ID;
     const properties = m && { suburb, ...(!had && { invite_code: code, ...(ref && { invited_by: ref }) }) };
@@ -328,10 +329,10 @@ async function join(env, ctx, { email, list, suburb, ref }, t, lang) {
     } else {
         res = await resend("/contacts", { email, segments: [{ id: segment }], ...(m && { properties }) });
     }
-    const created = !exists && res.ok;
-    // Only a new contact is emailed, so joining again can't send them repeat mail.
-    // The send runs after the reply, and a failed send doesn't fail joining.
-    if (created) ctx.waitUntil(res.json().then(({ id }) => {
+    // Only a new contact, or one joining Melbourne for the first time (no code yet), is
+    // emailed, so joining again can't send them repeat mail. The send runs after the
+    // reply, and a failed send doesn't fail joining.
+    if (res.ok && (!exists || (m && !had))) ctx.waitUntil((exists ? Promise.resolve(old) : res.json()).then(({ id }) => {
         // The contact's id is the unsubscribe link's key: only this email carries it.
         const unsub = `https://yummersapp.com/api/unsubscribe?id=${id}&lang=${lang}`;
         return resend("/emails", {
