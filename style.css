@@ -1590,25 +1590,6 @@ html:lang(fr) .footer-links {
     background: var(--cream)
 }
 
-.menu .theme-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 8px 14px;
-    border-color: rgba(255, 250, 242, .4);
-    color: var(--cream);
-    font: 600 13px/1.2 Poppins, 'Noto Sans Khmer', sans-serif
-}
-
-.menu .theme-toggle::before {
-    width: 18px;
-    height: 18px;
-    margin: 0
-}
-
 @media (min-width: 1061px) {
     .menu {
         grid-template-columns: 1.4fr 1fr;
@@ -1633,7 +1614,13 @@ html:lang(fr) .footer-links {
 }
 
 /* A 390pt header holds the name, the beta pill and the button only if each gives a little. */
+/* With the beta button, the dark-mode switch and the menu button, a phone header only has room for the raccoon. */
+@media (max-width: 540px) {
+    .header .brand-name { display: none }
+}
+
 @media (max-width: 440px) {
+    .header .theme-toggle { width: 40px; height: 40px }
     .header { padding-inline: 20px; }
     .header .brand { font-size: 21px }
     .brand-image { width: 42px; height: 23px; margin-right: 8px }
