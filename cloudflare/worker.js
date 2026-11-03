@@ -362,7 +362,7 @@ async function catalogue(request, ref, ctx) {
 // still draws the page, so the two never disagree.
 const SUPABASE = "https://uobskavqhilnqakbdutt.supabase.co";
 const ANON = "sb_publishable_lHMGFti9a7-RxGHVj2Iz-g_wXFZoMC7"; // public by design, as in share.js
-const SHARE_IMAGE = "https://yummersapp.com/assets/share.jpg";
+const SHARE_IMAGE = "https://yummersapp.com/assets/share-square.jpg"; // 600 x 600
 const esc = (t) => String(t).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 // Same slug as share.js; the slug is decoration, so a mismatch breaks nothing.
 const slugify = (t) => t.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/['’]/g, "")
@@ -390,16 +390,18 @@ async function sharedList(url, id) {
     const l = listRes?.ok ? await listRes.json().catch(() => null) : null;
     const places = l?.list_restaurants?.length || 0;
     const owner = l?.profiles?.username ? `@${l.profiles.username}` : l?.profiles?.display_name;
-    const title = l ? `${l.title}, a list on yummers` : "A list on yummers";
+    const title = l ? l.title : "A list on yummers";
     const description = !l ? "A list of places to eat in Cambodia, shared from yummers."
-        : l.description || `A list of ${places} ${places === 1 ? "place" : "places"}${owner ? ` by ${owner}` : ""}`;
-    const image = (l && listImage(l)) || SHARE_IMAGE;
+        : `List${owner ? ` by ${owner}` : ""} · ${places} ${places === 1 ? "place" : "places"}`;
+    const photo = l && listImage(l);
+    const image = photo || SHARE_IMAGE;
     const canonical = `https://yummersapp.com/l/${id}${l ? `/${slugify(l.title)}` : ""}`;
     const tags = [
         ["property", "og:type", "website"], ["property", "og:site_name", "yummers"],
         ["property", "og:title", title], ["property", "og:description", description],
         ["property", "og:url", canonical], ["property", "og:image", image],
-        ["name", "twitter:card", "summary_large_image"], ["name", "twitter:title", title],
+        ...(photo ? [] : [["property", "og:image:width", "600"], ["property", "og:image:height", "600"]]),
+        ["name", "twitter:card", "summary"], ["name", "twitter:title", title],
         ["name", "twitter:description", description], ["name", "twitter:image", image],
     ].map(([k, n, v]) => `<meta ${k}="${n}" content="${esc(v)}">`).join("\n  ");
     const html = (await pageRes.text())
