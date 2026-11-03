@@ -306,7 +306,8 @@ function page(lang, title, text, button) {
 // Analytics' script (the zone's automatic setup injects it; it reports to our own
 // /cdn-cgi/rum, so 'self' covers that; until PostHog, #51), PostHog's script and
 // EU endpoint (analytics.js, #2), and the Supabase
-// project that 404.html's share links read (beta since #73).
+// project that 404.html's share links read (beta since #73), whose public photo
+// bucket and Google's place pictures are the only image hosts (the list page, #94).
 // Inline styles stay allowed for 404.html's <style> and page() below.
 const SECURITY_HEADERS = {
     "Content-Security-Policy": [
@@ -314,6 +315,7 @@ const SECURITY_HEADERS = {
         "script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://eu-assets.i.posthog.com",
         "frame-src https://challenges.cloudflare.com",
         "connect-src 'self' https://uobskavqhilnqakbdutt.supabase.co https://eu.i.posthog.com",
+        "img-src 'self' data: https://uobskavqhilnqakbdutt.supabase.co https://*.googleusercontent.com",
         "style-src 'self' 'unsafe-inline'",
         "object-src 'none'",
         "base-uri 'self'",
@@ -353,6 +355,64 @@ async function catalogue(request, ref, ctx) {
     return (await inflight.get(ref)).clone();
 }
 
+// Shared lists (/l/{id}/{slug}, D40, #95). Chat apps don't run the page's script,
+// so the Worker answers with 404.html plus this list's own preview tags. The
+// same answer for a private, hidden or missing list (the generic card), and
+// always 200, so nothing here shows whether a list exists. 404.html itself
+// still draws the page, so the two never disagree.
+const SUPABASE = "https://uobskavqhilnqakbdutt.supabase.co";
+const ANON = "sb_publishable_lHMGFti9a7-RxGHVj2Iz-g_wXFZoMC7"; // public by design, as in share.js
+const SHARE_IMAGE = "https://yummersapp.com/assets/share.jpg";
+const esc = (t) => String(t).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+// Same slug as share.js; the slug is decoration, so a mismatch breaks nothing.
+const slugify = (t) => t.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60).replace(/-+$/, "") || "list";
+
+// The list's cover, else the first place's picture (0084), else null.
+function listImage(l) {
+    const first = (l.list_restaurants || []).slice().sort((a, b) => a.position - b.position)[0]?.picture;
+    const photo = first?.kind === "photo" && first.userId && first.id
+        ? `${SUPABASE}/storage/v1/object/public/photos/${encodeURIComponent(first.userId)}/${encodeURIComponent(first.id)}.jpg` : null;
+    const url = l.cover_url || photo || (first?.kind === "cover" && first.url);
+    return /^https:\/\//.test(url || "") ? url : null;
+}
+
+async function sharedList(url, id) {
+    const [pageRes, listRes] = await Promise.all([
+        fetch(new URL("/404.html", url)),
+        fetch(`${SUPABASE}/rest/v1/rpc/shared_list`, {
+            method: "POST",
+            headers: { apikey: ANON, Authorization: `Bearer ${ANON}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ p_share_id: id }),
+        }).catch(() => null),
+    ]);
+    if (!pageRes.ok) return pageRes;
+    const l = listRes?.ok ? await listRes.json().catch(() => null) : null;
+    const places = l?.list_restaurants?.length || 0;
+    const owner = l?.profiles?.username ? `@${l.profiles.username}` : l?.profiles?.display_name;
+    const title = l ? `${l.title}, a list on yummers` : "A list on yummers";
+    const description = !l ? "A list of places to eat in Cambodia, shared from yummers."
+        : l.description || `A list of ${places} ${places === 1 ? "place" : "places"}${owner ? ` by ${owner}` : ""}`;
+    const image = (l && listImage(l)) || SHARE_IMAGE;
+    const canonical = `https://yummersapp.com/l/${id}${l ? `/${slugify(l.title)}` : ""}`;
+    const tags = [
+        ["property", "og:type", "website"], ["property", "og:site_name", "yummers"],
+        ["property", "og:title", title], ["property", "og:description", description],
+        ["property", "og:url", canonical], ["property", "og:image", image],
+        ["name", "twitter:card", "summary_large_image"], ["name", "twitter:title", title],
+        ["name", "twitter:description", description], ["name", "twitter:image", image],
+    ].map(([k, n, v]) => `<meta ${k}="${n}" content="${esc(v)}">`).join("\n  ");
+    const html = (await pageRes.text())
+        .replace(/<title>[^<]*<\/title>/, () => `<title>${esc(title)}</title>`)
+        .replace(/<meta name="description" content="[^"]*">/, () => `<meta name="description" content="${esc(description)}">`)
+        .replace("</head>", () => `  ${tags}\n</head>`);
+    return new Response(html, { headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        // Five minutes, so a list made private stops previewing quickly. A failed lookup isn't kept.
+        "Cache-Control": listRes?.ok ? "public, max-age=300" : "no-store",
+    } });
+}
+
 async function route(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/signup" && request.method === "POST") return signup(request, env);
@@ -365,6 +425,8 @@ async function route(request, env, ctx) {
     if (signin) return Response.redirect(`https://${signin[1]}.supabase.co/auth/v1/authorize${url.search}`, 302);
     const cached = url.pathname.match(/^\/catalogue\/(mbuxxkchudopmpihrakk|uobskavqhilnqakbdutt)$/);
     if (cached) return catalogue(request, cached[1], ctx);
+    const list = url.pathname.match(/^\/l\/([0-9A-Za-z]{8})(?:\/[^/]*)?\/?$/);
+    if (list && ["GET", "HEAD"].includes(request.method)) return sharedList(url, list[1]);
     const wantsMarkdown = (request.headers.get("Accept") || "").includes("text/markdown");
 
     if (wantsMarkdown && url.pathname === "/") {
