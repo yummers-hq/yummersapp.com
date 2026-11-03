@@ -120,7 +120,7 @@ for (const p of posts) {
             publisher: { "@type": "Organization", name: "yummers", logo: { "@type": "ImageObject", url: `${SITE}/assets/logo.png` } },
             image: p.image, mainEntityOfPage: `${SITE}/blog/${p.slug}`,
         },
-        main: `<i class="read-bar" aria-hidden="true"></i>\n<header class="cover">${photo(p.image.replace(/=w\d+-h\d+/, "=w1600-h1000"), 1600, 1000, true)}<div class="txt"><p class="b-kicker"><a href="/blog">Blog</a> · ${p.minutes} min read</p><h1>${esc(p.title)}</h1><p class="meta">${day(p)} · ${esc(p.author)}</p></div></header>\n<article class="prose">\n${article(p)}\n</article>`,
+        main: `<i class="read-bar" aria-hidden="true"></i>\n<header class="post-cover">${photo(p.image.replace(/=w\d+-h\d+/, "=w1600-h1000"), 1600, 1000, true)}<div class="txt"><p class="b-kicker"><a href="/blog">Blog</a> · ${p.minutes} min read</p><h1>${esc(p.title)}</h1><p class="meta">${day(p)} · ${esc(p.author)}</p></div></header>\n<article class="prose">\n${article(p)}\n</article>`,
     }));
 }
 

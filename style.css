@@ -1426,13 +1426,13 @@ html:lang(fr) .footer-links {
 .b-ph { display: block; width: 96px; height: 96px; border-radius: 12px; overflow: hidden; background: var(--panel) }
 .b-ph img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease }
 .b-item:is(:hover, :focus-visible) .b-ph img { transform: scale(1.04) }
-.cover { position: relative; height: 380px; overflow: hidden; background: #3a2a20; color: #fffaf2 }
-.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(28, 20, 16, .88), rgba(28, 20, 16, 0) 62%) }
-.cover img { display: block; width: 100%; height: 100%; object-fit: cover }
-.cover .txt { position: absolute; z-index: 1; left: max(16px, env(safe-area-inset-left)); right: max(16px, env(safe-area-inset-right)); bottom: 18px }
-.cover .b-kicker, .cover .meta { color: rgba(255, 250, 242, .85) }
-.cover h1 { font-size: 32px; line-height: 1.06; letter-spacing: -.02em; font-weight: 700; color: #fffaf2; margin: 6px 0 8px; max-width: 18ch }
-.cover .meta { font-size: 12.5px }
+.post-cover { position: relative; height: 380px; overflow: hidden; background: #3a2a20; color: #fffaf2 }
+.post-cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(28, 20, 16, .88), rgba(28, 20, 16, 0) 62%) }
+.post-cover img { display: block; width: 100%; height: 100%; object-fit: cover }
+.post-cover .txt { position: absolute; z-index: 1; left: max(16px, env(safe-area-inset-left)); right: max(16px, env(safe-area-inset-right)); bottom: 18px }
+.post-cover .b-kicker, .post-cover .meta { color: rgba(255, 250, 242, .85) }
+.post-cover h1 { font-size: 32px; line-height: 1.06; letter-spacing: -.02em; font-weight: 700; color: #fffaf2; margin: 6px 0 8px; max-width: 18ch }
+.post-cover .meta { font-size: 12.5px }
 .prose { max-width: 680px; margin: 0 auto; padding: 22px max(16px, env(safe-area-inset-right)) 56px max(16px, env(safe-area-inset-left)) }
 .prose p, .prose li { font-size: 16px; line-height: 1.75 }
 .prose p { margin-bottom: 14px }
@@ -1452,9 +1452,9 @@ html:lang(fr) .footer-links {
     .b-item h2 { font-size: 32px }
     .b-desc { font-size: 16px }
     .b-ph { width: 260px; height: 175px; border-radius: 14px }
-    .cover { height: 480px }
-    .cover .txt { left: 0; right: 0; max-width: 1080px; margin: 0 auto; padding: 0 32px; bottom: 36px }
-    .cover h1 { font-size: 54px }
+    .post-cover { height: 480px }
+    .post-cover .txt { left: 0; right: 0; max-width: 1080px; margin: 0 auto; padding: 0 32px; bottom: 36px }
+    .post-cover h1 { font-size: 54px }
     .prose { padding-top: 44px }
     .prose .stand { font-size: 21px }
 }
@@ -1470,8 +1470,8 @@ html:lang(fr) .footer-links {
     .b-list li:nth-child(1) { animation-delay: .2s }
     .b-list li:nth-child(2) { animation-delay: .3s }
     .b-list li:nth-child(n+3) { animation-delay: .4s }
-    .cover img { animation: b-settle 1.2s ease-out both }
-    .cover .txt { animation: b-in .6s .15s ease-out both }
+    .post-cover img { animation: b-settle 1.2s ease-out both }
+    .post-cover .txt { animation: b-in .6s .15s ease-out both }
 }
 @supports (animation-timeline: scroll()) {
     @media (prefers-reduced-motion: no-preference) {
