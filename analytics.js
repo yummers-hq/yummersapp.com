@@ -73,7 +73,7 @@
         banner.hidden = true;
         reserve();
         var back = document.querySelector("[data-cookie-settings]");
-        if (back && banner.contains(document.activeElement)) back.focus();
+        if (back && banner.contains(document.activeElement)) back.focus({ preventScroll: true });
     }
 
     function open() {
