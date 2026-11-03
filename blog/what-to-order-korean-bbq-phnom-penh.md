@@ -4,6 +4,10 @@ slug: what-to-order-korean-bbq-phnom-penh
 date: 2026-11-03T12:00:00+07:00
 description: "First time at a Korean BBQ in Phnom Penh? Here is what to order, how to grill and wrap it, and where to go in BKK1, Toul Kork and beyond."
 author: "the yummers team"
+guide: korean-restaurants-phnom-penh
+guide_title: "Korean restaurants in Phnom Penh"
+guide_places: 10
+image: "https://lh3.googleusercontent.com/grass-cs/AABkmLePutnYDBHzmwKreBXdtejUwBakWD7xtfkUTTb8mFTZ-Tgx9A__61isueMGzY8mO_E4Kqg-iG3594Hywlfvhw40muVoGdDvadhtQMsecZSUVzKGbDPtR1rzZaGsiFML_JjVSdmSHYufrQs=w800-h600-k-no"
 ---
 
 You sit down. There is a grill in the middle of the table. A dozen tiny dishes arrive that you did not order. Someone hands you scissors and tongs and walks away.

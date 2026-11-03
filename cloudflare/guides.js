@@ -1,6 +1,8 @@
 // Guide pages (D92, yummers#441) and the restaurant pages for their places (D103, yummersapp.com#81):
 // the team's public lists as pages Google can read. Built on request from beta through the public
 // anon key (RLS and shared_list() decide what is public) and cached for an hour.
+import { PLACES, COVERS } from "./guide-places.js";
+
 const SUPABASE = "https://uobskavqhilnqakbdutt.supabase.co";
 const ANON = "sb_publishable_lHMGFti9a7-RxGHVj2Iz-g_wXFZoMC7"; // public by design, as in share.js
 const SITE = "https://yummersapp.com";
@@ -56,7 +58,6 @@ async function liveGuides() {
     return (await Promise.all(Object.keys(GUIDES).map(load))).filter(Boolean);
 }
 
-const FOLLOW = `<div class="follow"><a href="https://www.instagram.com/yummersapp/" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@hungryraccoonapp" rel="noopener">TikTok</a><a href="/">About the app</a></div>`;
 
 function layout(title, description, path, jsonld, body) {
     return `<!doctype html>
@@ -81,58 +82,99 @@ function layout(title, description, path, jsonld, body) {
 <link rel="stylesheet" href="/fonts.css">
 <link rel="stylesheet" href="/style.css">
 <style>
-.g{max-width:640px;padding-top:56px;padding-bottom:72px}
-.g h1{font-size:clamp(28px,6vw,44px);overflow-wrap:anywhere}
-.g .by{color:var(--muted);font-size:15px;margin-top:10px}
-.g .by a{text-decoration:underline;text-underline-offset:3px}
-.g .desc{font-size:18px;line-height:1.6;margin-top:16px;max-width:60ch;white-space:pre-line}
-.g h2{font-size:22px}
-.cards{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:12px}
-.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
-.card{display:flex;gap:14px;align-items:flex-start}
-.card>div{flex:1;min-width:0}
-.n{font-family:Fraunces,serif;font-weight:700;font-size:22px;color:var(--accent);min-width:24px}
-.name{font-weight:600;font-size:17px;overflow-wrap:anywhere}
-a.name:hover{color:var(--accent)}
-.meta{color:var(--muted);font-size:14px;margin-top:2px}
-.note{font-family:Fraunces,serif;color:var(--accent);margin-top:6px}
-.thumb{flex:none;width:56px;height:56px;border-radius:12px;background:var(--panel);overflow:hidden}
-.thumb img,.pic img{display:block;width:100%;height:100%;object-fit:cover}
-.pic{aspect-ratio:16/9;border-radius:16px;background:var(--panel);overflow:hidden;margin-top:20px}
-.panel{margin-top:16px}
-.panel p{margin-top:8px}
-.wu{white-space:pre-line;font-size:17px}
-.hrs div{display:flex;justify-content:space-between;gap:16px;padding:6px 0;border-bottom:1px solid var(--line);font-size:15px}
-.hrs div:last-child{border:0}
-.hrs dt{color:var(--muted)}
-.hrs dd{margin:0;text-align:right}
-.dir{display:inline-block;margin-top:10px;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:3px}
-.panel ul{margin:8px 0 0;padding-left:20px}
-.panel li a{text-decoration:underline;text-underline-offset:3px}
-.get{background:var(--panel);border-radius:20px;padding:28px;margin-top:40px}
-.get h2{font-size:30px}
-.get p{color:var(--muted);margin-top:10px}
-.get .button{margin-top:18px}
-.get .follow{display:flex;gap:18px;margin-top:18px;font-weight:600}
-.get .follow a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.g{padding-bottom:72px}
+.in{max-width:1040px;margin:0 auto;padding-inline:16px}
+.g h1,.g h2,.g h3,.g h4{letter-spacing:normal}
+.cover{position:relative;aspect-ratio:4/3;background:var(--panel);color:#fffaf2}
+.cover img,.photo img,.more-grid img,.pl-in img{display:block;width:100%;height:100%;object-fit:cover}
+.cover:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,16,.85),rgba(28,20,16,0) 60%)}
+.cover .txt{position:absolute;left:0;right:0;bottom:14px;z-index:1}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,250,242,.85)}
+.g h1.t{font-size:30px;line-height:1.08;margin:4px 0;color:#fffaf2;text-wrap:balance;overflow-wrap:anywhere}
+.cover .meta{color:rgba(255,250,242,.85)}
+.meta{font-size:13px;color:var(--muted)}
+.lead{font-size:15px;margin-top:16px;white-space:pre-line}
+.items,.ixg{list-style:none;margin:0;padding:0}
+.item{display:grid;gap:10px;padding:22px 0;border-bottom:1px solid var(--line)}
+.head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline}
+.num{font:700 34px/1 Fraunces,serif;color:var(--accent)}
+.g h2.name{font-size:22px;line-height:1.15;overflow-wrap:anywhere}
+.name a:hover{color:var(--accent)}
+.photo{display:block;aspect-ratio:3/2;border-radius:14px;overflow:hidden;background:var(--panel)}
+.item p{font-size:15px}
+.ixg{display:grid;gap:14px;margin-top:18px}
+.cov{position:relative;display:block;aspect-ratio:16/11;border-radius:18px;overflow:hidden;background:var(--panel);color:#fffaf2}
+.cov img{display:block;width:100%;height:100%;object-fit:cover}
+.cov:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,16,.85),rgba(28,20,16,0) 62%)}
+.cov .txt{position:absolute;left:14px;right:14px;bottom:12px;z-index:1}
+.cov h2{font-size:23px;line-height:1.1;margin-top:2px;color:#fffaf2}
+.ixh{padding-top:28px}
+.ixh h1{font-size:34px;line-height:1.1}
+.pl{display:grid;margin-top:16px}
+.lede{font-size:17px;line-height:1.6}
+.glance{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.glance span{font-size:13px;font-weight:500;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+.facts{display:grid;gap:14px;margin-top:18px;align-content:start}
+.box{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:6px;margin-top:18px}
+.facts .box{margin-top:0}
+.box h3,.more h3{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:Poppins,sans-serif}
+.box a.dir{color:var(--accent);font-weight:600}
+.hours{display:grid;grid-template-columns:auto 1fr;gap:2px 16px;font-size:14px;font-variant-numeric:tabular-nums;margin:0}
+.hours dt,.hours dd{margin:0}
+.hours .today{font-weight:600}
+.pl-in{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;align-items:center}
+.pl-in img{width:56px;height:56px;border-radius:12px}
+.pl-in b{font-weight:600}
+.wu{white-space:pre-line}
+.more{margin-top:28px}
+.more h3{margin-bottom:12px}
+.more-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.more-grid .ph{display:block;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:var(--panel)}
+.more-grid b{display:block;font:600 14px/1.2 Fraunces,serif;margin-top:8px;overflow-wrap:anywhere}
+.more-grid span.m{font-size:12.5px;color:var(--muted)}
+.more-all{display:inline-block;margin-top:14px;font-weight:600;font-size:14px;color:var(--accent)}
+@media(min-width:900px){
+.in{padding-inline:28px}
+.cover{aspect-ratio:auto;height:440px}
+.cover .txt{bottom:30px}
+.g h1.t{font-size:52px;margin:6px 0;max-width:16ch}
+.cover .meta{font-size:15px}
+.lead{font-size:19px;line-height:1.65;max-width:62ch;margin:32px 0 8px}
+.item{grid-template-columns:1.15fr 1fr;grid-template-rows:1fr 1fr;column-gap:40px;align-items:center;padding:36px 0}
+.item .photo{grid-column:1;grid-row:1/3}
+.item .head{grid-column:2;grid-row:1;align-self:end}
+.item p{grid-column:2;grid-row:2;align-self:start;font-size:16.5px;line-height:1.7;margin-top:4px}
+.item:nth-child(even){grid-template-columns:1fr 1.15fr}
+.item:nth-child(even) .photo{grid-column:2}
+.item:nth-child(even) .head,.item:nth-child(even) p{grid-column:1}
+.num{font-size:46px}
+.g h2.name{font-size:30px}
+.ixh{padding:40px 0 8px}
+.ixh h1{font-size:46px}
+.ixh .lead{margin-top:12px}
+.ixg{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:24px}
+.cov{aspect-ratio:4/5}
+.cov h2{font-size:25px}
+.pl{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);grid-template-rows:auto auto auto 1fr;column-gap:56px;margin-top:36px}
+.pl>:not(.facts){grid-column:1}
+.facts{grid-column:2;grid-row:1/5;margin-top:0}
+.lede{font-size:21px}
+.more-grid{gap:14px}
+.more-grid b{font-size:16px}
+}
 </style>
 <script type="application/ld+json">${jsonld.replace(/</g, "\\u003c")}</script>
 </head>
 <body><a class="skip" href="#main">Skip to content</a>
 <header class="header wrap"><a href="/" class="brand" aria-label="yummers home"><img class="brand-image" src="/assets/raccoon.png" alt="" width="58" height="32"><span class="brand-name">yummers<span class="brand-tag"> | Restaurant Lists App</span></span></a>
-<nav aria-label="Main navigation"><a href="/guides">Guides</a><a href="/#preview">How it works</a><a class="nav-status" href="/#launch">Join the iPhone beta</a><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode" data-i18n-aria="themeLabel"></button></nav></header>
-<main id="main" class="g wrap">
+<nav aria-label="Main navigation"><a class="nav-status" href="/#launch">Join the iPhone beta</a><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode"></button><button type="button" class="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button></nav></header>
+<div class="menu" id="menu"><ul class="menu-links"><li><a href="/guides">Guides</a></li><li><a href="/blog">Blog</a></li><li><a href="/#preview">How it works</a></li><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li></ul><div class="menu-side"><p>yummers is a social food diary for Cambodia: rate places, keep lists and share them with friends.</p><div class="menu-extras"></div></div></div>
+<main id="main" class="g">
 ${body}
-<section class="get">
-<h2>Make your own lists</h2>
-<p>yummers is a social food diary for Cambodia: rate places, keep lists and share them. It isn't out yet. Join the iPhone beta, or follow along while it simmers.</p>
-<a class="button" href="/#launch">Join the iPhone beta</a>
-${FOLLOW}
-</section>
 </main>
 <footer class="footer site-footer wrap">
 <div class="footer-brand"><a class="brand" href="/"><img class="footer-logo" src="/assets/logo-horizontal.svg" alt="yummers" width="188" height="50"></a></div>
-<nav class="footer-links" aria-label="Footer"><a href="/guides">Guides</a><a href="/about">About</a><a href="/privacy">Privacy policy</a><a href="/terms">Terms of service</a><a href="/contact">Contact us</a><a href="#cookies" role="button" data-cookie-settings>Cookie settings</a></nav>
+<nav class="footer-links" aria-label="Footer"><a href="/guides">Guides</a><a href="/blog">Blog</a><a href="/about">About</a><a href="/privacy">Privacy policy</a><a href="/terms">Terms of service</a><a href="/contact">Contact us</a><a href="#cookies" role="button" data-cookie-settings>Cookie settings</a></nav>
 <div class="footer-follow"><a href="https://www.instagram.com/yummersapp/" target="_blank" rel="noopener" aria-label="yummers on Instagram"><img src="/assets/social/instagram.svg" alt="" width="21" height="21"></a><a href="https://www.facebook.com/profile.php?id=61594898428255" target="_blank" rel="noopener" aria-label="yummers on Facebook"><img src="/assets/social/facebook.svg" alt="" width="21" height="21"></a><a href="https://www.linkedin.com/company/hungryraccoon/" target="_blank" rel="noopener" aria-label="yummers on LinkedIn"><img src="/assets/social/linkedin.svg" alt="" width="21" height="21"></a><a href="https://www.tiktok.com/@hungryraccoonapp" target="_blank" rel="noopener" aria-label="yummers on TikTok"><img src="/assets/social/tiktok.svg" alt="" width="21" height="21"></a></div><span class="footer-copy">© 2026 yummers</span>
 </footer>
 <script src="/analytics.js"></script>
@@ -140,7 +182,12 @@ ${FOLLOW}
 </html>`;
 }
 
-const img = (url, w = 112, h = 112) => (url ? `<img src="${esc(url)}" alt="" loading="lazy" referrerpolicy="no-referrer" width="${w}" height="${h}">` : "");
+const img = (url, w, h, eager) => (url ? `<img src="${esc(url)}" alt="" loading="${eager ? "eager" : "lazy"}" referrerpolicy="no-referrer" width="${w}" height="${h}">` : "");
+// Display name and kind come from guide-places.js; a place missing there shows its database name and cuisine.
+const nameOf = (it) => PLACES[it.d.id]?.name || it.restaurants.name;
+const metaOf = (it) => [PLACES[it.d.id]?.kind || cuisineOf(it.restaurants), it.restaurants.district].filter(Boolean).join(" · ");
+const guideCover = (g) => coverOf(g.items.find((i) => i.d.id === COVERS[g.slug]) || {}) || g.items.map(coverOf).find(Boolean);
+const cover = (photo, eyebrow, title, meta) => `<div class="cover">${img(photo, 1040, 780, true)}<div class="txt"><div class="in"><div class="eyebrow">${esc(eyebrow)}</div><h1 class="t">${esc(title)}</h1><div class="meta">${esc(meta)}</div></div></div></div>`;
 
 function guidePage(g) {
     const path = `/guides/${g.slug}`;
@@ -149,26 +196,20 @@ function guidePage(g) {
         "@context": "https://schema.org", "@type": "ItemList", name: g.title, description, url: SITE + path,
         itemListElement: g.items.map((it, i) => ({
             "@type": "ListItem", position: i + 1,
-            item: { "@type": "Restaurant", name: it.restaurants.name, url: `${SITE}/places/${it.slug}`, ...(it.note && { description: it.note }) },
+            item: { "@type": "Restaurant", name: nameOf(it), url: `${SITE}/places/${it.slug}`, ...(it.note && { description: it.note }) },
         })),
     });
-    const cards = g.items.map((it, i) => {
-        const r = it.restaurants;
-        return `<li class="card"><span class="n">${i + 1}</span><div><a class="name" href="/places/${it.slug}">${esc(r.name)}</a><div class="meta">${esc([cuisineOf(r), r.district].filter(Boolean).join(" · "))}</div>${it.note ? `<div class="note">“${esc(it.note)}”</div>` : ""}</div><span class="thumb">${img(coverOf(it))}</span></li>`;
-    }).join("");
-    return layout(`${g.title} | yummers`, description, path, jsonld, `<p class="by"><a href="/guides">Guides</a> / Phnom Penh</p>
-<h1>${esc(g.title)}</h1>
-<p class="by">${g.items.length} places · By the yummers team</p>
-${g.description ? `<p class="desc">${esc(g.description)}</p>` : ""}
-<ol class="cards">${cards}</ol>`);
+    const items = g.items.map((it, i) => `<li class="item"><div class="head"><span class="num">${String(i + 1).padStart(2, "0")}</span><div><h2 class="name"><a href="/places/${it.slug}">${esc(nameOf(it))}</a></h2><div class="meta">${esc(metaOf(it))}</div></div></div><a class="photo" href="/places/${it.slug}" tabindex="-1" aria-hidden="true">${img(coverOf(it), 600, 400)}</a>${it.note ? `<p>${esc(it.note)}</p>` : ""}</li>`).join("");
+    return layout(`${g.title} | yummers`, description, path, jsonld, `${cover(guideCover(g), "Guide · Phnom Penh", g.title, `${g.items.length} places · by the yummers team`)}
+<div class="in">${g.description ? `<p class="lead">${esc(g.description)}</p>` : ""}<ol class="items">${items}</ol></div>`);
 }
 
 function indexPage(found) {
     const description = "Lists of where to eat in Phnom Penh, made by the yummers team.";
     const jsonld = JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "Where to eat in Phnom Penh", description, url: `${SITE}/guides` });
-    const cards = found.map((g) => `<li class="card"><div><a class="name" href="/guides/${g.slug}">${esc(g.title)}</a><div class="meta">${g.items.length} places</div></div><span class="thumb">${img(coverOf(g.items[0]))}</span></li>`).join("");
+    const cards = found.map((g, i) => `<li><a class="cov" href="/guides/${g.slug}">${img(guideCover(g), 520, 650, i === 0)}<div class="txt"><div class="eyebrow">Guide · ${g.items.length} places</div><h2>${esc(g.title)}</h2></div></a></li>`).join("");
     return layout("Where to eat in Phnom Penh | yummers", description, "/guides", jsonld,
-        `<h1>Where to eat in Phnom Penh</h1>\n<p class="desc">${esc(description)}</p>\n<ul class="cards">${cards}</ul>`);
+        `<div class="in"><div class="ixh"><h1>Where to eat in Phnom Penh</h1><p class="lead">${found.length} guides from the yummers team, from Korean barbecue to rooftop bars.</p></div>\n<ul class="ixg">${cards}</ul></div>`);
 }
 
 // The team account's own public review of the place, and how many people liked it from public ratings.
@@ -184,30 +225,33 @@ async function placeFacts(g, id) {
 async function placePage(slug, all) {
     const g = all.find((x) => x.items.some((it) => it.slug === slug));
     if (!g) return null;
-    const it = g.items.find((x) => x.slug === slug), r = it.restaurants, d = it.d;
+    const it = g.items.find((x) => x.slug === slug), r = it.restaurants, d = it.d, name = nameOf(it);
     const { review, liked } = d.id ? await placeFacts(g, d.id) : { review: "", liked: 0 };
-    const path = `/places/${slug}`, cuisine = cuisineOf(r);
-    const description = firstSentence(review) || `${r.name}, ${cuisine ? `${cuisine.toLowerCase()} in ` : "in "}${r.district ? `${r.district}, ` : ""}Phnom Penh, picked by the yummers team for ${g.title}.`;
+    const path = `/places/${slug}`, cuisine = cuisineOf(r), fact = PLACES[d.id] || {};
+    const description = firstSentence(review) || `${name}, ${cuisine ? `${cuisine.toLowerCase()} in ` : "in "}${r.district ? `${r.district}, ` : ""}Phnom Penh, picked by the yummers team for ${g.title}.`;
     const inGuides = all.filter((x) => x.items.some((i) => i.slug === slug));
     const hours = (d.opening_hours?.weekday_text || []).map((l) => l.split(/: (.*)/s)).filter((p) => p[1]);
-    const where = d.latitude != null && d.longitude != null ? `${d.latitude},${d.longitude}` : `${r.name} Phnom Penh`;
+    const today = new Date().toLocaleDateString("en-US", { weekday: "long", timeZone: "Asia/Phnom_Penh" });
+    const where = d.latitude != null && d.longitude != null ? `${d.latitude},${d.longitude}` : `${name} Phnom Penh`;
     const jsonld = JSON.stringify({
-        "@context": "https://schema.org", "@type": "Restaurant", name: r.name, url: SITE + path, description,
+        "@context": "https://schema.org", "@type": "Restaurant", name, url: SITE + path, description,
         ...(cuisine && { servesCuisine: cuisine }),
         address: { "@type": "PostalAddress", ...(d.address && { streetAddress: d.address }), addressLocality: "Phnom Penh", addressCountry: "KH" },
         ...(d.latitude != null && { geo: { "@type": "GeoCoordinates", latitude: d.latitude, longitude: d.longitude } }),
     });
-    const body = `<p class="by"><a href="/guides">Guides</a> / <a href="/guides/${g.slug}">${esc(g.title)}</a></p>
-<h1>${esc(r.name)}</h1>
-<p class="by">${esc([cuisine, r.district].filter(Boolean).join(" · "))}</p>
-${coverOf(it) ? `<div class="pic">${img(coverOf(it), 800, 450)}</div>` : ""}
-${liked ? `<p class="by">${liked} ${liked === 1 ? "person" : "people"} liked it on yummers</p>` : ""}
-${review ? `<section class="panel"><h2>From the yummers team</h2><p class="wu">${esc(review)}</p></section>` : ""}
-${it.note ? `<p class="note">“${esc(it.note)}”</p>` : ""}
-<section class="panel"><h2>Find it</h2>${d.address ? `<p>${esc(d.address)}</p>` : ""}<a class="dir" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(where)}" rel="noopener">Directions</a></section>
-${hours.length ? `<section class="panel"><h2>Opening hours</h2><dl class="hrs">${hours.map(([day, h]) => `<div><dt>${esc(day)}</dt><dd>${esc(h)}</dd></div>`).join("")}</dl></section>` : ""}
-<section class="panel"><h2>In our guides</h2><ul>${inGuides.map((x) => `<li><a href="/guides/${x.slug}">${esc(x.title)}</a></li>`).join("")}</ul></section>`;
-    return layout(`${r.name}${r.district ? `, ${r.district}` : ""} | yummers`, description, path, jsonld, body);
+    const chips = [fact.kind, fact.price && `About ${fact.price} a person`, fact.when, liked && `${liked} ${liked === 1 ? "person" : "people"} liked it on yummers`].filter(Boolean);
+    const at = g.items.indexOf(it), more = [1, 2, 3].map((n) => g.items[(at + n) % g.items.length]).filter((x) => x !== it);
+    const body = `${cover(coverOf(it), metaOf(it), name, `In ${g.title}`)}
+<div class="in"><div class="pl">
+${it.note ? `<p class="lede">${esc(it.note)}</p>` : ""}
+${chips.length ? `<div class="glance">${chips.map((c) => `<span>${esc(c)}</span>`).join("")}</div>` : ""}
+${review ? `<section class="box"><h3>From the yummers team</h3><p class="wu">${esc(review)}</p></section>` : ""}
+<div class="facts"><section class="box"><h3>Find it</h3>${d.address ? `<div>${esc(d.address)}</div>` : ""}<a class="dir" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(where)}" rel="noopener">Directions</a></section>
+${hours.length ? `<section class="box"><h3>Opening hours</h3><dl class="hours">${hours.map(([day, h]) => { const c = day === today ? ' class="today"' : ""; return `<dt${c}>${esc(day)}</dt><dd${c}>${esc(h)}</dd>`; }).join("")}</dl></section>` : ""}
+<section class="box"><h3>In these guides</h3>${inGuides.map((x) => `<a class="pl-in" href="/guides/${x.slug}">${img(guideCover(x), 112, 112)}<div><b>${esc(x.title)}</b><div class="meta">${x.items.length} places</div></div></a>`).join("")}</section></div>
+<section class="more"><h3>More in ${esc(g.title)}</h3><ul class="more-grid">${more.map((x) => `<li><a href="/places/${x.slug}"><span class="ph">${img(coverOf(x), 400, 300)}</span><b>${esc(nameOf(x))}</b><span class="m">${esc(metaOf(x))}</span></a></li>`).join("")}</ul><a class="more-all" href="/guides/${g.slug}">See all ${g.items.length} places →</a></section>
+</div></div>`;
+    return layout(`${name}${r.district ? `, ${r.district}` : ""} | yummers`, description, path, jsonld, body);
 }
 
 const html = (body) => new Response(body, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=3600" } });
