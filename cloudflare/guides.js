@@ -24,7 +24,9 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "
 const slugify = (s) => s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 // Name plus area, so branches differ; decided by the data, not the position in a list, so it never moves.
 const placeSlug = (r) => slugify(`${r.name} ${r.district || ""}`).slice(0, 70).replace(/-+$/, "") || "place";
-const cuisineOf = (r) => (r.cuisine_type || []).find((c) => c !== "International") || (r.cuisine_type || [])[0];
+// The first cuisine tag that says something; "International" and friends are left out, so a place may have no kind.
+const VAGUE = ["International", "Asian", "Western", "Fusion", "Restaurant"];
+const cuisineOf = (r) => (r.cuisine_type || []).find((c) => !VAGUE.includes(c));
 // Google's "11:00 AM – 10:00 PM" as "11am – 10pm"; "Closed" and "Open 24 hours" pass through.
 export const shortHours = (h) => h
     .replace(/(\d{1,2})(?::(\d\d))?\s*([AP])M/g, (_, hr, min, ap) => `${hr}${min && min !== "00" ? `:${min}` : ""}${ap.toLowerCase()}m`)
@@ -41,6 +43,11 @@ export const cleanAddress = (a) => a
 // Google's place picture only: a person's photo, name or credit stays off these pages (spec criterion 8).
 const coverOf = (it) => (it.picture?.kind === "cover" && /^https:\/\//.test(it.picture.url) ? it.picture.url : null);
 const firstSentence = (t) => (t.split(/(?<=[.!?])\s/)[0] || "").slice(0, 300);
+// A meta description: whole sentences from the list, as many as fit in ~155 characters (the first always).
+const fit = (parts, max = 2) => { let out = ""; for (const s of parts.slice(0, max)) { if (out && out.length + s.length + 1 > 155) break; out = out ? `${out} ${s}` : s; } return out; };
+// "Open 11am – 10pm every day." when all seven days read the same, else nothing.
+const sameHours = (hours) => { const h = new Set(hours.map(([, t]) => shortHours(t))); return hours.length === 7 && h.size === 1 ? `${/^open/i.test([...h][0]) ? "" : "Open "}${[...h][0]} every day.` : ""; };
+const headline = (kind, area) => `${kind || "Restaurant"} in ${[area, "Phnom Penh"].filter(Boolean).join(", ")}.`;
 
 async function rest(path, init = {}) {
     const res = await fetch(`${SUPABASE}/rest/v1/${path}`, {
@@ -230,7 +237,7 @@ const cover = (photo, eyebrow, title, meta) => `<div class="cover">${img(photo, 
 
 function guidePage(g) {
     const path = `/guides/${g.slug}`;
-    const description = firstSentence(g.description) || `${g.title}, picked by the yummers team.`;
+    const description = fit(g.description.split(/(?<=[.!?])\s+/).filter(Boolean)) || `${g.title}, picked by the yummers team.`;
     const jsonld = JSON.stringify({
         "@context": "https://schema.org", "@type": "ItemList", name: g.title, description, url: SITE + path,
         itemListElement: g.items.map((it, i) => ({
@@ -266,15 +273,15 @@ async function placePage(slug, all) {
     if (!g) return null;
     const it = g.items.find((x) => x.slug === slug), r = it.restaurants, d = it.d, name = nameOf(it);
     const { review, liked } = d.id ? await placeFacts(g, d.id) : { review: "", liked: 0 };
-    const path = `/places/${slug}`, cuisine = cuisineOf(r), fact = PLACES[d.id] || {};
-    const description = firstSentence(review) || `${name}, ${cuisine ? `${cuisine.toLowerCase()} in ` : "in "}${r.district ? `${r.district}, ` : ""}Phnom Penh, picked by the yummers team for ${g.title}.`;
+    const path = `/places/${slug}`, fact = PLACES[d.id] || {}, kind = fact.kind || cuisineOf(r), area = d.neighbourhood || r.district;
     const inGuides = all.filter((x) => x.items.some((i) => i.slug === slug));
     const hours = (d.opening_hours?.weekday_text || []).map((l) => l.split(/: (.*)/s)).filter((p) => p[1]);
+    const description = firstSentence(review) || fit([headline(kind, area), sameHours(hours), `Picked by the yummers team for ${g.title}.`].filter(Boolean), 3);
     const today = new Date().toLocaleDateString("en-US", { weekday: "long", timeZone: "Asia/Phnom_Penh" });
     const where = d.latitude != null && d.longitude != null ? `${d.latitude},${d.longitude}` : `${name} Phnom Penh`;
     const jsonld = JSON.stringify({
         "@context": "https://schema.org", "@type": "Restaurant", name, url: SITE + path, description,
-        ...(cuisine && { servesCuisine: cuisine }),
+        ...(kind && { servesCuisine: kind }),
         address: { "@type": "PostalAddress", ...(d.address && { streetAddress: cleanAddress(d.address) }), addressLocality: "Phnom Penh", addressCountry: "KH" },
         ...(d.latitude != null && { geo: { "@type": "GeoCoordinates", latitude: d.latitude, longitude: d.longitude } }),
     });
@@ -290,7 +297,7 @@ ${hours.length ? `<section class="box"><h3>Opening hours</h3><dl class="hours">$
 <section class="box"><h3>In these guides</h3>${inGuides.map((x) => `<a class="pl-in" href="/guides/${x.slug}">${img(guideCover(x), 112, 112)}<div><b>${esc(x.title)}</b><div class="meta">${x.items.length} places</div></div></a>`).join("")}</section></div>
 <section class="more"><h3>More in ${esc(g.title)}</h3><ul class="more-grid">${more.map((x) => `<li><a href="/places/${x.slug}"><span class="ph">${img(coverOf(x), 400, 300)}</span><b>${esc(nameOf(x))}</b><span class="m">${esc(metaOf(x))}</span></a></li>`).join("")}</ul><a class="more-all" href="/guides/${g.slug}">See all ${g.items.length} places →</a></section>
 </div></div>`;
-    return layout(`${name}${r.district ? `, ${r.district}` : ""} | yummers`, description, path, jsonld, body);
+    return layout(`${name}${area ? `, ${area}` : ""} | yummers`, description, path, jsonld, body);
 }
 
 const html = (body) => new Response(body, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=3600" } });
@@ -401,9 +408,9 @@ async function placeShare(id) {
     const slug = slugify(p.name).slice(0, 60).replace(/-+$/, "") || "place";
     const path = `/p/${id}/${slug}`, canonical = item ? `/places/${item.slug}` : path;
     const hours = (p.opening_hours?.weekday_text || []).map((l) => l.split(/: (.*)/s)).filter((x) => x[1]);
+    const description = fit([headline(kind, area), sameHours(hours), inGuides.length && `In our guide: ${inGuides[0].title}.`, "See what people think on yummers."].filter(Boolean), 4);
     const today = new Date().toLocaleDateString("en-US", { weekday: "long", timeZone: "Asia/Phnom_Penh" });
     const where = p.latitude != null && p.longitude != null ? `${p.latitude},${p.longitude}` : `${name} Phnom Penh`;
-    const description = `${line ? line + " · " : ""}${sub}`;
     const jsonld = JSON.stringify({
         "@context": "https://schema.org", "@type": "Restaurant", name, url: SITE + canonical,
         ...(kind && { servesCuisine: kind }),
