@@ -48,12 +48,13 @@
     var error = form.querySelector(".signup-error");
     // The Melbourne page: an invite link's ?ref= goes along with the sign-up.
     if (form.elements.ref) form.elements.ref.value = new URLSearchParams(location.search).get("ref") || "";
-    // Melbourne: "Somewhere else" asks which suburb.
+    // Melbourne: "Somewhere else" and "Another city or state" ask for text.
     var other = form.querySelector(".signup-other");
     if (other) form.elements.suburb.addEventListener("change", function () {
-        var elsewhere = this.value === "Somewhere else in Melbourne";
-        other.hidden = !elsewhere;
-        form.elements.suburb_other.required = elsewhere;
+        var asks = this.value === "Somewhere else in Melbourne" || this.value === "Another city or state";
+        other.hidden = !asks;
+        form.elements.suburb_other.required = asks;
+        document.getElementById("signup-other-label").textContent = this.value === "Another city or state" ? "Which city?" : "Which suburb?";
     });
     form.addEventListener("submit", function (e) {
         e.preventDefault();

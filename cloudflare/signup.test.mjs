@@ -116,6 +116,7 @@ assert.equal((await call("POST", "/api/signup", signupForm("m1@example.com", mel
 const else_ = (other) => melb({ suburb: "Somewhere else in Melbourne", suburb_other: other });
 for (const bad of ["", "  ", "a".repeat(61), "<b>x</b>", "Preston2"])
     assert.equal((await call("POST", "/api/signup", signupForm("m1@example.com", else_(bad)))).status, 400);
+assert.equal((await call("POST", "/api/signup", signupForm("m1@example.com", melb({ suburb: "Another city or state" })))).status, 400);
 assert.equal(emails.length, before);
 
 // A valid sign-up (with a malformed ref, which is dropped) gets an English confirm email,
@@ -172,6 +173,12 @@ assert.equal((await call("POST", "/api/signup", signupForm("m5@example.com", els
 await confirmFrom(emails.length - 1);
 await Promise.all(waits);
 assert.equal(props.get("m5@example.com").suburb.value, "Elsewhere: Preston");
+
+// "Another city or state" is stored as "Outside: Sydney".
+assert.equal((await call("POST", "/api/signup", signupForm("m6@example.com", melb({ suburb: "Another city or state", suburb_other: "Sydney" })))).status, 204);
+await confirmFrom(emails.length - 1);
+await Promise.all(waits);
+assert.equal(props.get("m6@example.com").suburb.value, "Outside: Sydney");
 
 console.log("ok  melbourne waitlist: validation, ref, segment and properties, invite link, existing contact, old pending tokens");
 console.log("ok  beta sign-up: confirm link, once a day, welcome email, unsubscribe, expired links, Turnstile hostname");
