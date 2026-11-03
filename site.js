@@ -40,6 +40,18 @@
     }
 })();
 
+// Homepage: the form waits behind "I'm in Cambodia" (without this script it just shows).
+(function () {
+    var cambodia = document.getElementById("choose-cambodia");
+    var form = document.getElementById("signup");
+    if (!cambodia || !form) return;
+    form.hidden = true;
+    cambodia.addEventListener("click", function () {
+        form.hidden = false;
+        form.elements.email.focus();
+    });
+})();
+
 // Beta and Melbourne sign-up: sends the form to the Worker (/api/signup) and shows the
 // answer in place. The Turnstile bot check needs JavaScript anyway.
 (function () {
