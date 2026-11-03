@@ -10,7 +10,8 @@ const TEAM = "yummers";
 // shortcut: hand-kept map and a request-time scan of all guides to find a place, fine to ~20 guides
 // (Workers allow 50 subrequests, two per guide); then add a guide_slug column and a place slug table.
 export const GUIDES = {
-    "street-food-phnom-penh": "9tZNChF4",
+    "korean-restaurants-phnom-penh": "CFvYICHV",
+    "khmer-food-phnom-penh": "hn35pV5d",
 };
 
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
