@@ -45,6 +45,14 @@ const get = async (path) => { store.clear(); return worker.fetch(new Request("ht
 let r = await get("/guides/korean");
 let t = await r.text();
 assert.equal(r.status, 200);
+assert.equal(r.headers.get("Cache-Control"), "public, max-age=300", "browsers keep a guide five minutes");
+{ // The edge copy is keyed to the deployed version: a new version renders afresh.
+    const at = (v) => worker.fetch(new Request("https://yummersapp.com/guides/korean"), { CF_VERSION_METADATA: { id: v } }, { waitUntil(p) { return p; } });
+    store.clear(); await at("v1"); await new Promise((d) => setTimeout(d, 0));
+    assert.ok([...store.keys()].some((k) => k.endsWith("?v=v1")), "cached under v1");
+    await at("v2"); await new Promise((d) => setTimeout(d, 0));
+    assert.ok([...store.keys()].some((k) => k.endsWith("?v=v2")), "a new deploy gets its own copy");
+}
 for (const s of ["Korean restaurants in Phnom Penh | yummers", "Clean One", "Place 2 &amp; Co", "Order the 1 &lt;b&gt;", "Korean BBQ · BKK", "Korean · BKK", "Guide · Phnom Penh", "2 places · by the yummers team", ">01<", ">02<", '"name":"Clean One"', '"@type":"ItemList"', '"@type":"Restaurant"',
     'rel="canonical" href="https://yummersapp.com/guides/korean"', 'href="/places/place-1-co-bkk"', "https://lh3.googleusercontent.com/p1", 'href="/guides"']) assert.ok(t.includes(s), s);
 assert.ok(!t.includes("<b>"), "notes are escaped");

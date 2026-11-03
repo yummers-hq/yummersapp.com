@@ -514,7 +514,7 @@ async function route(request, env, ctx) {
     const list = url.pathname.match(/^\/l\/([0-9A-Za-z]{8})(?:\/[^/]*)?\/?$/);
     if (list && ["GET", "HEAD"].includes(request.method)) return sharedList(url, list[1]);
     if (/^\/(guides|places)(\/|$)/.test(url.pathname) && ["GET", "HEAD"].includes(request.method)) {
-        const page = await guides(url, ctx);
+        const page = await guides(url, ctx, env.CF_VERSION_METADATA?.id);
         if (page) return page;
     }
     const wantsMarkdown = (request.headers.get("Accept") || "").includes("text/markdown");

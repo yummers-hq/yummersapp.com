@@ -290,14 +290,18 @@ async function render(pathname) {
     }
 }
 
-export async function guides(url, ctx) {
+// The edge keeps a page for an hour, keyed to the deployed version so a deploy shows at once;
+// browsers keep it five minutes.
+export async function guides(url, ctx, version = "") {
     const path = url.pathname.replace(/\/$/, "");
-    const key = new Request(url.origin + path);
+    const key = new Request(url.origin + path + (version ? "?v=" + version : ""));
     const hit = await caches.default.match(key);
-    if (hit) return hit;
-    const res = await render(path);
-    if (res?.ok) ctx.waitUntil(caches.default.put(key, res.clone()));
-    return res;
+    const res = hit || await render(path);
+    if (!res?.ok) return res;
+    if (!hit) ctx.waitUntil(caches.default.put(key, res.clone()));
+    const out = new Response(res.body, res);
+    out.headers.set("Cache-Control", "public, max-age=300");
+    return out;
 }
 
 // The static sitemap plus every live guide and the places in them, so adding a guide is one line.
