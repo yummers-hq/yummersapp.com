@@ -9,6 +9,13 @@
         document.querySelectorAll(".theme-toggle").forEach(function (b) { b.setAttribute("aria-pressed", theme === "dark"); });
         // Screenshots with a dark version swap to it; dark files download only when needed.
         document.querySelectorAll("img[data-dark]").forEach(function (img) { img.src = img.dataset[theme]; });
+        // The hero clip swaps the same way, its poster being the clip's first frame (same name, .webp).
+        // With reduced motion it stays on that still.
+        document.querySelectorAll("video[data-dark]").forEach(function (v) {
+            if (matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); v.pause(); }
+            if (!v.src.endsWith(v.dataset[theme])) v.src = v.dataset[theme];
+            v.poster = v.dataset[theme].replace(".mp4", ".webp");
+        });
     }
     var saved;
     try { saved = localStorage.getItem(KEY); } catch (e) { }
