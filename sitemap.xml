@@ -20,4 +20,22 @@
     <loc>https://yummersapp.com/contact</loc>
     <lastmod>2026-10-22</lastmod>
   </url>
+<!-- blog -->
+  <url>
+    <loc>https://yummersapp.com/blog</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://yummersapp.com/blog/what-to-order-korean-bbq-phnom-penh</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://yummersapp.com/blog/khmer-dishes-to-try-phnom-penh</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://yummersapp.com/blog/street-food-phnom-penh-for-beginners</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+<!-- /blog -->
 </urlset>
