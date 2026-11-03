@@ -110,13 +110,6 @@ svg {
     line-height: 1
 }
 
-/* The " | Restaurant Lists App" after the name: dropped where it would wrap. */
-@media (max-width: 1060px) {
-    .brand-tag {
-        display: none
-    }
-}
-
 .brand-dot {
     color: var(--orange)
 }

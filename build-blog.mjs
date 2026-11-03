@@ -74,7 +74,7 @@ function page({ title, description, path, type, jsonld, main }) {
 <script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, "\\u003c")}</script>
 </head>
 <body><a class="skip" href="#main">Skip to content</a>
-<header class="header wrap"><a href="/" class="brand" aria-label="yummers home"><img class="brand-image" src="/assets/raccoon.png" alt="" width="58" height="32"><span class="brand-name">yummers<span class="brand-tag"> | Restaurant Lists App</span></span></a>
+<header class="header wrap"><a href="/" class="brand" aria-label="yummers home"><img class="brand-image" src="/assets/raccoon.png" alt="" width="58" height="32"><span class="brand-name">yummers</span></a>
 ${NAV}</header>
 <main id="main" class="blog wrap">
 ${main}
