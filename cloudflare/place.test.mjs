@@ -47,7 +47,10 @@ assert.ok(!t.includes("Pho <b>") && !t.includes("In these guides") && !t.include
 assert.equal(t.match(/class="today"/g).length, 2, "today's row is bold");
 assert.equal(meta(t, "twitter:card"), "summary_large_image");
 assert.equal(meta(t, "og:title"), "Pho &lt;b&gt; &amp; Co, BKK1 | yummers");
-assert.equal(meta(t, "og:description"), "Vietnamese · BKK1 · on yummers");
+const d1 = "Vietnamese in BKK1, Phnom Penh. Open 9am – 9pm every day. See what people think on yummers.";
+assert.equal(meta(t, "og:description"), d1);
+assert.equal(meta(t, "twitter:description"), d1);
+assert.equal(meta(t, "description"), d1);
 assert.equal(meta(t, "og:image"), "https://lh3.googleusercontent.com/pho");
 assert.equal(meta(t, "twitter:image"), "https://lh3.googleusercontent.com/pho");
 JSON.parse(t.match(/ld\+json">(.*?)<\/script>/)[1].replace(/\\u003c/g, "<"));
@@ -56,7 +59,7 @@ JSON.parse(t.match(/ld\+json">(.*?)<\/script>/)[1].replace(/\\u003c/g, "<"));
 t = await (await get("/p/BBBBBBBB/place-1-co")).text();
 for (const s of ["Clean One", "Korean BBQ · BKK1", "75%", "liked it", "from 12 ratings on yummers", "In 1 yummers guide", "In these guides", 'href="/guides/korean"', "1 places",
     'rel="canonical" href="https://yummersapp.com/places/place-1-co-bkk"', "Photo by @someone", "/storage/v1/object/public/photos/uid/pid.jpg"]) assert.ok(t.includes(s), s);
-assert.equal(meta(t, "og:description"), "Korean BBQ · BKK1 · in 1 yummers guide");
+assert.equal(meta(t, "og:description"), "Korean BBQ in BKK1, Phnom Penh. Open 9am – 9pm every day. In our guide: Korean. See what people think on yummers.");
 assert.equal(meta(t, "og:url"), "https://yummersapp.com/places/place-1-co-bkk");
 places.BBBBBBBB.liked = 3; places.BBBBBBBB.disliked = 1;
 assert.ok((await (await get("/p/BBBBBBBB/place-1-co")).text()).includes("Not rated on yummers yet"), "under 5 ratings");
@@ -104,3 +107,13 @@ mode = "nocolumn";
 t = await (await get("/sitemap-places.xml")).text();
 assert.ok(t.includes("<urlset") && !t.includes("<loc>"));
 console.log("place ok");
+
+// Vague cuisine tags are skipped; with nothing left there is no kind, chip or stray separator
+places.AAAAAAAA = { ...base, cuisine_type: ["International", "Asian", "Thai"], opening_hours: { weekday_text: hours.weekday_text.map((l, i) => i ? l : "Monday: 10:00 AM – 6:00 PM") } };
+t = await (await get("/p/AAAAAAAA/pho-b-co")).text();
+assert.equal(meta(t, "og:description"), "Thai in BKK1, Phnom Penh. See what people think on yummers.", "first useful tag; hours differ, so left out");
+assert.ok(t.includes(">Thai · BKK1<") || t.includes("Thai · BKK1"));
+places.AAAAAAAA = { ...base, cuisine_type: ["International"], neighbourhood: null, district: null };
+t = await (await get("/p/AAAAAAAA/pho-b-co")).text();
+assert.equal(meta(t, "og:description"), "Restaurant in Phnom Penh. Open 9am – 9pm every day. See what people think on yummers.");
+assert.ok(!t.includes("International") && !t.includes("> · ") && !t.includes(" ·  ") && !/·\s*</.test(t.replace(/<script[\s\S]*?<\/script>/g, "")), "no kind, no stray separator");

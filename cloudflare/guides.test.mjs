@@ -60,11 +60,14 @@ assert.ok(!t.includes("Place 1 &amp; Co"), "the clean name replaces the database
 assert.ok(t.indexOf("lh3.googleusercontent.com/p2") < t.indexOf("lh3.googleusercontent.com/p1"), "the guide cover is the chosen place's photo, first on the page");
 assert.ok(!t.includes("/photos/") && !t.includes("someone"), "a person's photo and name stay off");
 
+assert.ok(t.includes('<meta name="description" content="Korean food is easy to find here. Start with the BBQ.">'), "two sentences");
+{ const d = lists.KOREAN01.description; lists.KOREAN01.description = `Short one. ${"Long second sentence. ".repeat(10)}`;
+  assert.ok((await (await get("/guides/korean")).text()).includes('content="Short one. Long second sentence.">'), "at most two sentences"); lists.KOREAN01.description = d; }
 // Restaurant page
 r = await get("/places/place-1-co-bkk");
 t = await r.text();
 assert.equal(r.status, 200);
-for (const s of ["Clean One, BKK | yummers", "Korean BBQ", "About $12–20 a person", "<span>Dinner</span>", "In Korean restaurants in Phnom Penh", "More in Korean restaurants in Phnom Penh", "See all 2 places", "From the yummers team", "Get the short rib &lt;script&gt;. Worth the queue.", "7 people liked it on yummers", "1 Street &lt;1&gt;",
+for (const s of ["Clean One, BKK1 | yummers", "Korean BBQ", "About $12–20 a person", "<span>Dinner</span>", "In Korean restaurants in Phnom Penh", "More in Korean restaurants in Phnom Penh", "See all 2 places", "From the yummers team", "Get the short rib &lt;script&gt;. Worth the queue.", "7 people liked it on yummers", "1 Street &lt;1&gt;",
     "Monday", "9am – 9pm", "query=11.5%2C104.9", '"@type":"Restaurant"', 'href="/guides/korean"', 'href="/guides/bbq"', 'rel="canonical" href="https://yummersapp.com/places/place-1-co-bkk"', 'content="Get the short rib &lt;script&gt;.']) assert.ok(t.includes(s), s);
 assert.ok(!t.includes("<script>"), "the review is escaped");
 const today = new Date().toLocaleDateString("en-US", { weekday: "long", timeZone: "Asia/Phnom_Penh" });
@@ -76,7 +79,11 @@ review = ""; liked = "*/0";
 t = await (await get("/places/place-2-co-bkk")).text();
 assert.ok(!t.includes("From the yummers team") && !t.includes("liked it on yummers"), "no review or likes: the blocks are left out");
 assert.ok(!t.includes("About $") && !t.includes("<span>Dinner</span>"), "no facts for a place missing from the map: no chips invented");
-assert.ok(t.includes("picked by the yummers team for Korean restaurants in Phnom Penh"));
+assert.ok(t.includes("Korean in BKK, Phnom Penh. Open 9am – 9pm every day. Picked by the yummers team for Korean restaurants in Phnom Penh."), "kind skips International, area, same hours every day, guide");
+assert.ok(t.includes("<title>Place 2 &amp; Co, BKK | yummers</title>"));
+lists.KOREAN01.list_restaurants[1].restaurants.cuisine_type = ["International", "Asian"];
+t = await (await get("/places/place-2-co-bkk")).text();
+assert.ok(t.includes('content="Restaurant in BKK, Phnom Penh.') && !t.includes("International") && !t.includes("Asian") && !t.includes("· BKK<") && !t.includes("> · "), "only vague tags: no kind, no stray separator");
 assert.ok(!t.includes("someone") && !t.includes("/photos/"), "a person's photo stays off");
 
 // Hours and addresses (real beta values)
