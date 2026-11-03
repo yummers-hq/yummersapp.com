@@ -229,7 +229,7 @@ function language(lang) {
 async function signup(request, env) {
     const form = await request.formData().catch(() => null);
     const email = String(form?.get("email") || "").trim().toLowerCase();
-    if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (email.length > 254 || !/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email)) {
         return new Response(null, { status: 400 });
     }
 
@@ -261,6 +261,7 @@ async function signup(request, env) {
     // answer is the same either way, so it doesn't show who has signed up.
     const sent = `sent:${melbourne ? "melbourne:" : ""}${email}`;
     if (await env.SIGNUPS.get(sent)) return new Response(null, { status: 204 });
+    await env.SIGNUPS.put(sent, "1", { expirationTtl: 86400 });
     const token = crypto.randomUUID();
     const pending = { email, ...(melbourne && { list: "melbourne", suburb, ref: CODE.test(ref) ? ref : "" }) };
     await env.SIGNUPS.put(`confirm:${token}`, JSON.stringify(pending), { expirationTtl: 7 * 86400 });
@@ -276,14 +277,16 @@ async function signup(request, env) {
         html: confirmHtml(note(`<a href="${link}" style="color:#A83618;">${t.verifyButton}</a>`), lang),
         text: confirmText(note(`${t.verifyButton}: ${link}`)),
     });
-    if (!res.ok) return new Response(null, { status: 502 });
-    await env.SIGNUPS.put(sent, "1", { expirationTtl: 86400 });
+    if (!res.ok) {
+        await env.SIGNUPS.delete(sent); // a failed send mustn't lock the person out for a day
+        return new Response(null, { status: 502 });
+    }
     return new Response(null, { status: 204 });
 }
 
 // The confirm link. Like unsubscribe(), opening it (GET) only asks, because mail
 // scanners open links on their own; the button POSTs, which joins the list.
-// Pressing it again says the same until the link expires.
+// The link works once: after joining it is deleted, so pressing it again says it expired.
 async function confirm(request, env, ctx, url) {
     const { t, lang } = language(url.searchParams.get("lang"));
     const token = url.searchParams.get("token") || "";
@@ -296,6 +299,7 @@ async function confirm(request, env, ctx, url) {
     if (request.method !== "POST") return page(s.lang, s.t.joinTitle, s.t.joinText, s.t.verifyButton);
     const code = await join(env, ctx, pending, s.t, s.lang);
     if (!code) return new Response(null, { status: 502 });
+    await env.SIGNUPS.delete(`confirm:${token}`);
     return page(s.lang, s.t.joinedTitle, s.t.joinedText, null, m ? inviteBlock(s.t, code) : "");
 }
 
@@ -310,6 +314,7 @@ async function join(env, ctx, { email, list, suburb, ref }, t, lang) {
     // Resend's create also answers OK for an existing contact (same id), so look the
     // address up first: an existing one is only added to the segment, and not emailed.
     const found = await resendApi(env, "GET", `/contacts/${to}`);
+    if (!found.ok && found.status !== 404) return false;
     const exists = found.ok;
     // An existing contact keeps the code (and inviter) it already has.
     const had = m && exists ? (await found.json()).properties?.invite_code?.value : null;
