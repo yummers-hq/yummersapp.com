@@ -1390,3 +1390,16 @@ html:lang(fr) .footer-links {
 :root[data-theme="dark"] .footer-follow img {
     filter: invert(1)
 }
+
+.invited {
+    display: inline-block;
+    margin: 0 0 14px;
+    padding: 6px 14px;
+    border: 1.5px solid var(--accent);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 600
+}
+
+.invited[hidden] { display: none }
