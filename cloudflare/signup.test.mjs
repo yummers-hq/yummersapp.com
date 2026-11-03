@@ -6,15 +6,15 @@ import worker from "./worker.js";
 const kv = new Map();
 const env = {
     TURNSTILE_SECRET: "x", RESEND_API_KEY: "x", SEGMENT_ID: "seg", MELBOURNE_SEGMENT_ID: "melb",
-    SIGNUPS: { get: async (k) => kv.get(k) ?? null, put: async (k, v) => kv.set(k, v) },
+    SIGNUPS: { get: async (k) => kv.get(k) ?? null, put: async (k, v) => kv.set(k, v), delete: async (k) => kv.delete(k) },
 };
 const emails = [], contacts = new Map(), deleted = [], props = new Map(), segments = new Map(), legacy = new Set();
-let hostname = "yummersapp.com";
+let hostname = "yummersapp.com", failEmail = false, lookupStatus = 0;
 globalThis.fetch = async (url, init) => {
     url = String(url);
     if (url.includes("turnstile")) return Response.json({ success: true, hostname });
     const body = init.body && JSON.parse(init.body);
-    if (url.endsWith("/emails")) { emails.push(body); return Response.json({ id: "e" }); }
+    if (url.endsWith("/emails")) { if (failEmail) return new Response(null, { status: 500 }); emails.push(body); return Response.json({ id: "e" }); }
     // Like Resend, creating an existing contact answers OK with the same id.
     if (url.endsWith("/contacts")) {
         if (!contacts.has(body.email)) {
@@ -25,6 +25,7 @@ globalThis.fetch = async (url, init) => {
         return Response.json({ id: contacts.get(body.email) });
     }
     if (init.method === "GET") {
+        if (lookupStatus) return new Response(null, { status: lookupStatus });
         const email = decodeURIComponent(url.split("/").pop());
         const id = contacts.get(email);
         return id ? Response.json({ id, properties: props.get(email) }) : new Response(null, { status: 404 });
@@ -80,8 +81,8 @@ assert.equal(emails[1].subject, "Merci d'avoir rejoint la bêta yummers");
 const unsub = emails[1].text.match(/https:\/\/yummersapp\.com(\/api\/unsubscribe\?\S+)/)[1];
 assert.equal(unsub, `/api/unsubscribe?id=${contacts.get("sophea@example.com")}&lang=fr`);
 
-// Pressing it again doesn't send another welcome note.
-assert.equal((await call("POST", link.replace("https://yummersapp.com", ""))).status, 200);
+// The link works once: pressing it again says it expired and sends no second welcome note.
+assert.match(await (await call("POST", link.replace("https://yummersapp.com", ""))).text(), /Ce lien a expiré|expired/);
 await Promise.all(waits);
 assert.equal(emails.length, 2);
 
@@ -96,10 +97,31 @@ const bad = await call("POST", `/api/confirm?token=${crypto.randomUUID()}&lang=e
 assert.match(await bad.text(), /This link has expired/);
 assert.match(await (await call("GET", "/api/confirm?token=nope")).text(), /This link has expired/);
 
+// Only a plain address is accepted.
+assert.equal((await call("POST", "/api/signup", signupForm("a<v@x.com>"))).status, 400);
+
+// A failed confirm email leaves no daily-limit key, so the person can try again.
+failEmail = true;
+assert.equal((await call("POST", "/api/signup", signupForm("retry@example.com"))).status, 502);
+assert.equal(kv.has("sent:retry@example.com"), false);
+failEmail = false;
+assert.equal((await call("POST", "/api/signup", signupForm("retry@example.com"))).status, 204);
+assert.equal(kv.has("sent:retry@example.com"), true);
+
+// A lookup that fails for any reason but 404 is not a new contact: 502, no welcome email.
+const mailed = emails.length;
+const link2 = emails.at(-1).text.match(/\/api\/confirm\?\S+/)[0];
+lookupStatus = 429;
+assert.equal((await call("POST", link2)).status, 502);
+lookupStatus = 0;
+await Promise.all(waits);
+assert.equal(emails.length, mailed);
+assert.equal(contacts.has("retry@example.com"), false);
+
 // A Turnstile pass from another site is refused.
 hostname = "evil.example";
 assert.equal((await call("POST", "/api/signup", signupForm("dara@example.com"))).status, 403);
-assert.equal(emails.length, 2);
+assert.equal(emails.length, 3);
 
 hostname = "yummersapp.com";
 const melb = (extra) => ({ list: "melbourne", suburb: "Footscray", adult: "yes", ...extra });
