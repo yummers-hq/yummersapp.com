@@ -124,11 +124,11 @@ const CONFIRM = {
 // The Melbourne waitlist (yummers#786): English only, and its own segment. Its
 // strings replace the beta's where they differ; the rest (leave*, left*, expired*,
 // verifyButton, regards, role) are shared.
-// Options that ask for free text, and the prefix each is stored under.
-const OTHER = { "Somewhere else in Melbourne": "Elsewhere", "Another city or state": "Outside" };
+const ELSEWHERE = "Somewhere else in Melbourne";
+const STATES = ["Regional Victoria", "New South Wales", "Queensland", "South Australia", "Western Australia", "Tasmania", "Australian Capital Territory", "Northern Territory"];
 const MELBOURNE = {
     suburbs: ["CBD", "Carlton", "Fitzroy", "Collingwood", "Richmond", "Brunswick", "South Yarra", "Footscray", "Sunshine",
-        "St Albans", "Springvale", "Noble Park", "Dandenong", "Clayton", "Box Hill", ...Object.keys(OTHER)],
+        "St Albans", "Springvale", "Noble Park", "Dandenong", "Clayton", "Box Hill", ELSEWHERE, ...STATES],
     subject: "You're on the yummers Melbourne list",
     note: [
         "Hi,",
@@ -235,10 +235,10 @@ async function signup(request, env) {
     let suburb = String(form.get("suburb") || "");
     // The Melbourne form's extra fields are checked here, not trusted from the page.
     if (melbourne && (!MELBOURNE.suburbs.includes(suburb) || !form.get("adult"))) return new Response(null, { status: 400 });
-    if (melbourne && OTHER[suburb]) {
+    if (melbourne && suburb === ELSEWHERE) {
         const other = String(form.get("suburb_other") || "").trim();
         if (!/^[\p{L} '’.-]{1,60}$/u.test(other)) return new Response(null, { status: 400 });
-        suburb = `${OTHER[suburb]}: ${other}`;
+        suburb = `Elsewhere: ${other}`;
     }
     // A malformed ref is dropped, so the sign-up still goes through.
     const ref = String(form.get("ref") || "");
