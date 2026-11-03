@@ -59,7 +59,11 @@
     if (!form) return;
     var error = form.querySelector(".signup-error");
     // The Melbourne page: an invite link's ?ref= goes along with the sign-up.
-    if (form.elements.ref) form.elements.ref.value = new URLSearchParams(location.search).get("ref") || "";
+    var ref = new URLSearchParams(location.search).get("ref") || "";
+    if (form.elements.ref && /^[a-z0-9]{8}$/.test(ref)) {
+        form.elements.ref.value = ref;
+        document.getElementById("invited").hidden = false;
+    }
     // Melbourne: "Somewhere else" asks which suburb.
     var other = form.querySelector(".signup-other");
     if (other) form.elements.suburb.addEventListener("change", function () {
