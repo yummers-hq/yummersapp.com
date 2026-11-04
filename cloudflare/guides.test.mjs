@@ -112,7 +112,16 @@ assert.ok(t.includes("/places/place-1-co-bkk") && t.includes("<loc>https://yumme
 
 // Beta down: 503, never 404
 down = true;
-assert.equal((await get("/guides/korean")).status, 503);
+const res503 = await get("/guides/korean");
+const page503 = await res503.text();
+assert.equal(res503.status, 503);
+assert.equal(res503.headers.get("Retry-After"), "60");
+assert.equal(res503.headers.get("Cache-Control"), "no-store");
+assert.ok(res503.headers.get("Content-Security-Policy").includes("default-src"));
+assert.ok(page503.includes("We'll be right back") && page503.includes("Our restaurant data is taking a short break. Try again in a minute."));
+assert.ok(page503.includes('class="header wrap"') && page503.includes('class="site-footer wrap"'), "the site's header and footer");
+assert.ok(page503.includes('href="/guides/korean">Try again') && page503.includes('href="/blog"'), "reloads the same address, links the blog");
+assert.ok(!/<script(?![^>]*\bsrc=|[^>]*ld\+json)/.test(page503), "no inline script");
 assert.equal((await get("/places/place-1-co-bkk")).status, 503);
 for (const [u, ok] of [["https://lh3.googleusercontent.com/p/x=w800", true], ["https://lh5.googleusercontent.com/grass-cs/x", true], ["https://uobskavqhilnqakbdutt.supabase.co/storage/v1/object/public/photos/a.jpg", true],
     ["https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=w800-h600-k-no", false], ["http://lh3.googleusercontent.com/x", false], ["https://evil.example/googleusercontent.com/x", false], [null, false]]) assert.equal(!!usable(u), ok, String(u));
