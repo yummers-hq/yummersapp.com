@@ -46,9 +46,20 @@
     var form = document.getElementById("signup");
     if (!cambodia || !form) return;
     form.hidden = true;
+    // Turnstile loads only now: its frame logs CSP errors under Cloudflare's own policy (#132),
+    // so visitors who never open the form never see them. Explicit render, since inline script is banned.
     cambodia.addEventListener("click", function () {
         form.hidden = false;
         form.elements.email.focus();
+        var box = form.querySelector(".cf-turnstile");
+        if (box.dataset.loading) return;
+        box.dataset.loading = "1";
+        var api = document.createElement("script");
+        api.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+        api.onload = function () {
+            window.turnstile.render(box, { sitekey: box.dataset.sitekey, size: "flexible", theme: "auto", appearance: "always" });
+        };
+        document.head.appendChild(api);
     });
 })();
 
