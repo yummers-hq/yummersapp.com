@@ -977,7 +977,7 @@ html {
 /* Rows of one or two phones keep the three-phone size. */
 @media (min-width: 701px) {
     .screens-2 { grid-template-columns: repeat(2, 1fr); width: 67%; }
-    .screens-1 { grid-template-columns: 1fr; width: 33%; }
+    .screens-1 { grid-template-columns: 1fr; width: 33%; justify-self: center; }
 }
 /* Each section's text eases up as it scrolls into view. It rests fully visible, so
    without scroll-driven animations, or with reduced motion, nothing moves or hides. */
