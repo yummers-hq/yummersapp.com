@@ -1,6 +1,7 @@
 // A shared list's link carries its own preview tags; a private or missing list gets the generic card, same status.
 // Usage: node cloudflare/list.test.mjs
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import worker from "./worker.js";
 
 const PAGE = '<html><head><title>A list on yummers</title>\n<meta name="description" content="generic">\n</head><body></body></html>';
@@ -64,3 +65,8 @@ console.log("list: ok");
 const fav = await get("/favicon.ico");
 assert.equal(fav.status, 301);
 assert.equal(fav.headers.get("Location"), "https://yummersapp.com/assets/favicon-192.png");
+
+// The dead-list page (404.html + share.js): the message shows with two ways on, whether the list is missing or the lookup failed.
+const dead = readFileSync(new URL("../404.html", import.meta.url), "utf8"), draw = readFileSync(new URL("../share.js", import.meta.url), "utf8");
+assert.ok(dead.includes('<a class="button" href="/guides">See what\'s good in Phnom Penh</a>') && dead.includes('href="/#launch">Join the iPhone beta</a>'));
+assert.ok(draw.includes('$("ways").hidden = false') && draw.includes("private or doesn't exist") && draw.includes("Couldn't load this list"));

@@ -109,6 +109,9 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 <link rel="stylesheet" href="/style.css">
 <style>
 .g{padding-bottom:72px}
+.out{padding-top:56px}.out h1{font-size:clamp(28px,8vw,44px)}
+.acts{display:flex;flex-wrap:wrap;gap:0 14px}.acts .button{margin-top:24px}
+.button-outline{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}.button-outline:hover{background:var(--accent);color:var(--cream);box-shadow:none}
 .in{max-width:1040px;margin:0 auto;padding-inline:16px}
 .g h1{font-weight:700;letter-spacing:-.02em}.g h2,.g h3,.g h4{letter-spacing:normal}
 .cover{position:relative;aspect-ratio:4/3;background:var(--panel);color:#fffaf2}
@@ -305,6 +308,13 @@ ${hours.length ? `<section class="box"><h2>Opening hours</h2><dl class="hours">$
     return layout(`${name}${area ? `, ${area}` : ""} | yummers`, description, path, jsonld, body);
 }
 
+// Beta unreachable: the site's shell, a way to retry and a way on that needs no data. Never cached.
+export const outage = (path) => new Response(layout("We'll be right back | yummers", "Our restaurant data is taking a short break.", path, "{}", `<div class="in out"><h1>We'll be right back</h1>
+<p class="lead">Our restaurant data is taking a short break. Try again in a minute.</p>
+<p class="acts"><a class="button" href="${esc(path)}">Try again</a><a class="button button-outline" href="/blog">Read the blog</a></p></div>`), {
+    status: 503, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", "Retry-After": "60" },
+});
+
 const html = (body) => new Response(body, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=3600" } });
 
 // A Response for a guide or place address, or null to let the site answer (its 404 page).
@@ -321,7 +331,7 @@ async function render(pathname) {
         const page = pathname.startsWith("/places/") && await placePage(pathname.slice("/places/".length), all);
         return page ? html(page) : null;
     } catch {
-        return new Response("Guides are unavailable right now. Try again in a minute.", { status: 503, headers: { "Retry-After": "60" } });
+        return outage(pathname);
     }
 }
 
@@ -463,6 +473,6 @@ export async function places(url, ctx, version = "") {
         res.headers.delete("X-Slug");
         return slug === want ? res : Response.redirect(`${SITE}/p/${id}/${want}`, 301);
     } catch {
-        return new Response("This page is unavailable right now. Try again in a minute.", { status: 503, headers: { "Retry-After": "60" } });
+        return outage(url.pathname);
     }
 }

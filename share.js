@@ -44,7 +44,7 @@
   }
   function show(title, message) {
     $("title").textContent = title; document.title = title + " · yummers";
-    if (message) { $("state").textContent = message; $("state").hidden = false; }
+    if (message) { $("state").textContent = message; $("state").hidden = false; $("ways").hidden = false; }
   }
   var m = /^\/l\/([0-9A-Za-z]{8})(?:\/[^/]*)?\/?$/.exec(location.pathname);
   if (!m) { show("Page not found", "That page doesn't exist. Head back to the home page."); return; }
