@@ -52,7 +52,8 @@
         form.hidden = false;
         form.elements.email.focus();
         var box = form.querySelector(".cf-turnstile");
-        if (box.firstChild) return;
+        if (box.dataset.loading) return;
+        box.dataset.loading = "1";
         var api = document.createElement("script");
         api.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
         api.onload = function () {
