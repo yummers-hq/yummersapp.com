@@ -899,8 +899,10 @@ html {
    and side buttons. cqw is the phone's width, so every size matches. */
 .device-figure,
 .onboarding-screens figure,
+.steps .shots figure,
 .peek-duo figure { container-type: inline-size; isolation: isolate; }
 .onboarding-screens figure,
+.steps .shots figure,
 .peek-duo figure { position: relative; }
 .preview-device,
 .screen-link {
@@ -942,6 +944,7 @@ html {
    button plus three copies of it as shadows, tucked behind the frame. */
 .device-figure::before,
 .onboarding-screens figure::before,
+.steps .shots figure::before,
 .peek-duo figure::before {
     content: "";
     position: absolute;
@@ -1699,3 +1702,11 @@ html:lang(km) .onboarding h2 {
 .steps h3 { font-family: Fraunces, 'Noto Serif Khmer', Georgia, serif; font-weight: 600; letter-spacing: -.02em }
 .steps-help { padding-left: 22px; line-height: 1.7; font-size: 17px; max-width: 65ch }
 .steps-help li { margin-top: 12px }
+/* Help page: app screenshots under a step (reuses the homepage phone frame). */
+.steps .shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 20px; max-width: 560px }
+.steps .shots.one { grid-template-columns: 1fr; max-width: 190px }
+.steps figcaption { margin-top: 12px; font-size: 13px; color: var(--muted); text-align: center }
+@media (max-width: 700px) {
+    .steps .shots:not(.one) { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 56%; overflow-x: auto; scroll-snap-type: x mandatory; padding: 8px 12px 12px }
+    .steps .shots figure { scroll-snap-align: start }
+}
