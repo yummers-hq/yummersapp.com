@@ -135,7 +135,10 @@ const MELBOURNE = {
     note: [
         "Hi,",
         "Thanks for joining the yummers Melbourne list. I'm Sovithyea, one of a team of seven building yummers: an app to rate the places you've eaten, keep lists of where to go next, and see where your friends are eating.",
-        "We're starting in Phnom Penh, and Melbourne is next. We'll email you when there's news. The more people who ask for it, the sooner it comes.",
+        // The owner's CBD update of 5 Nov (yummers D139), so everyone who joins gets it.
+        "Melbourne starts with the CBD. Nearly 1,000 CBD places are in the app now: ramen and dumplings, Korean BBQ, laneway cafés, rooftop bars and the old favourites. We picked them by hand, kept only well-rated ones, and took out anything that isn't really a place to eat or drink.",
+        "Other suburbs are coming next: Carlton, Southbank, Box Hill, Springvale and the rest. The suburbs where the most people join go first.",
+        "We'll invite the first people from this list to try it on iPhone soon. If you've got a CBD spot we must have, just reply and let me know!",
     ],
     verifySubject: "Confirm your email for the yummers Melbourne list",
     verifyNote: [
@@ -148,6 +151,9 @@ const MELBOURNE = {
     joinedText: "We'll write when there's news. Want it here sooner? Send your invite link to friends who'd use it.",
     invite: "Want yummers in Melbourne sooner? Send friends your invite link:",
     share: "Share my invite link",
+    oneTapTitle: "Adding you to the Melbourne list…",
+    oneTapText: "One moment. If nothing happens, press Join.",
+    oneTapButton: "Join",
 };
 
 const NAME = "Sovithyea Prach";
@@ -302,6 +308,23 @@ async function confirm(request, env, ctx, url) {
     if (!code) return new Response(null, { status: 502 });
     await env.SIGNUPS.delete(`confirm:${token}`);
     return page(s.lang, s.t.joinedTitle, s.t.joinedText, null, m ? inviteBlock(s.t, code) : "");
+}
+
+// The one-tap join for people already on our lists (#201): the email's link carries their Resend
+// contact id, the key the unsubscribe link already trusts, so there's no form, no suburb (owner,
+// 5 Nov) and no confirm email. Opening it submits its own Join button at once, so a person lands on
+// "You're on the Melbourne list!" (owner, 5 Nov); mail scanners open links but don't run scripts, so
+// they stop here and join nobody. Without scripts, the person presses Join.
+async function joinMelbourne(request, env, ctx, url) {
+    const { t, lang } = melbourneStrings();
+    const id = url.searchParams.get("id") || "";
+    if (!UUID.test(id)) return page(lang, t.expiredTitle, t.expiredText);
+    if (request.method !== "POST") return page(lang, t.oneTapTitle, t.oneTapText, t.oneTapButton, `<script src="/autosubmit.js" defer></script>`);
+    const found = await resendApi(env, "GET", `/contacts/${id}`);
+    if (!found.ok) return found.status === 404 ? page(lang, t.expiredTitle, t.expiredText) : new Response(null, { status: 502 });
+    const code = await join(env, ctx, { email: (await found.json()).email, list: "melbourne" }, t, lang);
+    if (!code) return new Response(null, { status: 502 });
+    return page(lang, t.joinedTitle, t.joinedText, null, inviteBlock(t, code));
 }
 
 // Saves a confirmed email as a Resend contact in the beta sign-up segment (or the
@@ -504,6 +527,7 @@ async function route(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/signup" && request.method === "POST") return signup(request, env);
     if (url.pathname === "/api/confirm") return confirm(request, env, ctx, url);
+    if (url.pathname === "/api/join-melbourne") return joinMelbourne(request, env, ctx, url);
     if (url.pathname === "/api/unsubscribe") return unsubscribe(request, env, url);
     // Browsers ask for /favicon.ico whatever the pages say; the tab icon is the 192 px one.
     if (url.pathname === "/favicon.ico") return Response.redirect("https://yummersapp.com/assets/favicon-192.png", 301);
