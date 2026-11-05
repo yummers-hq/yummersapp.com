@@ -135,7 +135,10 @@ const MELBOURNE = {
     note: [
         "Hi,",
         "Thanks for joining the yummers Melbourne list. I'm Sovithyea, one of a team of seven building yummers: an app to rate the places you've eaten, keep lists of where to go next, and see where your friends are eating.",
-        "We're starting in Phnom Penh, and Melbourne is next. We'll email you when there's news. The more people who ask for it, the sooner it comes.",
+        // The owner's CBD update of 5 Nov (yummers D139), so everyone who joins gets it.
+        "Melbourne starts with the CBD. Nearly 1,000 CBD places are in the app now: ramen and dumplings, Korean BBQ, laneway cafés, rooftop bars and the old favourites. We picked them by hand, kept only well-rated ones, and took out anything that isn't really a place to eat or drink.",
+        "Other suburbs are coming next: Carlton, Southbank, Box Hill, Springvale and the rest. The suburbs where the most people join go first.",
+        "We'll invite the first people from this list to try it on iPhone soon. If you've got a CBD spot we must have, just reply and let me know!",
     ],
     verifySubject: "Confirm your email for the yummers Melbourne list",
     verifyNote: [
