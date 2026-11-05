@@ -151,7 +151,8 @@ const MELBOURNE = {
     joinedText: "We'll write when there's news. Want it here sooner? Send your invite link to friends who'd use it.",
     invite: "Want yummers in Melbourne sooner? Send friends your invite link:",
     share: "Share my invite link",
-    oneTapText: "Press Join and you're on it. Your invite link comes by email.",
+    oneTapTitle: "Adding you to the Melbourne list…",
+    oneTapText: "One moment. If nothing happens, press Join.",
     oneTapButton: "Join",
 };
 
@@ -311,12 +312,14 @@ async function confirm(request, env, ctx, url) {
 
 // The one-tap join for people already on our lists (#201): the email's link carries their Resend
 // contact id, the key the unsubscribe link already trusts, so there's no form, no suburb (owner,
-// 5 Nov) and no confirm email. Opening it only asks, because mail scanners open links; the button joins.
+// 5 Nov) and no confirm email. Opening it submits its own Join button at once, so a person lands on
+// "You're on the Melbourne list!" (owner, 5 Nov); mail scanners open links but don't run scripts, so
+// they stop here and join nobody. Without scripts, the person presses Join.
 async function joinMelbourne(request, env, ctx, url) {
     const { t, lang } = melbourneStrings();
     const id = url.searchParams.get("id") || "";
     if (!UUID.test(id)) return page(lang, t.expiredTitle, t.expiredText);
-    if (request.method !== "POST") return page(lang, t.joinTitle, t.oneTapText, t.oneTapButton);
+    if (request.method !== "POST") return page(lang, t.oneTapTitle, t.oneTapText, t.oneTapButton, `<script src="/autosubmit.js" defer></script>`);
     const found = await resendApi(env, "GET", `/contacts/${id}`);
     if (!found.ok) return found.status === 404 ? page(lang, t.expiredTitle, t.expiredText) : new Response(null, { status: 502 });
     const code = await join(env, ctx, { email: (await found.json()).email, list: "melbourne" }, t, lang);

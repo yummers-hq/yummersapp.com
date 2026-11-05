@@ -223,8 +223,10 @@ console.log("ok  melbourne waitlist: validation, ref, segment and properties, in
 contacts.set("tap@example.com", crypto.randomUUID()); props.set("tap@example.com", {}); segments.set("tap@example.com", ["seg"]);
 const tapId = contacts.get("tap@example.com"), tapPath = `/api/join-melbourne?id=${tapId}`;
 const tapBefore = emails.length;
-// Opening it only asks; a bad or unknown id says the link has expired, and nothing joins.
-assert.ok((await (await call("GET", tapPath)).text()).includes("Press Join"));
+// Opening it joins nobody by itself: the page submits its Join button with a script, which scanners
+// don't run. A bad or unknown id says the link has expired, and nothing joins.
+const opened = await (await call("GET", tapPath)).text();
+assert.ok(opened.includes('<script src="/autosubmit.js" defer>') && opened.includes('<form method="post">'));
 assert.ok((await (await call("POST", "/api/join-melbourne?id=nope")).text()).includes("expired"));
 assert.ok((await (await call("POST", "/api/join-melbourne?id=00000000-0000-4000-8000-00000000dead")).text()).includes("expired"));
 assert.deepEqual(segments.get("tap@example.com"), ["seg"]);
