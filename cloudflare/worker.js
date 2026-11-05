@@ -151,6 +151,8 @@ const MELBOURNE = {
     joinedText: "We'll write when there's news. Want it here sooner? Send your invite link to friends who'd use it.",
     invite: "Want yummers in Melbourne sooner? Send friends your invite link:",
     share: "Share my invite link",
+    oneTapText: "Press Join and you're on it. Your invite link comes by email.",
+    oneTapButton: "Join",
 };
 
 const NAME = "Sovithyea Prach";
@@ -305,6 +307,21 @@ async function confirm(request, env, ctx, url) {
     if (!code) return new Response(null, { status: 502 });
     await env.SIGNUPS.delete(`confirm:${token}`);
     return page(s.lang, s.t.joinedTitle, s.t.joinedText, null, m ? inviteBlock(s.t, code) : "");
+}
+
+// The one-tap join for people already on our lists (#201): the email's link carries their Resend
+// contact id, the key the unsubscribe link already trusts, so there's no form, no suburb (owner,
+// 5 Nov) and no confirm email. Opening it only asks, because mail scanners open links; the button joins.
+async function joinMelbourne(request, env, ctx, url) {
+    const { t, lang } = melbourneStrings();
+    const id = url.searchParams.get("id") || "";
+    if (!UUID.test(id)) return page(lang, t.expiredTitle, t.expiredText);
+    if (request.method !== "POST") return page(lang, t.joinTitle, t.oneTapText, t.oneTapButton);
+    const found = await resendApi(env, "GET", `/contacts/${id}`);
+    if (!found.ok) return found.status === 404 ? page(lang, t.expiredTitle, t.expiredText) : new Response(null, { status: 502 });
+    const code = await join(env, ctx, { email: (await found.json()).email, list: "melbourne" }, t, lang);
+    if (!code) return new Response(null, { status: 502 });
+    return page(lang, t.joinedTitle, t.joinedText, null, inviteBlock(t, code));
 }
 
 // Saves a confirmed email as a Resend contact in the beta sign-up segment (or the
@@ -507,6 +524,7 @@ async function route(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/signup" && request.method === "POST") return signup(request, env);
     if (url.pathname === "/api/confirm") return confirm(request, env, ctx, url);
+    if (url.pathname === "/api/join-melbourne") return joinMelbourne(request, env, ctx, url);
     if (url.pathname === "/api/unsubscribe") return unsubscribe(request, env, url);
     // Browsers ask for /favicon.ico whatever the pages say; the tab icon is the 192 px one.
     if (url.pathname === "/favicon.ico") return Response.redirect("https://yummersapp.com/assets/favicon-192.png", 301);

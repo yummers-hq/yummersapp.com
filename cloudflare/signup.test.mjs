@@ -26,9 +26,11 @@ globalThis.fetch = async (url, init) => {
     }
     if (init.method === "GET") {
         if (lookupStatus) return new Response(null, { status: lookupStatus });
-        const email = decodeURIComponent(url.split("/").pop());
+        // Like Resend, a contact is found by its email or its id.
+        const key = decodeURIComponent(url.split("/").pop());
+        const email = contacts.has(key) ? key : [...contacts].find(([, id]) => id === key)?.[0];
         const id = contacts.get(email);
-        return id ? Response.json({ id, properties: props.get(email) }) : new Response(null, { status: 404 });
+        return id ? Response.json({ id, email, properties: props.get(email) }) : new Response(null, { status: 404 });
     }
     if (url.includes("/segments/")) {
         const [, email, seg] = url.match(/contacts\/([^/]+)\/segments\/(.+)$/);
@@ -216,4 +218,29 @@ await Promise.all(waits);
 assert.equal(props.get("m6@example.com").suburb.value, "Queensland");
 
 console.log("ok  melbourne waitlist: validation, ref, segment and properties, invite link, existing contact, old pending tokens");
+
+// The one-tap join (#201): a contact already on the beta list joins Melbourne from their id alone.
+contacts.set("tap@example.com", crypto.randomUUID()); props.set("tap@example.com", {}); segments.set("tap@example.com", ["seg"]);
+const tapId = contacts.get("tap@example.com"), tapPath = `/api/join-melbourne?id=${tapId}`;
+const tapBefore = emails.length;
+// Opening it only asks; a bad or unknown id says the link has expired, and nothing joins.
+assert.ok((await (await call("GET", tapPath)).text()).includes("Press Join"));
+assert.ok((await (await call("POST", "/api/join-melbourne?id=nope")).text()).includes("expired"));
+assert.ok((await (await call("POST", "/api/join-melbourne?id=00000000-0000-4000-8000-00000000dead")).text()).includes("expired"));
+assert.deepEqual(segments.get("tap@example.com"), ["seg"]);
+// Pressing Join adds them to Melbourne with an invite code, no suburb, and one welcome note.
+const tapped = await (await call("POST", tapPath)).text();
+await Promise.all(waits);
+assert.deepEqual(segments.get("tap@example.com"), ["seg", "melb"]);
+const tapCode = props.get("tap@example.com").invite_code.value;
+assert.equal(props.get("tap@example.com").suburb, undefined);
+assert.ok(tapped.includes(`?ref=${tapCode}`));
+assert.equal(emails.length, tapBefore + 1);
+assert.equal(emails.at(-1).to, "tap@example.com");
+assert.ok(emails.at(-1).text.includes("Melbourne starts with the CBD"));
+// Pressing it again keeps the code and sends nothing more.
+assert.ok((await (await call("POST", tapPath)).text()).includes(`?ref=${tapCode}`));
+await Promise.all(waits);
+assert.equal(emails.length, tapBefore + 1);
+console.log("ok  melbourne one-tap join: asks first, bad ids refused, joins once, welcome with the CBD note");
 console.log("ok  beta sign-up: confirm link, once a day, welcome email, unsubscribe, expired links, Turnstile hostname");
