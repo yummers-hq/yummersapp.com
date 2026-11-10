@@ -1785,6 +1785,7 @@ html:lang(km) .onboarding h2 {
     .steps .shots figure { scroll-snap-align: start }
 }
 
+<<<<<<< HEAD
 /* Launch video: a poster with a play button; the player loads only on click */
 .launch-video { margin-top: 96px; text-align: center }
 .launch-video h2 { font-size: clamp(40px, 4.5vw, 64px) }
@@ -1803,3 +1804,10 @@ html:lang(km) .onboarding h2 {
 .launch-video figcaption { margin-top: 16px; color: var(--muted); font-size: 15px }
 @media (max-width: 680px) { .launch-video { margin-top: 64px } .video-play, .launch-video .player { border-radius: 18px } .play-dot { width: 72px; height: 72px } .play-dot::before { left: 29px; top: 22px; border-width: 14px 0 14px 21px } }
 @media (prefers-reduced-motion: reduce) { .play-dot::after, .launch-video .player { animation: none } .video-play img, .play-dot { transition: none } }
+=======
+/* The beta page's Join button sits in a .legal page, whose links are underlined accent text. */
+.legal .button {
+    color: var(--cream);
+    text-decoration: none
+}
+>>>>>>> e9c6191 (feat(beta): /beta page with the TestFlight link and three steps)
