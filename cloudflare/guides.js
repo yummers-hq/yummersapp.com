@@ -451,19 +451,28 @@ ${inGuides.length ? `<section class="box"><h2>In these guides</h2>${inGuides.map
 }
 
 // /p/{share_id}/{slug}: the right slug is in the answer, so a wrong or missing one is a 301, as for /l/.
-// Also /sitemap-places.xml, every place's /p/ address (the static sitemap can't hold ~5,000; robots.txt names this file).
+// Also /sitemap-places.xml: the /p/ address of every rated place outside the guides (robots.txt names this file).
 export async function places(url, ctx, version = "") {
     try {
         if (url.pathname === "/sitemap-places.xml") {
             return await edge(url.pathname, url, ctx, version, async () => {
-                const rows = [];
+                // Only places with something of our own: at least one public rating (the page's liked count, and any
+                // person's photo, hang off one). Google parked the ~6,000 unrated pages as copies of a Maps listing
+                // ("discovered, not indexed", 10 Nov); they still answer, they just aren't offered. A place in a
+                // guide is left out too: its canonical is /places/{slug}, which sitemap.xml lists.
+                const inGuide = new Set((await liveGuides().catch(() => [])).flatMap((g) => g.items.map((it) => it.d.id)));
+                const rated = new Map();
                 try {
-                    let page;
-                    do rows.push(...(page = await rest(`restaurants?select=share_id,name&order=share_id&limit=1000&offset=${rows.length}`).then((r) => r.json())));
-                    while (page.length === 1000);
+                    let page, at = 0;
+                    do {
+                        page = await rest(`user_restaurants?select=restaurant_id,restaurants(share_id,name)&is_public=eq.true&hidden=eq.false&sentiment=not.is.null&order=id&limit=1000&offset=${at}`).then((r) => r.json());
+                        at += page.length;
+                        for (const r of page) if (r.restaurants?.share_id && !inGuide.has(r.restaurant_id)) rated.set(r.restaurant_id, r.restaurants);
+                    } while (page.length === 1000);
                 } catch (e) {
                     if (e.message !== "400") throw e; // no share_id column on beta yet: an empty list
                 }
+                const rows = [...rated.values()];
                 const urls = rows.map((r) => `  <url><loc>${SITE}/p/${r.share_id}/${esc(slugify(r.name).slice(0, 60).replace(/-+$/, "") || "place")}</loc></url>\n`).join("");
                 return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}</urlset>\n`, { headers: { "Content-Type": "application/xml; charset=utf-8" } });
             });
