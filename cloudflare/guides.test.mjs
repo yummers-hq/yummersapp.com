@@ -3,11 +3,13 @@ import assert from "node:assert/strict";
 import worker from "./worker.js";
 import { GUIDES, shortHours, cleanAddress, usable } from "./guides.js";
 import { PLACES, COVERS } from "./guide-places.js";
+import { POSTS } from "./guide-posts.js";
 
 for (const k of Object.keys(GUIDES)) delete GUIDES[k];
 GUIDES["korean"] = "KOREAN01"; GUIDES["bbq"] = "BBQ00001"; GUIDES["mine"] = "OTHER001"; GUIDES["empty"] = "EMPTY001"; GUIDES["private"] = "PRIVATE1";
 PLACES.rid1 = { name: "Clean One", kind: "Korean BBQ", price: "$12–20", when: "Dinner" }; // place 2 is not in the map: database name and cuisine
 COVERS.korean = "rid2";
+POSTS.korean = [{ slug: "what-to-order", title: "What to order <now>", minutes: 4, image: "https://lh3.googleusercontent.com/b1" }];
 const row = (n, extra = {}) => ({
     note: `Order the ${n} <b>`, position: n,
     picture: { kind: "cover", url: `https://lh3.googleusercontent.com/p${n}` },
@@ -55,7 +57,8 @@ assert.equal(r.headers.get("Cache-Control"), "public, max-age=300", "browsers ke
 }
 for (const s of ["Korean restaurants in Phnom Penh | yummers", "Clean One", "Place 2 &amp; Co", "Order the 1 &lt;b&gt;", "Korean BBQ ·\u00a0BKK1", "Korean ·\u00a0BKK", "Guide · Phnom Penh", "2 places · by the yummers team", ">01<", ">02<", '"name":"Clean One"', '"@type":"ItemList"', '"@type":"Restaurant"',
     'rel="canonical" href="https://yummersapp.com/guides/korean"', 'href="/places/place-1-co-bkk"', "https://lh3.googleusercontent.com/p1", 'href="/guides"']) assert.ok(t.includes(s), s);
-assert.ok(!t.includes("<b>"), "notes are escaped");
+assert.ok(t.includes('<a class="guidebox" href="/blog/what-to-order">') && t.includes("<b>What to order &lt;now&gt;</b>From the blog · 4 min read"), "the guide links to its blog post");
+assert.ok(!t.includes("Order the 1 <b>"), "notes are escaped");
 assert.ok(!t.includes("Place 1 &amp; Co"), "the clean name replaces the database name");
 assert.ok(t.indexOf("lh3.googleusercontent.com/p2") < t.indexOf("lh3.googleusercontent.com/p1"), "the guide cover is the chosen place's photo, first on the page");
 assert.ok(!t.includes("/photos/") && !t.includes("someone"), "a person's photo and name stay off");
