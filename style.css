@@ -853,6 +853,90 @@ html {
     letter-spacing: -.03em
 }
 
+/* Help page: tap a question to show its answer (native <details>, works without script). */
+.legal .faq {
+    border-bottom: 1px solid var(--line);
+    interpolate-size: allow-keywords
+}
+
+/* The answer slides open and closed where the browser can animate to height: auto (Chrome); elsewhere it
+   opens at once. Everywhere, the text fades up as it appears. */
+.legal .faq::details-content {
+    height: 0;
+    overflow: clip;
+    transition: height .35s cubic-bezier(.2, .7, .2, 1), content-visibility .35s allow-discrete
+}
+
+.legal .faq[open]::details-content {
+    height: auto
+}
+
+.legal .faq[open] > p {
+    animation: faq-in .4s cubic-bezier(.2, .7, .2, 1) both
+}
+
+@keyframes faq-in {
+    from { opacity: 0; transform: translateY(-6px) }
+}
+
+.legal .faq summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 0;
+    min-height: 44px
+}
+
+.legal .faq summary::-webkit-details-marker {
+    display: none
+}
+
+.legal .faq summary h2 {
+    margin: 0;
+    font-size: 22px
+}
+
+.legal .faq summary::after {
+    content: "+";
+    flex: none;
+    font: 400 28px/1 system-ui, sans-serif;
+    color: var(--accent);
+    transition: transform .2s
+}
+
+.legal .faq[open] summary::after {
+    transform: rotate(45deg)
+}
+
+.legal .faq summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 4px
+}
+
+.legal .faq > p {
+    margin: 0 0 20px
+}
+
+.legal .faq:first-of-type {
+    margin-top: 32px;
+    border-top: 1px solid var(--line)
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .legal .faq summary::after,
+    .legal .faq::details-content {
+        transition: none
+    }
+
+    .legal .faq[open] > p {
+        animation: none
+    }
+}
+
 .legal h3 {
     font-size: 19px;
     margin-top: 28px
