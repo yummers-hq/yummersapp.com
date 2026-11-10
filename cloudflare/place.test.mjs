@@ -25,7 +25,7 @@ globalThis.fetch = async (url, init = {}) => {
     if (url.includes("shared_place")) return mode === "nofn" ? new Response("{}", { status: 404 }) : Response.json(places[JSON.parse(init.body).p_share_id] ?? null);
     if (url.includes("shared_list")) return Response.json(guide);
     if (url.includes("lists?share_id")) return Response.json([{ user_id: "yid", list_restaurants: embed }]);
-    if (url.includes("select=share_id,name")) {
+    if (url.includes("user_restaurants?select=restaurant_id")) {
         if (mode === "nocolumn") return new Response("{}", { status: 400 });
         const at = +url.match(/offset=(\d+)/)[1];
         return Response.json(rows.slice(at, at + 1000));
@@ -103,12 +103,16 @@ assert.equal(at("2026-11-04T18:00:00Z"), "Open now · closes 2am"); // Wednesday
 assert.equal(at("2026-11-05T20:30:00Z"), "Open 24 hours"); // Friday 03:30
 assert.equal(openStatus(null), null);
 
-// Sitemap: every place, once; empty before 0086 reaches beta
+// Sitemap: each rated place once, never a guide place (its canonical is /places/); empty before 0086 reaches beta
 mode = "ok";
-rows = Array.from({ length: 1500 }, (_, i) => ({ share_id: String(i).padStart(8, "0"), name: i ? `Place ${i}` : "A & B" }));
+rows = Array.from({ length: 1500 }, (_, i) => ({ restaurant_id: `r${i}`, restaurants: { share_id: String(i).padStart(8, "0"), name: i ? `Place ${i}` : "A & B" } }));
+rows.push({ restaurant_id: "r7", restaurants: rows[7].restaurants }, { restaurant_id: "rid1", restaurants: { share_id: "GUIDE001", name: "Place 1 & Co" } }, { restaurant_id: "gone", restaurants: null });
 t = await (await get("/sitemap-places.xml")).text();
-assert.equal(t.match(/<loc>/g).length, 1500, "two pages of the database read");
+assert.equal(t.match(/<loc>/g).length, 1500, "two pages of ratings read; a place rated twice is listed once");
 assert.ok(t.includes("<loc>https://yummersapp.com/p/00000000/a-b</loc>") && t.includes("/p/00001499/place-1499</loc>"));
+assert.ok(!t.includes("GUIDE001"), "a guide place is left out");
+rows = [];
+assert.ok(!(await (await get("/sitemap-places.xml")).text()).includes("<loc>"), "no ratings: no places");
 mode = "nocolumn";
 t = await (await get("/sitemap-places.xml")).text();
 assert.ok(t.includes("<urlset") && !t.includes("<loc>"));
