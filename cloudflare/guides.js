@@ -2,6 +2,7 @@
 // the team's public lists as pages Google can read. Built on request from beta through the public
 // anon key (RLS and shared_list() decide what is public) and cached for an hour.
 import { PLACES, COVERS } from "./guide-places.js";
+import { POSTS } from "./guide-posts.js";
 
 const SUPABASE = "https://uobskavqhilnqakbdutt.supabase.co";
 const ANON = "sb_publishable_lHMGFti9a7-RxGHVj2Iz-g_wXFZoMC7"; // public by design, as in share.js
@@ -253,8 +254,10 @@ function guidePage(g) {
         })),
     });
     const items = g.items.map((it, i) => `<li class="item"><div class="head"><span class="num">${String(i + 1).padStart(2, "0")}</span><div><h2 class="name"><a href="/places/${it.slug}">${esc(nameOf(it))}</a></h2><div class="meta">${esc(metaOf(it))}</div></div></div><a class="photo" href="/places/${it.slug}" tabindex="-1" aria-hidden="true">${img(coverOf(it), 600, 400)}</a>${it.note ? `<p>${esc(it.note)}</p>` : ""}</li>`).join("");
+    // The blog posts written for this guide, in the box the posts use to point back here.
+    const posts = (POSTS[g.slug] || []).map((p) => `<a class="guidebox" href="/blog/${esc(p.slug)}">${img(p.image, 72, 72)}<span><b>${esc(p.title)}</b>From the blog · ${p.minutes} min read</span></a>`).join("");
     return layout(`${g.title} | yummers`, description, path, jsonld, `${cover(guideCover(g), "Guide · Phnom Penh", g.title, `${g.items.length} places · by the yummers team`)}
-<div class="in">${g.description ? `<p class="lead">${esc(g.description)}</p>` : ""}<ol class="items">${items}</ol></div>`);
+<div class="in">${g.description ? `<p class="lead">${esc(g.description)}</p>` : ""}<ol class="items">${items}</ol>${posts}</div>`);
 }
 
 function indexPage(found) {
