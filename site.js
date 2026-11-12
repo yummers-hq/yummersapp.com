@@ -104,10 +104,10 @@
     });
 })();
 
-// On narrow screens each row of phones (the story sections and the light/dark pair) swipes sideways; the dots under it show
+// On narrow screens each row of phones swipes sideways; the dots under it show
 // which phone is in view (hidden by CSS on wider screens, where nothing scrolls). A row of one phone has nothing to slide.
 (function () {
-    document.querySelectorAll(".onboarding-screens, .peek-duo").forEach(function (row) {
+    document.querySelectorAll(".onboarding-screens").forEach(function (row) {
         var figures = row.querySelectorAll("figure");
         if (figures.length < 2) return;
         var dots = document.createElement("div");

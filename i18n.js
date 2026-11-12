@@ -45,15 +45,10 @@
         resultsTitle: "ត្រង់ទៅរបស់ឆ្ងាញ់",
         resultsText: "លទ្ធផលបែងចែកតាមសង្កាត់",
         themeLabel: "របៀបងងឹត",
-        peekLight: "ភ្លឺ",
-        peekDark: "ងងឹត",
-        notifTitle: "មតិ ការចូលចិត្ត និងអ្នកតាមដានថ្មី", // DRAFT (#129)
-        notifText: "មើលថានរណាបានឆ្លើយតបនឹងអ្វីដែលអ្នកបានញ៉ាំ", // DRAFT (#129)
         homeTitle: "មគ្គុទ្ទេសក៍ និងមិត្តភក្តិលើទំព័រដើម", // DRAFT (#129)
         homeText: "មគ្គុទ្ទេសក៍របស់យើងមុនគេ បន្ទាប់មកអ្វីដែលមនុស្សកំពុងញ៉ាំ", // DRAFT (#129)
         saveTitle: "រក្សាទុកក្នុងបញ្ជី",
         saveText: "រក្សាទុកកន្លែងមួយក្នុងបញ្ជីណាមួយរបស់អ្នក",
-        notifAlt: "ការជូនដំណឹង៖ ការឆ្លើយតបលើមតិរបស់អ្នកសប្តាហ៍នេះ និងអ្នកតាមដានថ្មីជាមួយប៊ូតុង Follow back",
         homeAlt: "ទំព័រដើម Discover៖ មគ្គុទ្ទេសក៍របស់យើង បន្ទាប់មកកន្លែងពេញនិយមប្រចាំសប្តាហ៍នេះ",
         saveAlt: "ផ្ទាំងរក្សាទុក៖ ធីក Want to try, Favourites ឬបញ្ជីណាមួយរបស់អ្នក ដូចជា BBQ in Phnom Penh រួចចុច Done",
         // DRAFT (#129): the Khmer below was drafted by Claude for the story sections (#134); it needs a native speaker's check.
@@ -68,14 +63,6 @@
         listsYoursAlt: "ទំព័របញ្ជី៖ Been here, Want to try, Favourites និង Your lists ជាមួយបញ្ជីរបស់អ្នកជាផ្ទាំងរូបថត ដូចជា Rooftop bars និង BBQ in Phnom Penh",
         listsYoursTitle: "បញ្ជីទាំងអស់របស់អ្នក",
         listsYoursText: "ឯកជន រហូតដល់អ្នកសម្រេចចែករំលែក",
-        importAlt: "ការនាំចូលបញ្ជី៖ នាំកន្លែងរបស់អ្នកមកពីបញ្ជី Google Maps ឬឈ្មោះដែលអ្នកបានកត់ទុក ជាមួយប៊ូតុង Paste the link",
-        importSecTitle: "ការរក្សាទុកក្នុង Google Maps របស់អ្នក<br><em>ទីបំផុតមានប្រយោជន៍!</em>",
-        importStep1: "ចែករំលែកបញ្ជីក្នុង Google Maps",
-        importStep1Text: "បើកបញ្ជី ចុច Share អនុញ្ញាតឱ្យអ្នកមានតំណមើលបាន ហើយចម្លងតំណ",
-        importStep2: "បិទភ្ជាប់តំណក្នុង yummers",
-        importStep2Text: "Lists, +, Import a list, Paste the link រួចចុច Find places",
-        importStep3: "ជ្រើសរើសកន្លែង ហើយចុច Import",
-        importStep3Text: "កន្លែងដែលត្រូវប្រាកដ ត្រូវបានគូសរួចហើយ",
         importLink: "របៀបនាំចូល",
         shareSecTitle: "ចែករំលែកដោយ<br><em>តំណតែមួយ!</em>",
         shareSecP1: "ធ្វើបញ្ជីឱ្យសាធារណៈ ហើយផ្ញើតំណ។ អ្នកណាក៏អាចបើកក្នុងកម្មវិធីរុករក ទោះមិនមានកម្មវិធីក៏ដោយ",
@@ -85,9 +72,6 @@
         bbqAlt: "ការរុករកជាមួយតម្រង BBQ៖ ផែនទីភ្នំពេញមានម្ជុលសម្គាល់ និងកន្លែង ១៦៧ ក្នុងទិដ្ឋភាព បង្ហាញខាងក្រោម",
         bbqTitle: "ត្រងផែនទី",
         bbqText: "ជ្រើសប្រភេទម្ហូប ហើយមើលថាវានៅឯណា",
-        filtersAlt: "តម្រង៖ Open now, Area, Cuisine និង Price for one ជាមួយ BBQ ដែលបានជ្រើស និងប៊ូតុង Show 167 places",
-        filtersTitle: "តំបន់ ប្រភេទម្ហូប តម្លៃ",
-        filtersText: "កំណត់ឱ្យតូចចុះ ដោយចុចប៉ុន្មានដង",
         guidesTitle: "ចាប់ផ្តើមជាមួយ<br><em>មគ្គុទ្ទេសក៍របស់យើង!</em>",
         guidesP1: "បញ្ជីកន្លែងញ៉ាំរបស់យើងផ្ទាល់នៅភ្នំពេញ ៖ កូរ៉េ ខ្មែរ សាច់អាំង អាហារតាមផ្លូវ បារលើដំបូល និងអាហារបួស។ អ្នកឃើញវាមុនគេលើទំព័រដើម ហើយអាចអានវានៅទីនេះផងដែរ។", // DRAFT (#129)
         guidesButton: "មើលមគ្គុទ្ទេសក៍", // DRAFT (#129)
@@ -100,10 +84,6 @@
         guidesAlt: "ទំព័រដើម៖ Start with our guides ជាមួយកាត Street food in Phnom Penh និង Coffee and bakeries រួចហើយ People to follow",
         guidesTitle1: "កន្លែងចាប់ផ្តើម",
         guidesText1: "បញ្ជីពីក្រុម yummers នៅលើទំព័រដើម",
-        darkTitle: "ភ្លឺ ឬងងឹត<br>តាមចិត្តអ្នក",
-        darkText: "yummers តាមការកំណត់លើទូរសព្ទរបស់អ្នក ដូច្នេះវាមើលទៅស្អាតទាំងពេលអាហារថ្ងៃត្រង់ និងពេលយប់ជ្រៅ។ ផែនទីក៏ប្តូរដែរ",
-        darkAltLight: "ទំព័រដើមក្នុងរបៀបភ្លឺ",
-        darkAltDark: "ទំព័រដើមក្នុងរបៀបងងឹត",
         closingTitle: "ជួបគ្នានៅ<br><em>ហាងសំណព្វថ្មីរបស់អ្នក</em>",
         closingText: "កម្មវិធីសាកល្បងមានតែលើ iPhone សម្រាប់ពេលនេះ ហើយនឹងបើកនៅខែវិច្ឆិកា<br>ទុកអ៊ីមែលរបស់អ្នក ហើយយើងនឹងផ្ញើការអញ្ជើញទៅអ្នក",
         chooseQ: "តើអ្នកនៅឯណា?",
@@ -171,15 +151,10 @@
         resultsTitle: "Droit au but.",
         resultsText: "Résultats regroupés par quartier.",
         themeLabel: "Mode sombre",
-        peekLight: "Clair",
-        peekDark: "Sombre",
-        notifTitle: "Commentaires, j’aime et nouveaux abonnés", // DRAFT (#129)
-        notifText: "Voyez qui a réagi à ce que vous avez mangé.", // DRAFT (#129)
         homeTitle: "Guides et amis sur l’accueil", // DRAFT (#129)
         homeText: "Nos guides d’abord, puis ce que les gens mangent.", // DRAFT (#129)
         saveTitle: "Enregistrer dans une liste",
         saveText: "Enregistrez un lieu dans n’importe laquelle de vos listes.",
-        notifAlt: "Notifications : les réponses à vos commentaires cette semaine, et les nouveaux abonnés avec un bouton Follow back",
         homeAlt: "Accueil, Discover : nos guides, puis les meilleurs lieux de la semaine",
         saveAlt: "La fenêtre Enregistrer : cochez Want to try, Favourites ou l’une de vos listes, comme BBQ in Phnom Penh, puis Done",
         // DRAFT (#129): the French below was drafted by Claude for the story sections (#134); it needs a native speaker's check.
@@ -194,14 +169,6 @@
         listsYoursAlt: "Listes : Been here, Want to try, Favourites et Your lists, avec vos listes en vignettes photo, comme Rooftop bars et BBQ in Phnom Penh",
         listsYoursTitle: "Toutes vos listes.",
         listsYoursText: "Privées, jusqu’à ce que vous décidiez de les partager.",
-        importAlt: "Importer une liste : rapatriez vos adresses depuis une liste Google Maps ou des noms notés ailleurs, avec un bouton Paste the link",
-        importSecTitle: "Vos favoris Google Maps, <em>enfin utiles.</em>",
-        importStep1: "Partagez la liste dans Google Maps",
-        importStep1Text: "Ouvrez la liste, touchez Share, laissez toute personne ayant le lien la voir, et copiez le lien.",
-        importStep2: "Collez le lien dans yummers",
-        importStep2Text: "Lists, +, Import a list, Paste the link, puis Find places.",
-        importStep3: "Choisissez les lieux, touchez Import",
-        importStep3Text: "Les correspondances sûres sont déjà cochées.",
         importLink: "Comment importer",
         shareSecTitle: "Partagez avec<br><em>un seul lien.</em>",
         shareSecP1: "Rendez une liste publique et envoyez le lien. Chacun peut l’ouvrir dans son navigateur, même sans l’app.",
@@ -211,9 +178,6 @@
         bbqAlt: "Explorer avec le filtre BBQ : une carte de Phnom Penh avec des repères, et 167 lieux visibles listés en dessous",
         bbqTitle: "Filtrez la carte.",
         bbqText: "Choisissez une cuisine et voyez où elle se trouve.",
-        filtersAlt: "Filtres : Open now, Area, Cuisine et Price for one, avec BBQ choisi et un bouton Show 167 places",
-        filtersTitle: "Quartier, cuisine, prix.",
-        filtersText: "Affinez en quelques touches.",
         guidesTitle: "Commencez par<br><em>nos guides.</em>",
         guidesP1: "Nos propres adresses à Phnom Penh, : coréen, khmer, barbecue, cuisine de rue, bars en rooftop, et végétarien et vegan. Elles s’affichent en premier sur l’accueil, et vous pouvez les lire ici aussi.", // DRAFT (#129)
         guidesButton: "Voir les guides", // DRAFT (#129)
@@ -226,10 +190,6 @@
         guidesAlt: "L’accueil : Start with our guides, avec des cartes pour Street food in Phnom Penh et Coffee and bakeries, puis People to follow",
         guidesTitle1: "Par où commencer.",
         guidesText1: "Des listes de l’équipe yummers, sur l’accueil.",
-        darkTitle: "Clair ou sombre,<br>à vous de choisir",
-        darkText: "yummers suit le réglage de votre téléphone, pour rester agréable à midi comme tard le soir. Les cartes aussi changent.",
-        darkAltLight: "L’accueil en mode clair",
-        darkAltDark: "L’accueil en mode sombre",
         closingTitle: "Rendez-vous à<br>votre prochaine <em>adresse fétiche.</em>",
         closingText: "Pour l’instant, la bêta est réservée à l’iPhone et ouvrira en novembre. <br>Laissez-nous votre e-mail, on vous enverra une invitation.",
         chooseQ: "Où êtes-vous ?",
