@@ -32,23 +32,23 @@ If you eat vegetarian, this may not bother you. If you are strictly vegan, or yo
 
 The easiest way to relax is to eat somewhere that has no meat at all. These are cheap, friendly and easy.
 
-[Vitking House](/guides/vegan-vegetarian-phnom-penh) is a fully vegetarian restaurant at 315 Street 430, open 8am to 8pm. The Khmer dishes often use soy-based substitutes for meat. One older guide put dishes at about $2 to $5, so it is a cheap lunch. Ask about fish sauce if you are vegan.
+[Vitking House](/places/vitking-house-toul-tompong-chamkar-mon) is a fully vegetarian restaurant at 315 Street 430, open 8am to 8pm. The Khmer dishes often use soy-based substitutes for meat. One older guide put dishes at about $2 to $5, so it is a cheap lunch. Ask about fish sauce if you are vegan.
 
-[Maitreya Vegetarian](/guides/vegan-vegetarian-phnom-penh) is in BKK3, open 6:30am to 8pm. One guide praises the value and the free tea. The early opening makes it a breakfast or lunch pick, for around $3 to $6.
+[Maitreya Vegetarian](/places/maitreya-vegetarian-chay-bkk) is in BKK3, open 6:30am to 8pm. One guide praises the value and the free tea. The early opening makes it a breakfast or lunch pick, for around $3 to $6.
 
 ## A vegan cafe
 
-[Bong Bonlai](/guides/vegan-vegetarian-phnom-penh) is a fully vegan cafe-restaurant inside YK Art House on Street 830. It is calm and cosy, with Mediterranean and Asian flavours, and reviewers like the vegan pizza. Hours vary by source, so check first. Budget around $8 to $14.
+[Bong Bonlai](/places/bong-bonlai-chamkar-mon) is a fully vegan cafe-restaurant inside YK Art House on Street 830. It is calm and cosy, with Mediterranean and Asian flavours, and reviewers like the vegan pizza. Hours vary by source, so check first. Budget around $8 to $14.
 
 ## Khmer food, plant-based
 
-[Sthāni V²](/guides/vegan-vegetarian-phnom-penh) in Toul Kork is a vegetarian and vegan Khmer buffet, open 9am to 10pm. Reviewers recommend the vegan amok and the red curry, and say dishes run about $2 to $5. Not every dish is vegan, so ask before you order.
+[Sthāni V²](/places/sthani-v2-vegan-vegantarian-restaurant-toul-kork) in Toul Kork is a vegetarian and vegan Khmer buffet, open 9am to 10pm. Reviewers recommend the vegan amok and the red curry, and say dishes run about $2 to $5. Not every dish is vegan, so ask before you order.
 
-[Eleven One Kitchen](/guides/vegan-vegetarian-phnom-penh) serves Khmer and Western food, with a vegetarian menu, at Street 460 in Toul Tom Poung. It is open 7am to 9:30pm. It is vegetarian-friendly, not fully vegetarian. Guides mention tofu amok. Amok is a creamy, coconut-based Khmer curry, so ask which dishes are vegan. Expect around $5 to $10.
+[Eleven One Kitchen](/places/eleven-one-kitchen-chamkar-mon) serves Khmer and Western food, with a vegetarian menu, at Street 460 in Toul Tom Poung. It is open 7am to 9:30pm. It is vegetarian-friendly, not fully vegetarian. Guides mention tofu amok. Amok is a creamy, coconut-based Khmer curry, so ask which dishes are vegan. Expect around $5 to $10.
 
 ## Something different: dosas
 
-[MDSK Masala Dosa Street Kitchen](/guides/vegan-vegetarian-phnom-penh) is on Sothearos Boulevard near the Royal Palace. A dosa is a thin, crisp South Indian pancake with a filling, and MDSK builds its menu around them. It is vegetarian and largely vegan, with tofu tikka masala, tandoor dishes and chai too. It is closed on Mondays. Around $8 to $15.
+[MDSK Masala Dosa Street Kitchen](/places/mdsk-best-vegan-masala-dosa-indian-street-food-phnom-penh-daun-penh) is on Sothearos Boulevard near the Royal Palace. A dosa is a thin, crisp South Indian pancake with a filling, and MDSK builds its menu around them. It is vegetarian and largely vegan, with tofu tikka masala, tandoor dishes and chai too. It is closed on Mondays. Around $8 to $15.
 
 ## A few more tips
 

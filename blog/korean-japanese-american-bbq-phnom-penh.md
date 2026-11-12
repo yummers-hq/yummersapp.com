@@ -26,7 +26,7 @@ If you have never tried any of them, start with whichever sounds closest to what
 
 This is the lazy-friendly option. The kitchen smokes the meat for hours, and you just eat it. Think brisket, ribs and pulled pork, with something cold to drink.
 
-In our guide, [Smoke American BBQ & Craft Beer](/guides/bbq-phnom-penh) is the American pick, in Sen Sok. It is open 11am to 9pm, Tuesday to Sunday, and closed on Monday. Brisket or ribs and a beer is the obvious order. We have not tried to pin down its menu, so check its page for what is on today. Budget roughly $12 to $20.
+In our guide, [Smoke American BBQ & Craft Beer](/places/smoke-american-bbq-craft-beer-sensok) is the American pick, in Sen Sok. It is open 11am to 9pm, Tuesday to Sunday, and closed on Monday. Brisket or ribs and a beer is the obvious order. We have not tried to pin down its menu, so check its page for what is on today. Budget roughly $12 to $20.
 
 ## Korean BBQ: grill, wrap, repeat
 
@@ -41,7 +41,7 @@ What to order:
 
 Eat it as a wrap: a lettuce leaf, a piece of meat, a dab of sauce, one big bite. Go from plain to sweet, so marinade does not coat the grill early.
 
-Three places in the guide fit this style. [Dosegi Korean BBQ](/guides/bbq-phnom-penh) is in BKK1 and open 11am to midnight, so it suits a late dinner. [Seorae Korean Charcoal BBQ](/guides/bbq-phnom-penh) is on the second floor of AEON Mall. Reviewers like its beef and pork sets, the grilled cheese and the kimchi, and a set is the easy way to share. [Boeung Snor Dae Jang Geum](/guides/bbq-phnom-penh) sits in the Boeung Snor food village across the river, also open until midnight. Expect around $12 to $20 a head at all three.
+Three places in the guide fit this style. [Dosegi Korean BBQ](/places/dosegi-korean-bbq-boeung-keng-kang-bkk) is in BKK1 and open 11am to midnight, so it suits a late dinner. [Seorae Korean Charcoal BBQ](/places/seorae-korean-charcoal-bbq-aeon-mall-phnom-penh-chamkar-mon) is on the second floor of AEON Mall. Reviewers like its beef and pork sets, the grilled cheese and the kimchi, and a set is the easy way to share. [Boeung Snor Dae Jang Geum](/places/boeung-snor-dae-jang-geum-restaurant-chbar-ampov) sits in the Boeung Snor food village across the river, also open until midnight. Expect around $12 to $20 a head at all three.
 
 ## Japanese yakiniku: thin slices, fast cooking
 
@@ -53,13 +53,13 @@ What to order:
 - **A few plates to share.** Mix beef and pork.
 - **Something fresh on the side,** like a salad, to balance the meat.
 
-Two chains and one group in the guide cover this. [Gyu-Kaku](/guides/bbq-phnom-penh) is on Street 370 in BKK1, open 11am to 10pm. You grill at the table, so go with friends and share a few beef sets. [Uraetei Hanare](/guides/bbq-phnom-penh) is on Street 334 in BKK1 and part of the Uraetei group. Plan on around $15 to $25 at both.
+Two chains and one group in the guide cover this. [Gyu-Kaku](/places/gyu-kaku-japanese-bbq-bkk-bkk) is on Street 370 in BKK1, open 11am to 10pm. You grill at the table, so go with friends and share a few beef sets. [Uraetei Hanare](/places/uraetei-hanare-bkk-bkk) is on Street 334 in BKK1 and part of the Uraetei group. Plan on around $15 to $25 at both.
 
-Eating alone? [Yakiniku Like](/guides/bbq-phnom-penh) at TK Avenue in Toul Kork is built around a grill at your own seat. A beef set with rice is the usual order, around $8 to $14, and it is open 10am to 10pm.
+Eating alone? [Yakiniku Like](/places/yakiniku-like-tk-avenue-toul-kork) at TK Avenue in Toul Kork is built around a grill at your own seat. A beef set with rice is the usual order, around $8 to $14, and it is open 10am to 10pm.
 
 ## And one wild card
 
-[Little Rangoon BBQ and Restaurant](/guides/bbq-phnom-penh) is on Street 135 in Toul Tom Poung, open 11am to 11pm. The name hints at Burmese food. We think grilled skewers are a fair bet, but we cannot promise it, so ask when you sit down. It is a casual late dinner for around $6 to $12.
+[Little Rangoon BBQ and Restaurant](/places/little-rangoon-bbq-and-restaurant-chamkar-mon) is on Street 135 in Toul Tom Poung, open 11am to 11pm. The name hints at Burmese food. We think grilled skewers are a fair bet, but we cannot promise it, so ask when you sit down. It is a casual late dinner for around $6 to $12.
 
 ## Tips for any grill
 

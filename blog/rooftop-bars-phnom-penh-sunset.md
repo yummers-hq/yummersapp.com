@@ -26,29 +26,29 @@ In rainy season, evening showers are common. Look at whether a bar has cover, an
 
 The riverside strip is the obvious start. It is flat, easy to reach by tuk-tuk, and full of people having a good time.
 
-[Le Moon Rooftop](/guides/rooftop-bars-phnom-penh) is on Street 154 near the river, open 5pm to midnight. One guide says it opened in 2010, which makes it one of the city's original rooftops. A beer or cocktail should run around $10 to $20.
+[Le Moon Rooftop](/places/le-moon-rooftop-daun-penh) is on Street 154 near the river, open 5pm to midnight. One guide says it opened in 2010, which makes it one of the city's original rooftops. A beer or cocktail should run around $10 to $20.
 
-[Rukkha Sky Bar & Tapas](/guides/rooftop-bars-phnom-penh) is on Sisowath Quay. It serves tapas, so you can eat there instead of moving on. It closes at midnight, or 1am on Friday and Saturday. A cocktail and a few tapas is around $15 to $25.
+[Rukkha Sky Bar & Tapas](/places/rukkha-sky-bar-tapas-daun-penh) is on Sisowath Quay. It serves tapas, so you can eat there instead of moving on. It closes at midnight, or 1am on Friday and Saturday. A cocktail and a few tapas is around $15 to $25.
 
 ## Up high
 
 If you want the big view, go higher.
 
-[Celeste Revolving Skybar](/guides/rooftop-bars-phnom-penh) sits on top of The Penthouse Residence, and it rotates. The skyline slowly turns around you while you sip. Save it for a special night or for guests you want to impress. Expect around $15 to $30 for a cocktail and the view.
+[Celeste Revolving Skybar](/places/celeste-revolving-skybar-chamkar-mon) sits on top of The Penthouse Residence, and it rotates. The skyline slowly turns around you while you sip. Save it for a special night or for guests you want to impress. Expect around $15 to $30 for a cocktail and the view.
 
-[Eclipse Sky Bar](/guides/rooftop-bars-phnom-penh) is on the 23rd floor of Phnom Penh Tower, on Preah Monivong Boulevard. It is open 5pm to 2am, which is late for a rooftop. Come for sunset, then stay. Around $12 to $25 a drink.
+[Eclipse Sky Bar](/places/eclipse-sky-bar-7-makara) is on the 23rd floor of Phnom Penh Tower, on Preah Monivong Boulevard. It is open 5pm to 2am, which is late for a rooftop. Come for sunset, then stay. Around $12 to $25 a drink.
 
 ## Across the river
 
-[Scenery SkyBar & Restaurant](/guides/rooftop-bars-phnom-penh) is on the Chroy Changvar side of the Tonle Sap, so you look back at the skyline instead of standing in it. It serves food, so dinner works. Go before sunset. A drink and a light meal is around $12 to $25.
+[Scenery SkyBar & Restaurant](/places/scenery-skybar-restaurant-phnom-penh-chroy-changvar) is on the Chroy Changvar side of the Tonle Sap, so you look back at the skyline instead of standing in it. It serves food, so dinner works. Go before sunset. A drink and a light meal is around $12 to $25.
 
-[Panorama Sky Bar](/guides/rooftop-bars-phnom-penh) is at The Peninsula hotel, on the 24th floor, with a view over the river to the city. The listed hours look like the hotel's, not the bar's, so check when the bar opens. Expect around $15 to $30 for a cocktail.
+[Panorama Sky Bar](/places/panorama-sky-bar-chroy-changvar) is at The Peninsula hotel, on the 24th floor, with a view over the river to the city. The listed hours look like the hotel's, not the bar's, so check when the bar opens. Expect around $15 to $30 for a cocktail.
 
 ## Hotel and group-friendly
 
-[Altitude Sky Bar](/guides/rooftop-bars-phnom-penh) is at Shangri-La. It is open Tuesday to Sunday from 5pm to 10pm (11pm on Friday and Saturday), and closed on Monday. That is earlier than most, so make it your first stop of the evening. Expect hotel prices, around $20 to $35.
+[Altitude Sky Bar](/places/altitude-sky-bar-chamkar-mon) is at Shangri-La. It is open Tuesday to Sunday from 5pm to 10pm (11pm on Friday and Saturday), and closed on Monday. That is earlier than most, so make it your first stop of the evening. Expect hotel prices, around $20 to $35.
 
-[Khmer Funk Sky Bar](/guides/rooftop-bars-phnom-penh) is on the top floor of the TRIBE hotel near Post Office Square. It serves Mekong-region food, local craft beer and cocktails, with live music or DJs on some nights. It is open 5pm to midnight and good for groups, since you can eat and drink in one place. Around $12 to $22.
+[Khmer Funk Sky Bar](/places/khmer-funk-sky-bar-daun-penh) is on the top floor of the TRIBE hotel near Post Office Square. It serves Mekong-region food, local craft beer and cocktails, with live music or DJs on some nights. It is open 5pm to midnight and good for groups, since you can eat and drink in one place. Around $12 to $22.
 
 ## Tips for a good night
 
