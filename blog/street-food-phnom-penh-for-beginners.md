@@ -32,9 +32,9 @@ Street food keeps its own hours. Some places are for breakfast and finish by lun
 
 **Num banh chok.** Fresh rice noodles with a fish-and-coconut gravy and raw vegetables. It is mostly a morning dish.
 
-**Boklahong.** A green papaya salad: crunchy, sour, salty and a bit spicy. Somphors Boklahong, on Street 358 in BKK1, is a casual spot for it, open 9am to 9pm daily.
+**Boklahong.** A green papaya salad: crunchy, sour, salty and a bit spicy. [Somphors Boklahong](/places/somphors-boklahong-bkk), on Street 358 in BKK1, is a casual spot for it, open 9am to 9pm daily.
 
-**Meatballs.** Phnom Penh loves meatballs, in soup or on skewers. 007 World Meatball, the Bak Touk branch, is a meatball specialist open 10:30am to 9pm.
+**Meatballs.** Phnom Penh loves meatballs, in soup or on skewers. [007 World Meatball](/places/007-007-world-meatball-7-makara), the Bak Touk branch, is a meatball specialist open 10:30am to 9pm.
 
 ## Try a night market
 
@@ -44,9 +44,9 @@ The easy plan: go around sunset, grab a few plates from different stalls, and sh
 
 ## Breakfast and evening spots
 
-Yi Yi Baykordot is near the Central Market (Psar Thom Thmey), open 6am to 3pm. Go early for breakfast. Breakfast places often run out by lunch.
+[Yi Yi Baykordot](/places/yi-yi-baykordot-psar-thom-thmey-daun-penh) is near the Central Market (Psar Thom Thmey), open 6am to 3pm. Go early for breakfast. Breakfast places often run out by lunch.
 
-For an evening bite, 1978 Street Food is on Street 1978 in Sen Sok and opens from 4pm to midnight.
+For an evening bite, [1978 Street Food](/places/1978-street-food-sensok) is on Street 1978 in Sen Sok and opens from 4pm to midnight.
 
 ## How to order without speaking Khmer
 

@@ -51,6 +51,49 @@ const fit = (parts, max = 2) => { let out = ""; for (const s of parts.slice(0, m
 // "Open 11am – 10pm every day." when all seven days read the same, else nothing.
 const sameHours = (hours) => { const h = new Set(hours.map(([, t]) => shortHours(t))); return hours.length === 7 && h.size === 1 ? `${/^open/i.test([...h][0]) ? "" : "Open "}${[...h][0]} every day.` : ""; };
 const headline = (kind, area) => `${kind || "Restaurant"} in ${[area, "Phnom Penh"].filter(Boolean).join(", ")}.`;
+// "a, b and c"
+const listed = (xs) => (xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}`);
+
+// A guide note's "Try the kuy teav." / "Go for grilled meats." sentences are the team's pick of what to order;
+// the place page shows them under What to order and the rest as its opening line.
+const PICK = /^(?:try|go for|order|get the|ask for|don['’]t miss|share)\b/i;
+export const splitNote = (note) => {
+    const s = (note || "").split(/(?<=[.!?])\s+/).filter(Boolean);
+    return { rest: s.filter((x) => !PICK.test(x)).join(" "), pick: s.filter((x) => PICK.test(x)).join(" ") };
+};
+
+// Dishes from public ratings' "Ordered" text ("beef, rice and a stew"), most-named first. A dish shows only when the
+// team named it or two different people did, so one person's free text never lands on the open web on its own.
+export const dishes = (rows, team, max = 6) => {
+    const seen = new Map();
+    for (const { user_id, ordered } of rows) {
+        for (let d of String(ordered || "").split(/[,;\n]/)) {
+            d = d.trim().replace(/^and\s+/i, "").replace(/[.!]+$/, "");
+            if (d.length < 2 || d.length > 50) continue;
+            const e = seen.get(d.toLowerCase()) || { d, who: new Set() };
+            e.who.add(user_id); seen.set(d.toLowerCase(), e);
+        }
+    }
+    return [...seen.values()].filter((e) => e.who.has(team) || e.who.size >= 2)
+        .sort((a, b) => b.who.size - a.who.size).slice(0, max).map((e) => e.d);
+};
+
+// Straight-line distance in km between two { latitude, longitude }.
+const km = (a, b) => {
+    const r = Math.PI / 180, h = Math.sin(((b.latitude - a.latitude) * r) / 2) ** 2
+        + Math.cos(a.latitude * r) * Math.cos(b.latitude * r) * Math.sin(((b.longitude - a.longitude) * r) / 2) ** 2;
+    return 2 * 6371 * Math.asin(Math.sqrt(h));
+};
+// The closest places from every guide, within 3 km, leaving out this place and any already linked (skip).
+export const nearby = (here, guides, skip = [], n = 3) => {
+    if (here.d.latitude == null) return [];
+    const seen = new Set([here.slug, ...skip]);
+    return guides.flatMap((g) => g.items)
+        .filter((x) => x.d.latitude != null && !seen.has(x.slug) && seen.add(x.slug))
+        .map((x) => ({ x, km: km(here.d, x.d) })).filter((o) => o.km <= 3)
+        .sort((a, b) => a.km - b.km).slice(0, n);
+};
+const away = (k) => (k < 1 ? `${Math.max(50, Math.round(k * 20) * 50)} m away` : `${k.toFixed(1)} km away`);
 
 async function rest(path, init = {}) {
     const res = await fetch(`${SUPABASE}/rest/v1/${path}`, {
@@ -161,7 +204,7 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .rate b{font:700 22px Fraunces,serif}
 .rate .big{font-size:40px;line-height:1;color:var(--accent)}
 .rate p{margin:0;color:var(--muted);font-size:14px}
-.dirbtn{display:flex;justify-content:center;margin-top:18px;font-weight:600;font-size:14px;background:var(--ink);color:var(--paper);border-radius:999px;padding:12px 18px}
+.dirbtn{display:flex;justify-content:center;align-self:start;margin-top:18px;font-weight:600;font-size:14px;background:var(--ink);color:var(--paper);border-radius:999px;padding:12px 18px}
 .more{margin-top:28px}
 .more h2{margin-bottom:12px}
 .more-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -271,22 +314,27 @@ function indexPage(found) {
 // The team account's own public review of the place, and how many people liked it from public ratings.
 // Both come through RLS, which already hides private accounts, hidden and blocked ratings and Want to try (0016, 0032, 0066, 0081).
 async function placeFacts(g, id) {
-    const [mine, liked] = await Promise.all([
+    const [mine, liked, ordered] = await Promise.all([
         rest(`user_restaurants?select=review&user_id=eq.${g.owner}&restaurant_id=eq.${id}&is_public=eq.true&sentiment=not.is.null&limit=1`).then((r) => r.json()),
         rest(`user_restaurants?select=id&restaurant_id=eq.${id}&sentiment=eq.liked&is_public=eq.true`, { method: "HEAD", headers: { Prefer: "count=exact" } }),
+        rest(`user_restaurants?select=user_id,ordered&restaurant_id=eq.${id}&is_public=eq.true&sentiment=not.is.null&ordered=not.is.null&limit=200`).then((r) => r.json()),
     ]);
-    return { review: (mine[0]?.review || "").trim(), liked: Number(liked.headers.get("content-range")?.split("/")[1]) || 0 };
+    return { review: (mine[0]?.review || "").trim(), liked: Number(liked.headers.get("content-range")?.split("/")[1]) || 0, dishes: dishes(ordered, g.owner) };
 }
 
 async function placePage(slug, all) {
     const g = all.find((x) => x.items.some((it) => it.slug === slug));
     if (!g) return null;
     const it = g.items.find((x) => x.slug === slug), r = it.restaurants, d = it.d, name = nameOf(it);
-    const { review, liked } = d.id ? await placeFacts(g, d.id) : { review: "", liked: 0 };
+    const { review, liked, dishes: ate } = d.id ? await placeFacts(g, d.id) : { review: "", liked: 0, dishes: [] };
     const path = `/places/${slug}`, fact = PLACES[d.id] || {}, kind = fact.kind || cuisineOf(r), area = d.neighbourhood || r.district;
     const inGuides = all.filter((x) => x.items.some((i) => i.slug === slug));
     const hours = (d.opening_hours?.weekday_text || []).map((l) => l.split(/: (.*)/s)).filter((p) => p[1]);
-    const description = firstSentence(review) || fit([headline(kind, area), sameHours(hours), `Picked by the yummers team for ${g.title}.`].filter(Boolean), 3);
+    const { rest: lede, pick } = splitNote(it.note);
+    // Searches ask for a place's "menu" and hours: the title names what the page answers, and only that.
+    const answers = [(pick || ate.length) && "what to order", hours.length && "hours", fact.price && "prices"].filter(Boolean);
+    const description = fit([firstSentence(review) || headline(kind, area), pick || (ate.length && `People order the ${listed(ate.slice(0, 3))}.`),
+        sameHours(hours), fact.price && `About ${fact.price} a person.`, `Picked by the yummers team for ${g.title}.`].filter(Boolean), 5);
     const today = new Date().toLocaleDateString("en-US", { weekday: "long", timeZone: "Asia/Phnom_Penh" });
     const where = d.latitude != null && d.longitude != null ? `${d.latitude},${d.longitude}` : `${name} Phnom Penh`;
     const jsonld = JSON.stringify({
@@ -297,18 +345,23 @@ async function placePage(slug, all) {
     });
     const chips = [fact.kind, fact.price && `About ${fact.price} a person`, fact.when, liked && `${liked} ${liked === 1 ? "person" : "people"} liked it on yummers`].filter(Boolean);
     const at = g.items.indexOf(it), more = [1, 2, 3].map((n) => g.items[(at + n) % g.items.length]).filter((x) => x !== it);
+    const near = nearby(it, all, more.map((x) => x.slug));
+    const tile = (x, m) => `<li><a href="/places/${x.slug}"><span class="ph">${img(coverOf(x), 400, 300)}</span><b>${esc(nameOf(x))}</b><span class="m">${esc(m)}</span></a></li>`;
     const body = `${cover(coverOf(it), metaOf(it), name, `In ${g.title}`)}
 <div class="in"><div class="pl">
-${it.note ? `<p class="lede">${esc(it.note)}</p>` : ""}
+${lede ? `<p class="lede">${esc(lede)}</p>` : ""}
 ${chips.length ? `<div class="glance">${chips.map((c) => `<span>${esc(c)}</span>`).join("")}</div>` : ""}
+${pick || ate.length ? `<section class="box"><h2>What to order</h2>${pick ? `<p class="wu">${esc(pick)}</p>` : ""}${ate.length ? `<p class="wu">People on yummers ordered ${esc(listed(ate))}.</p>` : ""}</section>` : ""}
 ${review ? `<section class="box"><h2>From the yummers team</h2><p class="wu">${esc(review)}</p></section>` : ""}
 <a class="dirbtn" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(where)}" rel="noopener">Directions</a>
 <div class="facts"><section class="box"><h2>Find it</h2>${d.address ? `<div>${esc(cleanAddress(d.address))}</div>` : ""}</section>
 ${hours.length ? `<section class="box"><h2>Opening hours</h2><dl class="hours">${hours.map(([day, h]) => { const c = day === today ? ' class="today"' : ""; return `<dt${c}>${esc(day)}</dt><dd${c}>${esc(shortHours(h))}</dd>`; }).join("")}</dl></section>` : ""}
 <section class="box"><h2>In these guides</h2>${inGuides.map((x) => `<a class="pl-in" href="/guides/${x.slug}">${img(guideCover(x), 112, 112)}<div><b>${esc(x.title)}</b><div class="meta">${x.items.length} places</div></div></a>`).join("")}</section></div>
-<section class="more"><h2>More in ${esc(g.title)}</h2><ul class="more-grid">${more.map((x) => `<li><a href="/places/${x.slug}"><span class="ph">${img(coverOf(x), 400, 300)}</span><b>${esc(nameOf(x))}</b><span class="m">${esc(metaOf(x))}</span></a></li>`).join("")}</ul><a class="more-all" href="/guides/${g.slug}">See all ${g.items.length} places →</a></section>
+${near.length ? `<section class="more"><h2>Near here</h2><ul class="more-grid">${near.map((o) => tile(o.x, dotted([metaOf(o.x).split(" · ")[0], away(o.km)]))).join("")}</ul></section>` : ""}
+<section class="more"><h2>More in ${esc(g.title)}</h2><ul class="more-grid">${more.map((x) => tile(x, metaOf(x))).join("")}</ul><a class="more-all" href="/guides/${g.slug}">See all ${g.items.length} places →</a></section>
 </div></div>`;
-    return layout(`${name}${area ? `, ${area}` : ""} | yummers`, description, path, jsonld, body);
+    const said = listed(answers);
+    return layout(`${name}${area ? `, ${area}` : ""}${said ? `: ${said[0].toUpperCase()}${said.slice(1)}` : ""} | yummers`, description, path, jsonld, body);
 }
 
 // Beta unreachable: the site's shell, a way to retry and a way on that needs no data. Never cached.

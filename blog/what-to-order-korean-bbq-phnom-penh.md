@@ -54,14 +54,14 @@ If you cannot decide, this works almost anywhere:
 
 Prices change, so check each place's page before you go. These are all in our [Korean guide](/guides/korean-restaurants-phnom-penh).
 
-- **Bornga (BKK1).** On Street 352, open 11am to 10pm every day. You grill beef or pork at the table, with kimchi on the side. Around $12 to $20 a head.
-- **TK Dae Jang Geum (Toul Kork).** On Street 592, open 11am to 10pm. Order meat plates, rice and a stew. Around $12 to $18 a head.
-- **Boeung Snor Dae Jang Geum.** The second branch, in the Boeung Snor food village. It is roomy, so it suits a big group, and it opens until midnight.
-- **Seorae Korean Charcoal BBQ (AEON Mall).** Charcoal barbecue on the second floor. Reviewers like the beef and pork sets and the kimchi. Weekend lunch gets busy.
-- **Sookdal (BKK1).** One listing calls it a premium-cuts spot. Save it for a treat dinner. Maybe $18 to $30.
-- **HunMinJeongEum Korean BBQ Buffet (BKK1).** A buffet, open until midnight. Good if you cannot agree on what to order. Around $15 to $22.
+- **[Bornga](/places/bornga-bkk) (BKK1).** On Street 352, open 11am to 10pm every day. You grill beef or pork at the table, with kimchi on the side. Around $12 to $20 a head.
+- **[TK Dae Jang Geum](/places/tk-dae-jang-geum-restaurant-toul-kork) (Toul Kork).** On Street 592, open 11am to 10pm. Order meat plates, rice and a stew. Around $12 to $18 a head.
+- **[Boeung Snor Dae Jang Geum](/places/boeung-snor-dae-jang-geum-restaurant-chbar-ampov).** The second branch, in the Boeung Snor food village. It is roomy, so it suits a big group, and it opens until midnight.
+- **[Seorae Korean Charcoal BBQ](/places/seorae-korean-charcoal-bbq-aeon-mall-phnom-penh-chamkar-mon) (AEON Mall).** Charcoal barbecue on the second floor. Reviewers like the beef and pork sets and the kimchi. Weekend lunch gets busy.
+- **[Sookdal](/places/sookdal-korean-restaurant-phnom-penh-bkk) (BKK1).** One listing calls it a premium-cuts spot. Save it for a treat dinner. Maybe $18 to $30.
+- **[HunMinJeongEum Korean BBQ Buffet](/places/hunminjeongeum-korean-bbq-buffet-bkk) (BKK1).** A buffet, open until midnight. Good if you cannot agree on what to order. Around $15 to $22.
 
-Not feeling smoke tonight? [Jaru](/guides/korean-restaurants-phnom-penh) and Silla Korean Restaurant serve calmer lunches, with stews and rice bowls. Jaru closes at 9pm, so do not turn up late.
+Not feeling smoke tonight? [Jaru](/places/jaru-korean-restaurant-bkk) and [Silla Korean Restaurant](/places/silla-korean-restaurant-toul-kork) serve calmer lunches, with stews and rice bowls. Jaru closes at 9pm, so do not turn up late.
 
 ## Smoke and good manners
 

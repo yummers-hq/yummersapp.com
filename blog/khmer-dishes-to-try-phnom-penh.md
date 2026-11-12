@@ -18,7 +18,7 @@ One tip first. Order a few dishes and share them with plain rice. That is how a 
 
 A creamy coconut curry, traditionally made with freshwater fish and steamed in banana leaf. It is mild and fragrant, with a soft, mousse-like texture. Most visitors order it first.
 
-**Try it at:** Malis, Titanic Restaurant, Tbal Khmer or Khmer Women's Food. Our guide mentions amok at each of them.
+**Try it at:** [Malis](/places/malis-restaurant-norodom-blvd-chamkar-mon), [Titanic Restaurant](/places/titanic-restaurant-daun-penh), [Tbal Khmer](/places/tbal-khmer-bkk) or [Khmer Women's Food](/places/khmer-women-food-chamkar-mon). Our guide mentions amok at each of them.
 
 ## 2. Lok lak
 
@@ -30,7 +30,7 @@ Marinated beef, stir-fried fast and served with rice and salad. The dip is lime 
 
 A noodle soup, usually with a pork or beef broth, and a classic breakfast. Add herbs, lime and chilli at the table.
 
-**Try it at:** Malis, which our guide suggests for kuy teav. For a simple bowl, go to KohKong Khmernoodle in Boeung Proluet. It opens at 7am and is usually cheap.
+**Try it at:** Malis, which our guide suggests for kuy teav. For a simple bowl, go to [KohKong Khmernoodle](/places/kohkong-khmernoodle-7-makara) in Boeung Proluet. It opens at 7am and is usually cheap.
 
 ## 4. Lort cha
 
@@ -42,13 +42,13 @@ Short, fat rice noodles stir-fried with chives, bean sprouts and often a fried e
 
 Kampot pepper is Cambodia's most famous spice. Pork belly cooked with it is rich and peppery.
 
-**Try it at:** Romdeng. It is run by Mith Samlanh, a social enterprise that trains young people. It is also known for adventurous snacks like fried tarantula, if you are brave. Check the hours before you go.
+**Try it at:** [Romdeng](/places/romdeng-restaurant-daun-penh). It is run by Mith Samlanh, a social enterprise that trains young people. It is also known for adventurous snacks like fried tarantula, if you are brave. Check the hours before you go.
 
 ## 6. A Khmer soup
 
 Soups are a big part of a Khmer table. They are usually light and sour or herby, and they go well with rice.
 
-**Try it at:** Sovanna II Restaurant, an evening place on Street 21 that opens at 4pm. Our guide says to look for grilled meats and a Khmer soup there.
+**Try it at:** [Sovanna II Restaurant](/places/sovanna-ii-restaurant-chamkar-mon), an evening place on Street 21 that opens at 4pm. Our guide says to look for grilled meats and a Khmer soup there.
 
 ## Three to look for on your own
 
@@ -66,7 +66,7 @@ Prahok is fermented fish paste, and Cambodians love it. It can smell strong. You
 
 ## Where to start
 
-Only one night? Pick a polished room like Malis or Kravanh Restaurant, a French colonial villa with courtyard seating. Order amok, lok lak and a soup. Prices there run higher, around $15 to $25 at Malis and roughly $20 to $35 at Kravanh.
+Only one night? Pick a polished room like Malis or [Kravanh Restaurant](/places/kravanh-restaurant-daun-penh), a French colonial villa with courtyard seating. Order amok, lok lak and a soup. Prices there run higher, around $15 to $25 at Malis and roughly $20 to $35 at Kravanh.
 
 Got a week? Add the home-style places, like Khmer Women's Food and Tbal Khmer, where you will usually spend around $6 to $12 each. Then add a noodle breakfast at KohKong Khmernoodle.
 
