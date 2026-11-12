@@ -165,3 +165,17 @@
         layout();
     }
 })();
+
+// Launch video: swap the poster for the player on click, so nothing loads until asked
+document.querySelectorAll(".video-play").forEach(function (b) {
+    b.addEventListener("click", function () {
+        var box = document.createElement("div");
+        box.className = "player";
+        var v = document.createElement("video");
+        v.src = b.dataset.video; v.controls = true; v.autoplay = true; v.playsInline = true;
+        v.setAttribute("aria-label", b.getAttribute("aria-label")); // already in the chosen language
+        box.appendChild(v);
+        b.replaceWith(box);
+        v.focus();
+    });
+});
