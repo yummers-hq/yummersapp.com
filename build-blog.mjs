@@ -72,7 +72,7 @@ function page({ title, description, path, type, jsonld, main, mainClass, image }
 <link rel="apple-touch-icon" href="/assets/logo.png">
 <script src="/theme.js"></script>
 <link rel="stylesheet" href="/fonts.css">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=20261114">
 <script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, "\\u003c")}</script>
 </head>
 <body><a class="skip" href="#main">Skip to content</a>
