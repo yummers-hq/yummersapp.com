@@ -1,6 +1,6 @@
 // Runs on Cloudflare in front of GitHub Pages. Clients that ask for Markdown
 // (Accept: text/markdown) get the homepage as llms.txt and a short Markdown
-// "not found" page; POST /api/signup takes a beta sign-up, and /api/confirm and
+// "not found" page; POST /api/signup takes an Android waitlist sign-up, and /api/confirm and
 // /api/unsubscribe answer the links in its emails; everything else passes
 // through unchanged.
 import { guides, places, sitemap, usable } from "./guides.js";
@@ -123,14 +123,11 @@ const CONFIRM = {
     },
 };
 
-// The Melbourne waitlist (yummers#786): English only, and its own segment. Its
-// strings replace the beta's where they differ; the rest (leave*, left*, expired*,
-// verifyButton, regards, role) are shared.
-const ELSEWHERE = "Somewhere else in Melbourne";
-const STATES = ["Regional Victoria", "New South Wales", "Queensland", "South Australia", "Western Australia", "Tasmania", "Australian Capital Territory", "Northern Territory"];
+// The Melbourne list (yummers#786, closed 14 Nov: Melbourne opens on iPhone): English only, and its
+// own segment. Its form is gone, but confirm links and one-tap links already emailed still work. Its
+// strings replace the beta's where they differ; the rest (leave*, left*, expired*, verifyButton,
+// regards, role) are shared.
 const MELBOURNE = {
-    suburbs: ["CBD", "Carlton", "Fitzroy", "Collingwood", "Richmond", "Brunswick", "South Yarra", "Footscray", "Sunshine",
-        "St Albans", "Springvale", "Noble Park", "Dandenong", "Clayton", "Box Hill", ELSEWHERE, ...STATES],
     subject: "You're on the yummers Melbourne list",
     note: [
         "Hi,",
@@ -140,12 +137,6 @@ const MELBOURNE = {
         "Other suburbs are coming next: Carlton, Southbank, Box Hill, Springvale and the rest. The suburbs where the most people join go first.",
         "We'll invite the first people from this list to try it on iPhone soon. If you've got a CBD spot we must have, just reply and let me know!",
     ],
-    verifySubject: "Confirm your email for the yummers Melbourne list",
-    verifyNote: [
-        "Hi,",
-        "Thanks for joining the yummers Melbourne list. Press the link below to confirm it's your email, and you're on the list.",
-        "After that, we'll send your invite link in a second email. If you use Gmail, look in the Promotions tab.",
-    ],
     joinTitle: "Join the yummers Melbourne list?",
     joinedTitle: "You're on the Melbourne list!",
     joinedText: "We'll write when there's news. Want it here sooner? Send your invite link to friends who'd use it.",
@@ -154,6 +145,62 @@ const MELBOURNE = {
     oneTapTitle: "Adding you to the Melbourne list…",
     oneTapText: "One moment. If nothing happens, press Join.",
     oneTapButton: "Join",
+};
+
+// The Android waitlist (14 Nov): its own segment, and the beta's strings with these laid over them,
+// in the language the page was showing.
+const ANDROID = {
+    en: {
+        subject: "You're on the yummers Android list",
+        note: [
+            "Hi,",
+            "Thanks for joining the yummers Android list. I'm Sovithyea, one of a team of seven building yummers for Cambodia: an app to rate the places you've eaten, keep lists of where to go next, and see where your friends are eating.",
+            "yummers is on iPhone now, and Android is next. We'll email you as soon as it's ready for you to try.",
+            "If there's a place you think everyone should try, hit reply and tell me. I read every email.",
+        ],
+        verifySubject: "Confirm your email for the yummers Android list",
+        verifyNote: [
+            "Hi,",
+            "Thanks for joining the yummers Android list. Press the link below to confirm it's your email, and you're on the list.",
+        ],
+        joinTitle: "Join the yummers Android list?",
+        joinedTitle: "You're on the Android list!",
+        joinedText: "We've sent you a short welcome note, and we'll write when yummers is on Android.",
+    },
+    km: {
+        subject: "អរគុណដែលបានចូលរួមបញ្ជី Android របស់ yummers",
+        note: [
+            "សួស្តី,",
+            "អរគុណដែលបានចូលរួមបញ្ជី Android របស់ yummers។ ខ្ញុំឈ្មោះ Sovithyea ជាសមាជិកម្នាក់ក្នុងក្រុមប្រាំពីរនាក់ ដែលកំពុងបង្កើត yummers សម្រាប់ប្រទេសកម្ពុជា៖ កម្មវិធីសម្រាប់វាយតម្លៃកន្លែងដែលអ្នកបានញ៉ាំ កត់ចំណាំកន្លែងដែលចង់ទៅលើកក្រោយ និងមើលថាមិត្តភក្តិរបស់អ្នកកំពុងញ៉ាំនៅឯណា។",
+            "ឥឡូវនេះ yummers មានលើ iPhone ហើយ ហើយ Android គឺបន្ទាប់។ យើងនឹងផ្ញើអ៊ីមែលទៅអ្នក ភ្លាមៗនៅពេលវារួចរាល់សម្រាប់អ្នកសាកល្បង។",
+            "បើមានកន្លែងណាដែលអ្នកគិតថាគ្រប់គ្នាគួរតែសាកល្បង សូមឆ្លើយតបមកប្រាប់ខ្ញុំ។ ខ្ញុំអានរាល់អ៊ីមែល។",
+        ],
+        verifySubject: "បញ្ជាក់អ៊ីមែលរបស់អ្នក សម្រាប់បញ្ជី Android របស់ yummers",
+        verifyNote: [
+            "សួស្តី,",
+            "អរគុណដែលបានចូលរួមបញ្ជី Android របស់ yummers។ សូមចុចតំណខាងក្រោម ដើម្បីបញ្ជាក់ថាជាអ៊ីមែលរបស់អ្នក ហើយអ្នកនឹងមានឈ្មោះក្នុងបញ្ជី។",
+        ],
+        joinTitle: "ចូលក្នុងបញ្ជី Android របស់ yummers?",
+        joinedTitle: "អ្នកមានឈ្មោះក្នុងបញ្ជី Android ហើយ!",
+        joinedText: "យើងបានផ្ញើសារស្វាគមន៍ខ្លីមួយទៅអ្នកហើយ។ យើងនឹងផ្ញើអ៊ីមែលម្ដងទៀត នៅពេល yummers មានលើ Android។",
+    },
+    fr: {
+        subject: "Vous êtes sur la liste Android de yummers",
+        note: [
+            "Bonjour,",
+            "Merci d'avoir rejoint la liste Android de yummers. Je m'appelle Sovithyea et je fais partie de l'équipe de sept personnes qui construit yummers pour le Cambodge : une appli pour noter les endroits où vous avez mangé, garder des listes de vos prochaines adresses et voir où mangent vos amis.",
+            "yummers est disponible sur iPhone, et Android est la prochaine étape. Nous vous écrirons dès que l'appli sera prête à être essayée.",
+            "S'il y a un endroit que tout le monde devrait essayer selon vous, répondez à cet e-mail pour me le dire. Je lis tous les e-mails.",
+        ],
+        verifySubject: "Confirmez votre e-mail pour la liste Android de yummers",
+        verifyNote: [
+            "Bonjour,",
+            "Merci d'avoir rejoint la liste Android de yummers. Appuyez sur le lien ci-dessous pour confirmer votre adresse e-mail, et vous serez sur la liste.",
+        ],
+        joinTitle: "Rejoindre la liste Android de yummers ?",
+        joinedTitle: "C'est noté, vous êtes sur la liste Android !",
+        joinedText: "Nous vous avons envoyé un petit mot de bienvenue. Nous vous écrirons dès que yummers sera disponible sur Android.",
+    },
 };
 
 const NAME = "Sovithyea Prach";
@@ -217,12 +264,8 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 // An invite code: 8 lowercase letters and digits. It is not the Resend contact id,
 // which is the unsubscribe key.
-const CODE = /^[a-z0-9]{8}$/;
 const newCode = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => "0123456789abcdefghijklmnopqrstuvwxyz"[b % 36]).join("");
 const inviteLink = (code) => `https://yummersapp.com/melbourne?ref=${code}`;
-
-// English with the Melbourne strings laid over it.
-const melbourneStrings = () => ({ t: { ...CONFIRM.en, ...MELBOURNE }, lang: "en" });
 
 // The strings for a form's or link's lang, falling back to English.
 function language(lang) {
@@ -230,7 +273,15 @@ function language(lang) {
     return { t: known ? CONFIRM[lang] : CONFIRM.en, lang: known ? lang : "en" };
 }
 
-// The homepage's beta sign-up form. Checks the Turnstile token and emails a link
+// The strings for a list: English with Melbourne's laid over it, the language's with Android's
+// laid over it, else (the beta, for links sent before 14 Nov) the language's own.
+function listStrings(list, lang) {
+    if (list === "melbourne") return { t: { ...CONFIRM.en, ...MELBOURNE }, lang: "en" };
+    const s = language(lang);
+    return list === "android" ? { t: { ...s.t, ...ANDROID[s.lang] }, lang: s.lang } : s;
+}
+
+// The homepage's Android waitlist form. Checks the Turnstile token and emails a link
 // to confirm the address; nothing joins the list until it's pressed, so nobody can
 // sign up someone else (#46). A pending sign-up waits in KV for 7 days.
 async function signup(request, env) {
@@ -239,18 +290,8 @@ async function signup(request, env) {
     if (email.length > 254 || !/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email)) {
         return new Response(null, { status: 400 });
     }
-
-    const melbourne = form.get("list") === "melbourne";
-    let suburb = String(form.get("suburb") || "");
-    // The Melbourne form's extra fields are checked here, not trusted from the page.
-    if (melbourne && (!MELBOURNE.suburbs.includes(suburb) || !form.get("adult"))) return new Response(null, { status: 400 });
-    if (melbourne && suburb === ELSEWHERE) {
-        const other = String(form.get("suburb_other") || "").trim();
-        if (!/^[\p{L} '’.-]{1,60}$/u.test(other)) return new Response(null, { status: 400 });
-        suburb = `Elsewhere: ${other}`;
-    }
-    // A malformed ref is dropped, so the sign-up still goes through.
-    const ref = String(form.get("ref") || "");
+    // The iPhone beta and Melbourne forms are gone: a stale cached page posting one gets a 400.
+    if (form.get("list") !== "android") return new Response(null, { status: 400 });
 
     const check = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
         method: "POST",
@@ -266,13 +307,12 @@ async function signup(request, env) {
 
     // One confirm email a day per address, so the form can't flood an inbox. The
     // answer is the same either way, so it doesn't show who has signed up.
-    const sent = `sent:${melbourne ? "melbourne:" : ""}${email}`;
+    const sent = `sent:${email}`;
     if (await env.SIGNUPS.get(sent)) return new Response(null, { status: 204 });
     await env.SIGNUPS.put(sent, "1", { expirationTtl: 86400 });
     const token = crypto.randomUUID();
-    const pending = { email, ...(melbourne && { list: "melbourne", suburb, ref: CODE.test(ref) ? ref : "" }) };
-    await env.SIGNUPS.put(`confirm:${token}`, JSON.stringify(pending), { expirationTtl: 7 * 86400 });
-    const { t, lang } = melbourne ? melbourneStrings() : language(String(form.get("lang")));
+    await env.SIGNUPS.put(`confirm:${token}`, JSON.stringify({ email, list: "android" }), { expirationTtl: 7 * 86400 });
+    const { t, lang } = listStrings("android", String(form.get("lang")));
     const link = `https://yummersapp.com/api/confirm?token=${token}&lang=${lang}`;
     // The same plain note as the welcome one, with the link as its last paragraph.
     const note = (last) => ({ ...t, subject: t.verifySubject, note: [...t.verifyNote, last], offList: t.verifyIgnore });
@@ -299,10 +339,10 @@ async function confirm(request, env, ctx, url) {
     const token = url.searchParams.get("token") || "";
     const raw = UUID.test(token) && await env.SIGNUPS.get(`confirm:${token}`);
     if (!raw) return page(lang, t.expiredTitle, t.expiredText);
-    // Sign-ups pending from before the Melbourne list are plain email strings.
+    // Sign-ups pending from before the Melbourne list are plain email strings (the beta list).
     const pending = raw.startsWith("{") ? JSON.parse(raw) : { email: raw };
     const m = pending.list === "melbourne";
-    const s = m ? melbourneStrings() : { t, lang };
+    const s = listStrings(pending.list, url.searchParams.get("lang"));
     if (request.method !== "POST") return page(s.lang, s.t.joinTitle, s.t.joinText, s.t.verifyButton);
     const code = await join(env, ctx, pending, s.t, s.lang);
     if (!code) return new Response(null, { status: 502 });
@@ -316,7 +356,7 @@ async function confirm(request, env, ctx, url) {
 // "You're on the Melbourne list!" (owner, 5 Nov); mail scanners open links but don't run scripts, so
 // they stop here and join nobody. Without scripts, the person presses Join.
 async function joinMelbourne(request, env, ctx, url) {
-    const { t, lang } = melbourneStrings();
+    const { t, lang } = listStrings("melbourne");
     const id = url.searchParams.get("id") || "";
     if (!UUID.test(id)) return page(lang, t.expiredTitle, t.expiredText);
     if (request.method !== "POST") return page(lang, t.oneTapTitle, t.oneTapText, t.oneTapButton, `<script src="/autosubmit.js" defer></script>`);
@@ -327,8 +367,8 @@ async function joinMelbourne(request, env, ctx, url) {
     return page(lang, t.joinedTitle, t.joinedText, null, inviteBlock(t, code));
 }
 
-// Saves a confirmed email as a Resend contact in the beta sign-up segment (or the
-// Melbourne one, with its suburb, invite code and inviter as contact properties),
+// Saves a confirmed email as a Resend contact in the Android segment (or, for links sent before
+// 14 Nov, the beta one, or the Melbourne one with its suburb, invite code and inviter as properties),
 // and sends a new contact the welcome note. Answers true, or for Melbourne the
 // contact's invite code, or false when Resend refused.
 async function join(env, ctx, { email, list, suburb, ref }, t, lang) {
@@ -344,7 +384,8 @@ async function join(env, ctx, { email, list, suburb, ref }, t, lang) {
     // An existing contact keeps the code (and inviter) it already has.
     const had = m && old?.properties?.invite_code?.value;
     const code = m && (had || newCode());
-    const segment = m ? env.MELBOURNE_SEGMENT_ID : env.SEGMENT_ID;
+    // An Android link with ANDROID_SEGMENT_ID unset must fail (502), never fall back to the beta segment.
+    const segment = list ? { melbourne: env.MELBOURNE_SEGMENT_ID, android: env.ANDROID_SEGMENT_ID }[list] : env.SEGMENT_ID;
     const properties = m && { suburb, ...(!had && { invite_code: code, ...(ref && { invited_by: ref }) }) };
     let res;
     if (exists) {

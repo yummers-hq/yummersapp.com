@@ -29,8 +29,7 @@
         go(target);
     });
 
-    // A link from another page (/#launch on the privacy page's Join button, or
-    // an old shared link) lands on its section; the # is then dropped from the
+    // A link from another page (/#launch, an old shared link) lands on its section; the # is then dropped from the
     // address bar. This script runs before the browser's own jump to the #, and
     // dropping it cancels that jump, so scroll here instead.
     if (location.hash) {
@@ -40,47 +39,22 @@
     }
 })();
 
-// Homepage: the form waits behind "I'm in Cambodia" (without this script it just shows).
+// Homepage: the Android list form. Turnstile loads only when the visitor first touches the form
+// (#132): its frame logs CSP errors under Cloudflare's own policy, so a page that is only read
+// logs nothing. Explicit render, since inline script is banned.
 (function () {
-    var cambodia = document.getElementById("choose-cambodia");
     var form = document.getElementById("signup");
-    if (!cambodia || !form) return;
-    form.hidden = true;
-    // Turnstile loads only now: its frame logs CSP errors under Cloudflare's own policy (#132),
-    // so visitors who never open the form never see them. Explicit render, since inline script is banned.
-    cambodia.addEventListener("click", function () {
-        form.hidden = false;
-        form.elements.email.focus();
+    if (!form) return;
+    var error = form.querySelector(".signup-error");
+    form.addEventListener("focusin", function load() {
+        form.removeEventListener("focusin", load);
         var box = form.querySelector(".cf-turnstile");
-        if (box.dataset.loading) return;
-        box.dataset.loading = "1";
         var api = document.createElement("script");
         api.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
         api.onload = function () {
             window.turnstile.render(box, { sitekey: box.dataset.sitekey, size: "flexible", theme: "auto", appearance: "always" });
         };
         document.head.appendChild(api);
-    });
-})();
-
-// Beta and Melbourne sign-up: sends the form to the Worker (/api/signup) and shows the
-// answer in place. The Turnstile bot check needs JavaScript anyway.
-(function () {
-    var form = document.getElementById("signup");
-    if (!form) return;
-    var error = form.querySelector(".signup-error");
-    // The Melbourne page: an invite link's ?ref= goes along with the sign-up.
-    var ref = new URLSearchParams(location.search).get("ref") || "";
-    if (form.elements.ref && /^[a-z0-9]{8}$/.test(ref)) {
-        form.elements.ref.value = ref;
-        document.getElementById("invited").hidden = false;
-    }
-    // Melbourne: "Somewhere else" asks which suburb.
-    var other = form.querySelector(".signup-other");
-    if (other) form.elements.suburb.addEventListener("change", function () {
-        var asks = this.value === "Somewhere else in Melbourne";
-        other.hidden = !asks;
-        form.elements.suburb_other.required = asks;
     });
     form.addEventListener("submit", function (e) {
         e.preventDefault();

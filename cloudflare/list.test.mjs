@@ -68,5 +68,5 @@ assert.equal(fav.headers.get("Location"), "https://yummersapp.com/assets/favicon
 
 // The dead-list page (404.html + share.js): the message shows with two ways on, whether the list is missing or the lookup failed.
 const dead = readFileSync(new URL("../404.html", import.meta.url), "utf8"), draw = readFileSync(new URL("../share.js", import.meta.url), "utf8");
-assert.ok(dead.includes('<a class="button" href="/guides">See what\'s good in Phnom Penh</a>') && dead.includes('href="/#launch">Join the iPhone beta</a>'));
+assert.ok(dead.includes('<a class="button" href="/guides">See what\'s good in Phnom Penh</a>') && dead.includes('href="/beta">Join the iPhone beta</a>'));
 assert.ok(draw.includes('$("ways").hidden = false') && draw.includes("private or doesn't exist") && draw.includes("Couldn't load this list"));

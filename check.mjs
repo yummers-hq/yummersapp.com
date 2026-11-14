@@ -64,8 +64,8 @@ check("homepage still returns HTML to browsers", home.type.startsWith("text/html
 const md404 = await get("/no-such-page", "text/markdown");
 check("unknown path returns a Markdown 404 linking to llms.txt",
     md404.status === 404 && md404.type.startsWith("text/markdown") && md404.body.includes("/llms.txt"));
-const badSignup = await fetch(`${base}/api/signup`, { method: "POST", body: new URLSearchParams({ email: "not-an-email" }) });
-check("the beta sign-up refuses a bad email", badSignup.status === 400);
+const badSignup = await fetch(`${base}/api/signup`, { method: "POST", body: new URLSearchParams({ email: "not-an-email", list: "android" }) });
+check("the Android sign-up refuses a bad email", badSignup.status === 400);
 
 // The Worker's security headers (#48), on a page, a share link and an API answer.
 for (const res of [await fetch(base + "/"), await fetch(base + "/l/abcdefgh/x"), badSignup]) {
