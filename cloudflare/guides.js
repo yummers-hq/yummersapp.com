@@ -150,7 +150,7 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 <link rel="apple-touch-icon" href="/assets/logo.png">
 <script src="/theme.js"></script>
 <link rel="stylesheet" href="/fonts.css">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=20261114">
 <style>
 .g{padding-bottom:72px}
 .out{padding-top:56px}.out h1{font-size:clamp(28px,8vw,44px)}
