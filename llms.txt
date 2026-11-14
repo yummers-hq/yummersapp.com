@@ -1,6 +1,6 @@
 # yummers
 
-> yummers is a social food app for Cambodia. People rate the restaurants, cafés and street food places they've eaten at, make and share lists of where to eat, and follow their friends' taste. It is still in the making: early versions are being tested, and it is not yet on the App Store or Google Play. It was called HungryRaccoon until October 2026, and hungryraccoonapp.com redirects here.
+> yummers is a social food app for Cambodia. People rate the restaurants, cafés and street food places they've eaten at, make and share lists of where to eat, and follow their friends' taste. It is still in the making: early versions are being tested, and the iPhone beta is open to join at https://yummersapp.com/beta (for Phnom Penh and Melbourne; in Australia, you need to be 18 or older), and it is not yet on the App Store or Google Play. An Android waitlist is on the homepage. It was called HungryRaccoon until October 2026, and hungryraccoonapp.com redirects here.
 
 yummers is a consumer app for iPhone and Android, not a developer service. It has no public API, no booking or delivery, and covers Cambodia only.
 

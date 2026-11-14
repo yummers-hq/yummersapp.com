@@ -346,43 +346,6 @@ em {
     margin: 32px 0 22px
 }
 
-/* Cambodia or Australia, above the beta form (site.js hides the form until Cambodia). */
-.choose {
-    margin-top: 34px
-}
-
-.choose-q {
-    font-weight: 600
-}
-
-.choose-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0 14px
-}
-
-.closing .choose .button {
-    border: 0;
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    margin-top: 14px
-}
-
-.closing .choose .button-outline {
-    background: transparent;
-    color: var(--ink);
-    box-shadow: inset 0 0 0 2px var(--ink)
-}
-
-.closing .choose .button-outline:hover {
-    background: var(--accent);
-    color: var(--cream);
-    box-shadow: none
-}
-
 .signup {
     max-width: 400px;
     margin: 34px auto 28px
@@ -394,9 +357,7 @@ em {
     margin-bottom: 10px
 }
 
-.signup input[type=email],
-.signup input[type=text],
-.signup select {
+.signup input[type=email] {
     width: 100%;
     font: inherit;
     font-size: 16px;
@@ -407,38 +368,6 @@ em {
     padding: 15px 20px
 }
 
-/* The Melbourne form (melbourne.html): the suburb picker gets its own chevron
-   (two gradients, so it follows the theme), then the optional suburb box and the age tick. */
-.signup select {
-    appearance: none;
-    padding-right: 48px;
-    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
-    background-position: calc(100% - 26px) 50%, calc(100% - 20px) 50%;
-    background-size: 6px 6px;
-    background-repeat: no-repeat
-}
-
-.signup-label~.signup-label,
-.signup-other {
-    margin-top: 16px
-}
-
-.signup-adult {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    min-height: 44px;
-    margin-top: 8px;
-    font-size: 16px
-}
-
-.signup-adult input {
-    width: 22px;
-    height: 22px;
-    accent-color: var(--orange)
-}
-
-.signup select:focus-visible,
 .signup input:focus-visible,
 .signup button:focus-visible {
     outline: 3px solid var(--orange);
@@ -452,6 +381,7 @@ em {
     display: flex;
     justify-content: center;
     margin-top: 12px;
+    min-height: 65px; /* its height once it loads, so the button doesn't jump */
     border-radius: 12px;
     overflow: hidden
 }
@@ -1320,19 +1250,6 @@ html:lang(km) .onboarding h2 {
     to { clip-path: circle(150% at var(--tx) var(--ty)) }
 }
 
-.invited {
-    display: inline-block;
-    margin: 0 0 14px;
-    padding: 6px 14px;
-    border: 1.5px solid var(--accent);
-    border-radius: 999px;
-    color: var(--accent);
-    font-size: 14px;
-    font-weight: 600
-}
-
-.invited[hidden] { display: none }
-
 /* Blog (#135): build-blog.mjs writes the markup. The list (B, editorial) and a post (A, magazine). */
 .b-kicker { color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase }
 .b-index { max-width: 1080px; margin: 0 auto; padding: 28px max(16px, env(safe-area-inset-right)) 64px max(16px, env(safe-area-inset-left)) }
@@ -1803,3 +1720,18 @@ html:lang(km) .onboarding h2 {
 .launch-video figcaption { margin-top: 16px; color: var(--muted); font-size: 15px }
 @media (max-width: 680px) { .launch-video { margin-top: 64px } .video-play, .launch-video .player { border-radius: 18px } .play-dot { width: 72px; height: 72px } .play-dot::before { left: 29px; top: 22px; border-width: 14px 0 14px 21px } }
 @media (prefers-reduced-motion: reduce) { .play-dot::after, .launch-video .player { animation: none } .video-play img, .play-dot { transition: none } }
+/* The beta page's Join button sits in a .legal page, whose links are underlined accent text. */
+.legal .button {
+    color: var(--cream);
+    text-decoration: none
+}
+
+/* The beta page's launch video (16:9, captions burned in) and the age line under the Join button. */
+.beta-age { margin-top: 14px; color: var(--muted); font-size: 15px }
+/* Android and computer tops (site.js shows them): the form sits left like the rest of the page; the QR keeps a light square so it scans in dark mode. */
+#join-android .signup { margin: 20px 0 }
+.beta-qr:not([hidden]) { display: flex; margin-top: 24px; gap: 28px; align-items: center; flex-wrap: wrap }
+.beta-qr img { background: #fff; border-radius: 12px; border: 1px solid var(--line) }
+.beta-qr div { flex: 1 1 240px }
+.beta-qr h2 { margin-top: 0 }
+.beta-video { display: block; width: 100%; height: auto; aspect-ratio: 16/9; margin-top: 32px; border-radius: 18px; background: #000 }

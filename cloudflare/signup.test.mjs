@@ -1,11 +1,11 @@
-// Runs the beta sign-up through the Worker with Turnstile, Resend and KV faked,
+// Runs the Android waitlist sign-up through the Worker with Turnstile, Resend and KV faked,
 // so nothing is sent. Usage: node cloudflare/signup.test.mjs
 import assert from "node:assert/strict";
 import worker from "./worker.js";
 
 const kv = new Map();
 const env = {
-    TURNSTILE_SECRET: "x", RESEND_API_KEY: "x", SEGMENT_ID: "seg", MELBOURNE_SEGMENT_ID: "melb",
+    TURNSTILE_SECRET: "x", RESEND_API_KEY: "x", SEGMENT_ID: "seg", MELBOURNE_SEGMENT_ID: "melb", ANDROID_SEGMENT_ID: "andr",
     SIGNUPS: { get: async (k) => kv.get(k) ?? null, put: async (k, v) => kv.set(k, v), delete: async (k) => kv.delete(k) },
 };
 const emails = [], contacts = new Map(), deleted = [], props = new Map(), segments = new Map(), legacy = new Set();
@@ -17,6 +17,7 @@ globalThis.fetch = async (url, init) => {
     if (url.endsWith("/emails")) { if (failEmail) return new Response(null, { status: 500 }); emails.push(body); return Response.json({ id: "e" }); }
     // Like Resend, creating an existing contact answers OK with the same id.
     if (url.endsWith("/contacts")) {
+        if (body.segments?.some((x) => !x.id)) return new Response(null, { status: 422 }); // Resend refuses an unknown segment
         if (!contacts.has(body.email)) {
             contacts.set(body.email, crypto.randomUUID());
             props.set(body.email, Object.fromEntries(Object.entries(body.properties ?? {}).map(([k, value]) => [k, { value, type: "string" }])));
@@ -51,7 +52,7 @@ const ctx = { waitUntil: (p) => waits.push(p) };
 const call = (method, path, form) => worker.fetch(new Request(`https://yummersapp.com${path}`, { method, body: form }), env, ctx);
 const signupForm = (email, extra = {}) => {
     const f = new FormData();
-    f.set("email", email); f.set("cf-turnstile-response", "t"); f.set("lang", "fr");
+    f.set("email", email); f.set("cf-turnstile-response", "t"); f.set("lang", "fr"); f.set("list", "android");
     for (const [k, v] of Object.entries(extra)) f.set(k, v);
     return f;
 };
@@ -60,7 +61,7 @@ const signupForm = (email, extra = {}) => {
 assert.equal((await call("POST", "/api/signup", signupForm("Sophea@Example.com"))).status, 204);
 assert.equal(emails.length, 1);
 assert.equal(emails[0].to, "sophea@example.com");
-assert.equal(emails[0].subject, "Confirmez votre e-mail pour la bêta yummers");
+assert.equal(emails[0].subject, "Confirmez votre e-mail pour la liste Android de yummers");
 const link = emails[0].text.match(/https:\/\/yummersapp\.com\/api\/confirm\?\S+/)[0];
 assert.equal(contacts.size, 0);
 
@@ -75,11 +76,12 @@ assert.equal(contacts.size, 0);
 
 // Pressing the button joins the list and sends the welcome note with its unsubscribe link.
 const joined = await call("POST", link.replace("https://yummersapp.com", ""));
-assert.match(await joined.text(), /vous êtes sur la liste/);
+assert.match(await joined.text(), /vous êtes sur la liste Android/);
 await Promise.all(waits);
 assert.ok(contacts.has("sophea@example.com"));
 assert.equal(emails.length, 2);
-assert.equal(emails[1].subject, "Merci d'avoir rejoint la bêta yummers");
+assert.equal(emails[1].subject, "Vous êtes sur la liste Android de yummers");
+assert.deepEqual(segments.get("sophea@example.com"), ["andr"]);
 const unsub = emails[1].text.match(/https:\/\/yummersapp\.com(\/api\/unsubscribe\?\S+)/)[1];
 assert.equal(unsub, `/api/unsubscribe?id=${contacts.get("sophea@example.com")}&lang=fr`);
 
@@ -126,30 +128,41 @@ assert.equal((await call("POST", "/api/signup", signupForm("dara@example.com")))
 assert.equal(emails.length, 3);
 
 hostname = "yummersapp.com";
-const melb = (extra) => ({ list: "melbourne", suburb: "Footscray", adult: "yes", ...extra });
-const confirmFrom = async (n) => {
-    const l = emails[n].text.match(/\/api\/confirm\?\S+/)[0];
-    return { l, res: await call("POST", l) };
-};
 
-// Melbourne: an unknown suburb or no age tick is refused before any email is sent.
+// Other kinds are refused before any email: the iPhone beta and Melbourne forms are gone.
 const before = emails.length;
-assert.equal((await call("POST", "/api/signup", signupForm("m1@example.com", melb({ suburb: "Atlantis" })))).status, 400);
-assert.equal((await call("POST", "/api/signup", signupForm("m1@example.com", melb({ adult: "" })))).status, 400);
-// "Somewhere else" needs a plain-text suburb of 1 to 60 characters.
-const else_ = (other) => melb({ suburb: "Somewhere else in Melbourne", suburb_other: other });
-for (const bad of ["", "  ", "a".repeat(61), "<b>x</b>", "Preston2"])
-    assert.equal((await call("POST", "/api/signup", signupForm("m1@example.com", else_(bad)))).status, 400);
-assert.equal((await call("POST", "/api/signup", signupForm("m1@example.com", melb({ suburb: "Narnia" })))).status, 400);
+for (const list of ["", "melbourne", "beta"])
+    assert.equal((await call("POST", "/api/signup", signupForm("x@example.com", { list }))).status, 400);
 assert.equal(emails.length, before);
 
-// A valid sign-up (with a malformed ref, which is dropped) gets an English confirm email,
-// and confirming adds the contact to the Melbourne segment with its properties.
-assert.equal((await call("POST", "/api/signup", signupForm("m1@example.com", melb({ ref: "../EVIL" })))).status, 204);
-assert.equal(emails.at(-1).subject, "Confirm your email for the yummers Melbourne list");
-assert.match(emails.at(-1).text, /Promotions tab/);
-let c = await confirmFrom(emails.length - 1);
-const html1 = await c.res.text();
+// Khmer and English get their own wording, and a language we don't have falls back to English.
+for (const [lang, subject] of [["km", /Android/], ["en", /^Confirm your email for the yummers Android list$/], ["de", /^Confirm your email for the yummers Android list$/]]) {
+    assert.equal((await call("POST", "/api/signup", signupForm(`${lang}@example.com`, { lang }))).status, 204);
+    assert.match(emails.at(-1).subject, subject);
+}
+
+// Android segment: a new contact lands in ANDROID_SEGMENT_ID only, with the English welcome note.
+const lk = emails.at(-1).text.match(/\/api\/confirm\?\S+/)[0];
+assert.match(lk, /lang=en/);
+assert.match(await (await call("POST", lk)).text(), /You're on the Android list!/);
+await Promise.all(waits);
+assert.deepEqual(segments.get("de@example.com"), ["andr"]);
+assert.equal(emails.at(-1).subject, "You're on the yummers Android list");
+assert.match(emails.at(-1).text, /Android is next/);
+
+// An unset ANDROID_SEGMENT_ID fails (502) and never drops the person into the beta segment.
+const savedAndroid = env.ANDROID_SEGMENT_ID;
+delete env.ANDROID_SEGMENT_ID;
+assert.equal((await call("POST", "/api/signup", signupForm("noseg@example.com"))).status, 204);
+assert.equal((await call("POST", emails.at(-1).text.match(/\/api\/confirm\?\S+/)[0])).status, 502);
+assert.equal(segments.get("noseg@example.com")?.length ?? 0, 0);
+env.ANDROID_SEGMENT_ID = savedAndroid;
+console.log("ok  android sign-up: confirm link, once a day, languages, segment, welcome email, unsubscribe, expired links, Turnstile hostname");
+
+// Links sent before 14 Nov still confirm. A pending Melbourne token (as the old form saved it) joins the
+// Melbourne segment with its properties, and the confirmed page and welcome note carry the invite link.
+const pend = (n, v) => { const t = `00000000-0000-4000-8000-00000000000${n}`; kv.set(`confirm:${t}`, typeof v === "string" ? v : JSON.stringify(v)); return `/api/confirm?token=${t}&lang=en`; };
+const html1 = await (await call("POST", pend(1, { email: "m1@example.com", list: "melbourne", suburb: "Footscray", ref: "" }))).text();
 await Promise.all(waits);
 const p1 = props.get("m1@example.com");
 assert.deepEqual(segments.get("m1@example.com"), ["melb"]);
@@ -157,67 +170,45 @@ assert.equal(p1.suburb.value, "Footscray");
 assert.match(p1.invite_code.value, /^[a-z0-9]{8}$/);
 assert.notEqual(p1.invite_code.value, contacts.get("m1@example.com"));
 assert.equal(p1.invited_by, undefined);
-// The confirmed page and the welcome note both show the invite link.
 const inviteUrl = `https://yummersapp.com/melbourne?ref=${p1.invite_code.value}`;
 assert.ok(html1.includes(inviteUrl) && html1.includes("Share my invite link"));
-assert.ok(emails.at(-1).text.includes(inviteUrl));
-assert.ok(emails.at(-1).html.includes(inviteUrl));
+assert.ok(emails.at(-1).text.includes(inviteUrl) && emails.at(-1).html.includes(inviteUrl));
 assert.match(emails.at(-1).text, /\/api\/unsubscribe\?id=/);
 
-// A friend arriving with that code is recorded as invited by it.
-assert.equal((await call("POST", "/api/signup", signupForm("m2@example.com", melb({ ref: p1.invite_code.value })))).status, 204);
-await confirmFrom(emails.length - 1);
+// A friend's code is recorded as invited_by.
+await call("POST", pend(2, { email: "m2@example.com", list: "melbourne", suburb: "CBD", ref: p1.invite_code.value }));
 await Promise.all(waits);
 assert.equal(props.get("m2@example.com").invited_by.value, p1.invite_code.value);
 
-// An existing contact (here a beta one) joins the Melbourne segment and keeps an invite code it has;
-// one without a code gets one. Neither is emailed again.
+// An existing contact (here an Android one) joins the Melbourne segment, gets a code and one welcome note;
+// confirming again keeps the code and sends nothing more.
 const sent = emails.length;
-assert.equal((await call("POST", "/api/signup", signupForm("sophea@example.com", melb({ suburb: "Box Hill" })))).status, 204);
-await confirmFrom(emails.length - 1);
-assert.ok(["seg", "melb"].every((x) => segments.get("sophea@example.com").includes(x)));
-assert.match(props.get("sophea@example.com").invite_code.value, /^[a-z0-9]{8}$/);
+await call("POST", pend(3, { email: "sophea@example.com", list: "melbourne", suburb: "Box Hill", ref: "" }));
+await Promise.all(waits);
+assert.ok(["andr", "melb"].every((x) => segments.get("sophea@example.com").includes(x)));
 const kept = props.get("sophea@example.com").invite_code.value;
-env.SIGNUPS.put("confirm:" + "00000000-0000-4000-8000-000000000001", JSON.stringify({ email: "sophea@example.com", list: "melbourne", suburb: "Clayton", ref: "" }));
-await call("POST", "/api/confirm?token=00000000-0000-4000-8000-000000000001");
+assert.match(kept, /^[a-z0-9]{8}$/);
+assert.equal(emails.length, sent + 1);
+assert.equal(emails.at(-1).subject, "You're on the yummers Melbourne list");
+assert.match(emails.at(-1).text, new RegExp(`/api/unsubscribe\\?id=${contacts.get("sophea@example.com")}&lang=en`));
+await call("POST", pend(4, { email: "sophea@example.com", list: "melbourne", suburb: "Clayton", ref: "" }));
+await Promise.all(waits);
 assert.equal(props.get("sophea@example.com").invite_code.value, kept);
 assert.equal(props.get("sophea@example.com").suburb.value, "Clayton");
-// The first Melbourne join also sent one Melbourne welcome note, with the invite link and their existing contact id.
-await Promise.all(waits);
-assert.equal(emails.length, sent + 2); // the confirm email and that welcome
-const welcome = emails.at(-1);
-assert.equal(welcome.subject, "You're on the yummers Melbourne list");
-assert.ok(welcome.text.includes(`https://yummersapp.com/melbourne?ref=${kept}`));
-assert.match(welcome.text, new RegExp(`/api/unsubscribe\\?id=${contacts.get("sophea@example.com")}&lang=en`));
+assert.equal(emails.length, sent + 1);
 
-// An existing contact joining the beta list is not emailed.
-kv.set("confirm:00000000-0000-4000-8000-000000000003", "m2@example.com");
-await call("POST", "/api/confirm?token=00000000-0000-4000-8000-000000000003&lang=en");
-await Promise.all(waits);
-assert.equal(emails.length, sent + 2);
-
-// A beta sign-up still goes to the beta segment, with no properties; and a pending token
-// saved before the Melbourne list (a plain email string) still confirms there.
-kv.set("confirm:00000000-0000-4000-8000-000000000002", "old@example.com");
-const old = await call("POST", "/api/confirm?token=00000000-0000-4000-8000-000000000002&lang=en");
-assert.match(await old.text(), /You're on the list!/);
+// A plain-email token (the beta list, before the Melbourne list) still joins the beta segment with no
+// properties; an existing contact joining it is not emailed.
+const mailedBeta = emails.length;
+assert.match(await (await call("POST", pend(5, "old@example.com"))).text(), /You're on the list!/);
 await Promise.all(waits);
 assert.deepEqual(segments.get("old@example.com"), ["seg"]);
 assert.deepEqual(props.get("old@example.com"), {});
-
-// Elsewhere "Preston" (trimmed) is stored as "Elsewhere: Preston".
-assert.equal((await call("POST", "/api/signup", signupForm("m5@example.com", else_(" Preston ")))).status, 204);
-await confirmFrom(emails.length - 1);
+assert.equal(emails.length, mailedBeta + 1);
+await call("POST", pend(6, "m2@example.com"));
 await Promise.all(waits);
-assert.equal(props.get("m5@example.com").suburb.value, "Elsewhere: Preston");
-
-// A listed state is stored as it is.
-assert.equal((await call("POST", "/api/signup", signupForm("m6@example.com", melb({ suburb: "Queensland" })))).status, 204);
-await confirmFrom(emails.length - 1);
-await Promise.all(waits);
-assert.equal(props.get("m6@example.com").suburb.value, "Queensland");
-
-console.log("ok  melbourne waitlist: validation, ref, segment and properties, invite link, existing contact, old pending tokens");
+assert.equal(emails.length, mailedBeta + 1);
+console.log("ok  old links: Melbourne and beta tokens still confirm, invite link, existing contact, plain-email tokens");
 
 // The one-tap join (#201): a contact already on the beta list joins Melbourne from their id alone.
 contacts.set("tap@example.com", crypto.randomUUID()); props.set("tap@example.com", {}); segments.set("tap@example.com", ["seg"]);
@@ -245,4 +236,3 @@ assert.ok((await (await call("POST", tapPath)).text()).includes(`?ref=${tapCode}
 await Promise.all(waits);
 assert.equal(emails.length, tapBefore + 1);
 console.log("ok  melbourne one-tap join: asks first, bad ids refused, joins once, welcome with the CBD note");
-console.log("ok  beta sign-up: confirm link, once a day, welcome email, unsubscribe, expired links, Turnstile hostname");
