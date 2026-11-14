@@ -593,7 +593,7 @@ em {
 
     h1 {
         font-size: clamp(51px, 11.7vw, 76px);
-        letter-spacing: -.04em
+        letter-spacing: -.02em
     }
 
     .intro {
@@ -850,7 +850,7 @@ html {
     font-size: 28px;
     margin-top: 44px;
     margin-bottom: 12px;
-    letter-spacing: -.03em
+    letter-spacing: -.02em
 }
 
 /* Help page: tap a question to show its answer (native <details>, works without script). */
