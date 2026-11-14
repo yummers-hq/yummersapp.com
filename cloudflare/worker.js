@@ -575,7 +575,7 @@ const APP_LINKS = { applinks: { details: [{
 // scanner opening it first can't use the code up.
 function codePage(request, url) {
     const code = url.searchParams.get("c");
-    if (!/^\d{8}$/.test(code || "")) return page("en", "Your code", "This link doesn't have a code. Ask the app for a new one.");
+    if (!/^(\d{6}|\d{8})$/.test(code || "")) return page("en", "Your code", "This link doesn't have a code. Ask the app for a new one.");
     const digits = `<p style="font:600 36px ui-monospace,Menlo,monospace;letter-spacing:0.2em;margin:0 0 24px;user-select:all;-webkit-user-select:all;">${code}</p>`;
     const open = /iPhone/.test(request.headers.get("User-Agent") || "")
         ? `<p><a href="hungryraccoon://in?c=${code}" style="display:inline-block;font:600 15px sans-serif;background:#A83618;color:#fff;border-radius:999px;padding:13px 24px;text-decoration:none;">Open yummers</a></p>` : "";
