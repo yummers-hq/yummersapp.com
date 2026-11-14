@@ -229,6 +229,19 @@ em {
     margin-top: 0
 }
 
+/* The second choice beside the main button (Android next to iPhone): same shape, outlined.
+   `a.` outranks .legal .button, which makes /beta's buttons cream. */
+a.button.button-outline {
+    background: transparent;
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1.5px var(--ink)
+}
+
+a.button.button-outline:hover {
+    background: var(--ink);
+    color: var(--paper)
+}
+
 .hero-peek {
     font-weight: 600;
     border-bottom: 1px solid currentColor
@@ -384,6 +397,12 @@ em {
     min-height: 65px; /* its height once it loads, so the button doesn't jump */
     border-radius: 12px;
     overflow: hidden
+}
+
+/* Until the visitor touches the form, the check hasn't loaded: no empty gap above the button. */
+.signup .cf-turnstile:empty {
+    min-height: 0;
+    margin-top: 0
 }
 
 .signup .button {
