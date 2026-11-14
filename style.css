@@ -39,7 +39,7 @@ body {
     margin: 0;
     background: var(--paper);
     color: var(--ink);
-    font: 16px/1.6 Poppins, 'Noto Sans Khmer', sans-serif;
+    font: 16px/1.6 'DM Sans', 'Noto Sans Khmer', sans-serif;
     /* The footer sits at the bottom of a short page (/nope, a small list) instead of leaving a blank band under it. */
     min-height: 100vh;
     min-height: 100dvh;
@@ -106,10 +106,10 @@ svg {
 }
 
 .brand {
-    font-family: Fraunces, 'Noto Serif Khmer', Georgia, serif;
+    font-family: 'DM Sans', 'Noto Sans Khmer', sans-serif;
     font-size: 29px;
     font-weight: 700;
-    letter-spacing: -1.1px;
+    letter-spacing: -.02em;
     display: flex;
     align-items: center
 }
@@ -179,9 +179,9 @@ figure {
 
 h1,
 h2 {
-    font-family: Fraunces, 'Noto Serif Khmer', Georgia, serif;
-    letter-spacing: -.04em;
-    font-weight: 600;
+    font-family: 'DM Sans', 'Noto Sans Khmer', sans-serif;
+    letter-spacing: -.02em;
+    font-weight: 700;
     line-height: 1.04
 }
 
@@ -277,7 +277,7 @@ em {
     left: 14px;
     right: 14px;
     background: var(--paper);
-    font-family: Fraunces, 'Noto Serif Khmer', serif;
+    font-family: 'DM Sans', 'Noto Sans Khmer', sans-serif;
     padding: 10px;
     font-size: 14px;
     text-align: center
@@ -312,7 +312,7 @@ em {
     position: absolute;
     right: 9%;
     bottom: 15px;
-    font-family: Fraunces, 'Noto Serif Khmer', serif;
+    font-family: 'DM Sans', 'Noto Sans Khmer', sans-serif;
     font-size: 28px;
     line-height: 1.1;
     transform: rotate(5deg);
@@ -593,7 +593,7 @@ em {
 
     h1 {
         font-size: clamp(51px, 11.7vw, 76px);
-        letter-spacing: -.04em
+        letter-spacing: -.02em
     }
 
     .intro {
@@ -850,7 +850,7 @@ html {
     font-size: 28px;
     margin-top: 44px;
     margin-bottom: 12px;
-    letter-spacing: -.03em
+    letter-spacing: -.02em
 }
 
 /* Help page: tap a question to show its answer (native <details>, works without script). */
@@ -1056,7 +1056,7 @@ html {
 .onboarding-screens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
 .onboarding-screens figure:nth-child(2) { margin-top: 56px; }
 .onboarding-screens figcaption { padding-top: 24px; }
-.onboarding-screens h3 { font: 600 24px/1.15 Fraunces, 'Noto Serif Khmer', Georgia, serif; letter-spacing: -.02em; }
+.onboarding-screens h3 { font: 700 24px/1.15 'DM Sans', 'Noto Sans Khmer', sans-serif; letter-spacing: -.02em; }
 .onboarding-screens figcaption p { margin-top: 8px; font-size: 14px; color: var(--muted); }
 /* Rows of one or two phones keep the three-phone size. */
 @media (min-width: 701px) {
@@ -1112,7 +1112,7 @@ html {
 }
 
 .lang-switch button {
-    font: 600 13px/1 'Noto Sans Khmer', Poppins, sans-serif;
+    font: 600 13px/1 'Noto Sans Khmer', 'DM Sans', sans-serif;
     color: var(--muted);
     background: none;
     border: 0;
@@ -1253,7 +1253,7 @@ html:lang(km) .onboarding h2 {
     border-radius: 999px;
     background: var(--paper);
     color: var(--ink);
-    font: 600 14px Poppins, 'Noto Sans Khmer', sans-serif;
+    font: 600 14px 'DM Sans', 'Noto Sans Khmer', sans-serif;
     cursor: pointer
 }
 
@@ -1341,7 +1341,7 @@ html:lang(km) .onboarding h2 {
 .b-list { list-style: none; margin: 0; padding: 0 }
 .b-item { display: grid; grid-template-columns: minmax(0, 1fr) 96px; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: start }
 .b-item:last-child { border-bottom: 0 }
-.b-n { display: none; font: 700 44px/1 Fraunces, Georgia, serif; color: var(--accent) }
+.b-n { display: none; font: 700 44px/1 'DM Sans', sans-serif; letter-spacing: -.02em; color: var(--accent) }
 .b-item h2 { font-size: 22px; line-height: 1.15; letter-spacing: -.02em; font-weight: 700; margin: 4px 0 6px; transition: color .2s }
 .b-item:is(:hover, :focus-visible) h2 { color: var(--accent) }
 .b-desc { color: var(--muted); font-size: 14px; margin-bottom: 8px }
@@ -1366,7 +1366,7 @@ html:lang(km) .onboarding h2 {
 .prose a:not(.guidebox) { color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px }
 .guidebox { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 14px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 12px; margin: 22px 0; font-size: 12.5px; color: var(--muted) }
 .guidebox img { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; background: var(--panel) }
-.guidebox b { display: block; font: 700 17px/1.3 Fraunces, Georgia, serif; color: var(--ink) }
+.guidebox b { display: block; font: 700 17px/1.3 'DM Sans', sans-serif; color: var(--ink) }
 .read-bar { display: none }
 @media (min-width: 900px) {
     .b-index { padding-top: 44px }
@@ -1407,7 +1407,7 @@ html:lang(km) .onboarding h2 {
 .post-link { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px }
 .post-link:hover .post-title { color: var(--accent) }
 .post-date { display: block; color: var(--muted); font-size: 14px }
-.post-title { display: block; font-family: Fraunces, serif; font-weight: 700; font-size: 22px; line-height: 1.25; margin-top: 4px }
+.post-title { display: block; font-family: 'DM Sans', sans-serif; letter-spacing: -.02em; font-weight: 700; font-size: 22px; line-height: 1.25; margin-top: 4px }
 .post-desc { display: block; color: var(--muted); font-size: 15px; line-height: 1.5; margin-top: 8px }
 .blog-latest { padding-top: 24px; padding-bottom: 24px }
 .blog-latest h2 { font-size: clamp(32px, 4vw, 44px) }
@@ -1513,8 +1513,8 @@ html:lang(km) .onboarding h2 {
 .menu-links a {
     display: block;
     padding: 4px 0;
-    font: 700 44px/1.15 Fraunces, 'Noto Serif Khmer', Georgia, serif;
-    letter-spacing: -.035em;
+    font: 700 44px/1.15 'DM Sans', 'Noto Sans Khmer', sans-serif;
+    letter-spacing: -.02em;
     color: var(--cream)
 }
 
@@ -1773,7 +1773,7 @@ html:lang(km) .onboarding h2 {
 .steps li { counter-increment: step; position: relative; padding-left: 48px; margin-top: 28px }
 .steps li::before { content: counter(step); position: absolute; left: 0; top: 2px; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--paper); font-weight: 700; display: grid; place-items: center }
 .steps h2, .steps h3 { margin-top: 0; font-size: 22px }
-.steps h3 { font-family: Fraunces, 'Noto Serif Khmer', Georgia, serif; font-weight: 600; letter-spacing: -.02em }
+.steps h3 { font-family: 'DM Sans', 'Noto Sans Khmer', sans-serif; font-weight: 700; letter-spacing: -.02em }
 .steps-help { padding-left: 22px; line-height: 1.7; font-size: 17px; max-width: 65ch }
 .steps-help li { margin-top: 12px }
 /* Help page: app screenshots under a step (reuses the homepage phone frame). */

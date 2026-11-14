@@ -171,7 +171,7 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .item{display:grid;gap:10px;padding:22px 0;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:0}
 .head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline}
-.num{font:700 34px/1 Fraunces,serif;color:var(--accent)}
+.num{font:700 34px/1 'DM Sans','Noto Sans Khmer',sans-serif;letter-spacing:-.02em;color:var(--accent)}
 .g h2.name{font-size:22px;line-height:1.15;overflow-wrap:anywhere}
 .name a:hover{color:var(--accent)}
 .photo{display:block;aspect-ratio:3/2;border-radius:14px;overflow:hidden;background:var(--panel)}
@@ -191,7 +191,7 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .facts{display:grid;gap:14px;margin-top:18px;align-content:start}
 .box{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:6px;margin-top:18px}
 .facts .box{margin-top:0}
-.g .box h2,.g .more h2{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;line-height:1.6;color:var(--muted);font-family:Poppins,sans-serif}
+.g .box h2,.g .more h2{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;line-height:1.6;color:var(--muted);font-family:'DM Sans','Noto Sans Khmer',sans-serif}
 .hours{display:grid;grid-template-columns:auto 1fr;gap:2px 16px;font-size:14px;font-variant-numeric:tabular-nums;margin:0}
 .hours dt,.hours dd{margin:0}
 .hours .today{font-weight:600}
@@ -201,7 +201,7 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .wu{white-space:pre-line}
 .glance .open{color:var(--green);border-color:var(--green)}
 .rate{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:6px}
-.rate b{font:700 22px Fraunces,serif}
+.rate b{font:700 22px 'DM Sans','Noto Sans Khmer',sans-serif}
 .rate .big{font-size:40px;line-height:1;color:var(--accent)}
 .rate p{margin:0;color:var(--muted);font-size:14px}
 .dirbtn{display:flex;justify-content:center;align-self:start;margin-top:18px;font-weight:600;font-size:14px;background:var(--ink);color:var(--paper);border-radius:999px;padding:12px 18px}
@@ -209,7 +209,7 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .more h2{margin-bottom:12px}
 .more-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .more-grid .ph{display:block;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:var(--panel)}
-.more-grid b{display:block;font:600 14px/1.2 Fraunces,serif;margin-top:8px;overflow-wrap:anywhere}
+.more-grid b{display:block;font:700 14px/1.2 'DM Sans','Noto Sans Khmer',sans-serif;margin-top:8px;overflow-wrap:anywhere}
 .more-grid span.m{font-size:12.5px;color:var(--muted)}
 .more-all{display:inline-block;margin-top:14px;font-weight:600;font-size:14px;color:var(--accent)}
 /* Motion: the cover settles, text and index covers rise in, sections ease up on scroll (rise, in style.css), photos zoom on hover. Rests fully visible; off with reduced motion. */
