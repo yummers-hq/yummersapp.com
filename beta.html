@@ -23,7 +23,7 @@
     <link rel="apple-touch-icon" href="assets/logo.png">
     <script src="theme.js"></script>
     <link rel="stylesheet" href="fonts.css">
-    <link rel="stylesheet" href="style.css?v=20261114">
+    <link rel="stylesheet" href="style.css?v=20261114b">
 </head>
 
 <body><a class="skip" href="#main">Skip to content</a>
@@ -35,7 +35,10 @@
         <p>yummers is a food diary you share with friends: rate the places you've eaten, make lists, and see what your friends love. Help us test it before it reaches the App Store. The beta is for Phnom Penh and Melbourne. It's free, and it's on iPhone for now.</p>
         <!-- The iPhone version is the default, so the page works without JavaScript; site.js swaps the top for Android and computers. -->
         <div id="join-ios">
-            <a class="button" href="https://testflight.apple.com/join/GH6xHcZ4">Join on iPhone</a>
+            <div class="hero-actions">
+                <a class="button" href="https://testflight.apple.com/join/GH6xHcZ4">Join on iPhone</a>
+                <a class="button button-outline" href="#join-android" data-show="join-android">Join the Android list</a>
+            </div>
             <p class="beta-age">In Australia, you need to be 18 or older to join.</p>
         </div>
         <div id="join-android" hidden>
@@ -62,7 +65,8 @@
             <div>
                 <h2>Scan with your iPhone camera</h2>
                 <p>It opens TestFlight and adds yummers. In Australia, you need to be 18 or older.</p>
-                <p>No iPhone? <a href="#join-android" data-show="join-android">Join the Android list</a></p>
+                <p>No iPhone? Android is next.</p>
+                <a class="button button-outline" href="#join-android" data-show="join-android">Join the Android list</a>
             </div>
         </div>
         <video class="beta-video" controls playsinline preload="none" width="1280" height="720" poster="/assets/beta-video-poster.jpg?v=1114b" src="/assets/beta-video.mp4?v=1114">
