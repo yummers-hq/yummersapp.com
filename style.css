@@ -1728,4 +1728,10 @@ html:lang(km) .onboarding h2 {
 
 /* The beta page's launch video (16:9, captions burned in) and the age line under the Join button. */
 .beta-age { margin-top: 14px; color: var(--muted); font-size: 15px }
+/* Android and computer tops (site.js shows them): the form sits left like the rest of the page; the QR keeps a light square so it scans in dark mode. */
+#join-android .signup { margin: 20px 0 }
+.beta-qr:not([hidden]) { display: flex; margin-top: 24px; gap: 28px; align-items: center; flex-wrap: wrap }
+.beta-qr img { background: #fff; border-radius: 12px; border: 1px solid var(--line) }
+.beta-qr div { flex: 1 1 240px }
+.beta-qr h2 { margin-top: 0 }
 .beta-video { display: block; width: 100%; height: auto; aspect-ratio: 16/9; margin-top: 32px; border-radius: 18px; background: #000 }

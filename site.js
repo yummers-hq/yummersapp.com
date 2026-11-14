@@ -78,6 +78,27 @@
     });
 })();
 
+// /beta: the top is the iPhone version in the HTML. Android phones get the Android waitlist form, and
+// computers (not Android, not iPhone or iPad) get the TestFlight QR code. The links swap the version.
+(function () {
+    var ios = document.getElementById("join-ios");
+    if (!ios) return;
+    var parts = ["join-ios", "join-android", "join-desktop"];
+    function show(id) {
+        parts.forEach(function (p) { document.getElementById(p).hidden = p !== id; });
+    }
+    var ua = navigator.userAgent;
+    var apple = /iPhone|iPad|iPod/.test(ua) || (/Mac/.test(navigator.platform) && navigator.maxTouchPoints > 1); // iPadOS says Mac
+    if (/Android/i.test(ua)) show("join-android");
+    else if (!apple && !/Mobi/i.test(ua)) show("join-desktop");
+    document.querySelectorAll("[data-show]").forEach(function (link) {
+        link.addEventListener("click", function (e) {
+            e.preventDefault();
+            show(link.dataset.show);
+        });
+    });
+})();
+
 // On narrow screens each row of phones swipes sideways; the dots under it show
 // which phone is in view (hidden by CSS on wider screens, where nothing scrolls). A row of one phone has nothing to slide.
 (function () {
