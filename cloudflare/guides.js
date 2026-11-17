@@ -174,7 +174,8 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .num{font:700 34px/1 'DM Sans','Noto Sans Khmer',sans-serif;letter-spacing:-.02em;color:var(--accent)}
 .g h2.name{font-size:22px;line-height:1.15;overflow-wrap:anywhere}
 .name a:hover{color:var(--accent)}
-.menu-pics{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.menu-pics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.menu-pics .photo{aspect-ratio:3/4}
 .photo{display:block;aspect-ratio:3/2;border-radius:14px;overflow:hidden;background:var(--panel)}
 .item p{font-size:15px}
 .ixg{display:grid;gap:14px;margin-top:18px}
