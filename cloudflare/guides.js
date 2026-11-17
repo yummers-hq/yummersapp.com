@@ -174,6 +174,8 @@ function layout(title, description, path, jsonld, body, opts = {}) {
 .num{font:700 34px/1 'DM Sans','Noto Sans Khmer',sans-serif;letter-spacing:-.02em;color:var(--accent)}
 .g h2.name{font-size:22px;line-height:1.15;overflow-wrap:anywhere}
 .name a:hover{color:var(--accent)}
+.menu-pics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.menu-pics .photo{aspect-ratio:3/4}
 .photo{display:block;aspect-ratio:3/2;border-radius:14px;overflow:hidden;background:var(--panel)}
 .item p{font-size:15px}
 .ixg{display:grid;gap:14px;margin-top:18px}
@@ -314,19 +316,23 @@ function indexPage(found) {
 // The team account's own public review of the place, and how many people liked it from public ratings.
 // Both come through RLS, which already hides private accounts, hidden and blocked ratings and Want to try (0016, 0032, 0066, 0081).
 async function placeFacts(g, id) {
-    const [mine, liked, ordered] = await Promise.all([
+    // D160 (migration 0116): checked menu photos from public ratings and visits, newest first, and whether people order delivery.
+    // Before 0116 reaches beta these fail, which reads as none, never an error.
+    const [mine, liked, ordered, menu, delivery] = await Promise.all([
         rest(`user_restaurants?select=review&user_id=eq.${g.owner}&restaurant_id=eq.${id}&is_public=eq.true&sentiment=not.is.null&limit=1`).then((r) => r.json()),
         rest(`user_restaurants?select=id&restaurant_id=eq.${id}&sentiment=eq.liked&is_public=eq.true`, { method: "HEAD", headers: { Prefer: "count=exact" } }),
         rest(`user_restaurants?select=user_id,ordered&restaurant_id=eq.${id}&is_public=eq.true&sentiment=not.is.null&ordered=not.is.null&limit=200`).then((r) => r.json()),
+        rest(`rating_photos?select=id,user_id,user_restaurants!inner(restaurant_id,is_public)&user_restaurants.restaurant_id=eq.${id}&user_restaurants.is_public=eq.true&kind=eq.menu&checked_at=not.is.null&order=created_at.desc&limit=6`).then((r) => r.json()).catch(() => []),
+        rest("rpc/eaten_places", { method: "POST", body: JSON.stringify({ p_kind: "delivery" }) }).then((r) => r.json()).catch(() => []),
     ]);
-    return { review: (mine[0]?.review || "").trim(), liked: Number(liked.headers.get("content-range")?.split("/")[1]) || 0, dishes: dishes(ordered, g.owner) };
+    return { menu: menu.map((p) => photoUrl({ id: p.id, userId: p.user_id })), delivery: delivery.includes(id), review: (mine[0]?.review || "").trim(), liked: Number(liked.headers.get("content-range")?.split("/")[1]) || 0, dishes: dishes(ordered, g.owner) };
 }
 
 async function placePage(slug, all) {
     const g = all.find((x) => x.items.some((it) => it.slug === slug));
     if (!g) return null;
     const it = g.items.find((x) => x.slug === slug), r = it.restaurants, d = it.d, name = nameOf(it);
-    const { review, liked, dishes: ate } = d.id ? await placeFacts(g, d.id) : { review: "", liked: 0, dishes: [] };
+    const { review, liked, dishes: ate, menu, delivery } = d.id ? await placeFacts(g, d.id) : { review: "", liked: 0, dishes: [], menu: [], delivery: false };
     const path = `/places/${slug}`, fact = PLACES[d.id] || {}, kind = fact.kind || cuisineOf(r), area = d.neighbourhood || r.district;
     const inGuides = all.filter((x) => x.items.some((i) => i.slug === slug));
     const hours = (d.opening_hours?.weekday_text || []).map((l) => l.split(/: (.*)/s)).filter((p) => p[1]);
@@ -353,8 +359,9 @@ ${lede ? `<p class="lede">${esc(lede)}</p>` : ""}
 ${chips.length ? `<div class="glance">${chips.map((c) => `<span>${esc(c)}</span>`).join("")}</div>` : ""}
 ${pick || ate.length ? `<section class="box"><h2>What to order</h2>${pick ? `<p class="wu">${esc(pick)}</p>` : ""}${ate.length ? `<p class="wu">People on yummers ordered ${esc(listed(ate))}.</p>` : ""}</section>` : ""}
 ${review ? `<section class="box"><h2>From the yummers team</h2><p class="wu">${esc(review)}</p></section>` : ""}
+${menu.length ? `<section class="box"><h2>Menu</h2><div class="menu-pics">${menu.map((u) => `<a class="photo" href="${esc(u)}" rel="noopener">${img(u, 600, 400)}</a>`).join("")}</div></section>` : ""}
 <a class="dirbtn" href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(where)}" rel="noopener">Directions</a>
-<div class="facts"><section class="box"><h2>Find it</h2>${d.address ? `<div>${esc(cleanAddress(d.address))}</div>` : ""}</section>
+<div class="facts"><section class="box"><h2>Find it</h2>${d.address ? `<div>${esc(cleanAddress(d.address))}</div>` : ""}${delivery ? "<div>People order delivery here</div>" : ""}</section>
 ${hours.length ? `<section class="box"><h2>Opening hours</h2><dl class="hours">${hours.map(([day, h]) => { const c = day === today ? ' class="today"' : ""; return `<dt${c}>${esc(day)}</dt><dd${c}>${esc(shortHours(h))}</dd>`; }).join("")}</dl></section>` : ""}
 <section class="box"><h2>In these guides</h2>${inGuides.map((x) => `<a class="pl-in" href="/guides/${x.slug}">${img(guideCover(x), 112, 112)}<div><b>${esc(x.title)}</b><div class="meta">${x.items.length} places</div></div></a>`).join("")}</section></div>
 ${near.length ? `<section class="more"><h2>Near here</h2><ul class="more-grid">${near.map((o) => tile(o.x, dotted([metaOf(o.x).split(" · ")[0], away(o.km)]))).join("")}</ul></section>` : ""}

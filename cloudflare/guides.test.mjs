@@ -24,7 +24,7 @@ const lists = {
     PRIVATE1: null,
 };
 const embeds = { KOREAN01: [det(1), det(2)], BBQ00001: [det(1)], OTHER001: [det(1)], EMPTY001: [] };
-let down = false, review = "Get the short rib <script>. Worth the queue.", liked = "0-0/7";
+let menus = [], deliv = [], down = false, review = "Get the short rib <script>. Worth the queue.", liked = "0-0/7";
 let ordered = [{ user_id: "yid", ordered: "Short rib, kimchi stew" }, { user_id: "u2", ordered: "kimchi stew and <rice>" }, { user_id: "u3", ordered: "Kimchi stew; Secret thing" }];
 const store = new Map();
 globalThis.caches = { default: { match: async (r) => store.get(r.url)?.clone(), put: async (r, v) => store.set(r.url, v) } };
@@ -34,6 +34,8 @@ globalThis.fetch = async (url, init = {}) => {
     if (url.includes("shared_list")) return Response.json(lists[JSON.parse(init.body).p_share_id]);
     const share = url.match(/lists\?share_id=eq\.(\w+)/)?.[1];
     if (share) return Response.json(embeds[share] ? [{ user_id: "yid", list_restaurants: embeds[share] }] : []);
+    if (url.includes("rating_photos")) { assert.ok(url.includes("kind=eq.menu") && url.includes("checked_at=not.is.null") && url.includes("user_restaurants.is_public=eq.true")); return Response.json(menus); }
+    if (url.includes("rpc/eaten_places")) { assert.equal(JSON.parse(init.body).p_kind, "delivery"); return Response.json(deliv); }
     if (url.includes("user_restaurants")) {
         if (init.method === "HEAD") return new Response(null, { headers: { "content-range": liked } });
         if (url.includes("ordered=not.is.null")) { assert.ok(url.includes("is_public=eq.true"), "only public ratings' dishes"); return Response.json(ordered); }
@@ -81,6 +83,13 @@ const today = new Date().toLocaleDateString("en-US", { weekday: "long", timeZone
 assert.equal(t.match(/class="today"/g).length, 2, "today's row, in Phnom Penh time, is bold");
 assert.ok(t.includes(`<dt class="today">${today}</dt>`));
 assert.ok(!/want to try/i.test(t));
+assert.ok(!t.includes("<h2>Menu</h2>") && !t.includes("order delivery"), "no menu photos or delivery: neither shows");
+menus = [{ id: "ph1", user_id: "u9" }]; deliv = ["rid1"];
+let m = await (await get("/places/place-1-co-bkk")).text();
+assert.ok(m.includes("<h2>Menu</h2>") && m.includes("/photos/u9/ph1.jpg") && m.includes("People order delivery here"), "menu photo and delivery line");
+m = await (await get("/places/place-2-co-bkk")).text();
+assert.ok(m.includes("<h2>Menu</h2>") && !m.includes("order delivery"), "delivery is per place");
+menus = []; deliv = [];
 assert.ok(t.includes('href="/places/place-2-co-bkk"') && t.includes(">Place 2 &amp; Co<"), "more from the same guide");
 review = ""; liked = "*/0"; ordered = [];
 t = await (await get("/places/place-2-co-bkk")).text();

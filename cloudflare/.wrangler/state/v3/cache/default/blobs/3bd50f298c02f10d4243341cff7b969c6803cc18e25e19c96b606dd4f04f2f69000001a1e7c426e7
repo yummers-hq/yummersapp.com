@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bornga, BKK1: Hours and prices | yummers</title>
+<meta name="description" content="Korean BBQ in BKK1, Phnom Penh. Open 11am – 10pm every day. About $12–20 a person. Picked by the yummers team for Korean restaurants in Phnom Penh.">
+<link rel="canonical" href="https://yummersapp.com/places/bornga-bkk">
+<meta name="theme-color" content="#b8401e">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="yummers">
+<meta property="og:title" content="Bornga, BKK1: Hours and prices | yummers">
+<meta property="og:description" content="Korean BBQ in BKK1, Phnom Penh. Open 11am – 10pm every day. About $12–20 a person. Picked by the yummers team for Korean restaurants in Phnom Penh.">
+<meta property="og:url" content="https://yummersapp.com/places/bornga-bkk">
+<meta property="og:image" content="https://yummersapp.com/assets/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bornga, BKK1: Hours and prices | yummers">
+<meta name="twitter:description" content="Korean BBQ in BKK1, Phnom Penh. Open 11am – 10pm every day. About $12–20 a person. Picked by the yummers team for Korean restaurants in Phnom Penh.">
+<meta name="twitter:image" content="https://yummersapp.com/assets/share.jpg">
+<link rel="icon" href="/assets/favicon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/assets/logo.png">
+<script src="/theme.js"></script>
+<link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/style.css?v=20261114b">
+<style>
+.g{padding-bottom:72px}
+.out{padding-top:56px}.out h1{font-size:clamp(28px,8vw,44px)}
+.acts{display:flex;flex-wrap:wrap;gap:0 14px}.acts .button{margin-top:24px}
+.button-outline{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}.button-outline:hover{background:var(--accent);color:var(--cream);box-shadow:none}
+.in{max-width:1040px;margin:0 auto;padding-inline:16px}
+.g h1{font-weight:700;letter-spacing:-.02em}.g h2,.g h3,.g h4{letter-spacing:normal}
+.cover{position:relative;aspect-ratio:4/3;background:var(--panel);color:#fffaf2}
+.cover img,.photo img,.more-grid img,.pl-in img{display:block;width:100%;height:100%;object-fit:cover}
+.cover:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,16,.9),rgba(28,20,16,.66) 50%,rgba(28,20,16,0) 85%)}
+.cover .txt{position:absolute;left:0;right:0;bottom:14px;z-index:1;text-shadow:0 1px 3px rgba(28,20,16,.6)}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,250,242,.85)}
+.g h1.t{font-size:30px;line-height:1.08;margin:4px 0;color:#fffaf2;text-wrap:balance;overflow-wrap:anywhere}
+.cover .meta{color:rgba(255,250,242,.85)}
+.meta{font-size:13px;color:var(--muted)}
+.lead{font-size:15px;margin-top:16px;white-space:pre-line}
+.items,.ixg{list-style:none;margin:0;padding:0}
+.item{display:grid;gap:10px;padding:22px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline}
+.num{font:700 34px/1 'DM Sans','Noto Sans Khmer',sans-serif;letter-spacing:-.02em;color:var(--accent)}
+.g h2.name{font-size:22px;line-height:1.15;overflow-wrap:anywhere}
+.name a:hover{color:var(--accent)}
+.menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.photo{display:block;aspect-ratio:3/2;border-radius:14px;overflow:hidden;background:var(--panel)}
+.item p{font-size:15px}
+.ixg{display:grid;gap:14px;margin-top:18px}
+.cov{position:relative;display:block;aspect-ratio:16/11;border-radius:18px;overflow:hidden;background:var(--panel);color:#fffaf2}
+.cov img{display:block;width:100%;height:100%;object-fit:cover}
+.cov:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,20,16,.9),rgba(28,20,16,.66) 50%,rgba(28,20,16,0) 85%)}
+.cov .txt{position:absolute;left:14px;right:14px;bottom:12px;z-index:1;text-shadow:0 1px 3px rgba(28,20,16,.6)}
+.cov h2{font-size:23px;line-height:1.1;margin-top:2px;color:#fffaf2}
+.ixh{padding-top:28px}
+.ixh h1{font-size:34px;line-height:1.1}
+.pl{display:grid;margin-top:16px}
+.lede{font-size:17px;line-height:1.6}
+.glance{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.glance span{font-size:13px;font-weight:500;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+.facts{display:grid;gap:14px;margin-top:18px;align-content:start}
+.box{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:6px;margin-top:18px}
+.facts .box{margin-top:0}
+.g .box h2,.g .more h2{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;line-height:1.6;color:var(--muted);font-family:'DM Sans','Noto Sans Khmer',sans-serif}
+.hours{display:grid;grid-template-columns:auto 1fr;gap:2px 16px;font-size:14px;font-variant-numeric:tabular-nums;margin:0}
+.hours dt,.hours dd{margin:0}
+.hours .today{font-weight:600}
+.pl-in{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;align-items:center}
+.pl-in img{width:56px;height:56px;border-radius:12px}
+.pl-in b{font-weight:600}
+.wu{white-space:pre-line}
+.glance .open{color:var(--green);border-color:var(--green)}
+.rate{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:6px}
+.rate b{font:700 22px 'DM Sans','Noto Sans Khmer',sans-serif}
+.rate .big{font-size:40px;line-height:1;color:var(--accent)}
+.rate p{margin:0;color:var(--muted);font-size:14px}
+.dirbtn{display:flex;justify-content:center;align-self:start;margin-top:18px;font-weight:600;font-size:14px;background:var(--ink);color:var(--paper);border-radius:999px;padding:12px 18px}
+.more{margin-top:28px}
+.more h2{margin-bottom:12px}
+.more-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.more-grid .ph{display:block;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:var(--panel)}
+.more-grid b{display:block;font:700 14px/1.2 'DM Sans','Noto Sans Khmer',sans-serif;margin-top:8px;overflow-wrap:anywhere}
+.more-grid span.m{font-size:12.5px;color:var(--muted)}
+.more-all{display:inline-block;margin-top:14px;font-weight:600;font-size:14px;color:var(--accent)}
+/* Motion: the cover settles, text and index covers rise in, sections ease up on scroll (rise, in style.css), photos zoom on hover. Rests fully visible; off with reduced motion. */
+.cover{overflow:hidden}
+@media(prefers-reduced-motion:no-preference){
+@keyframes g-in{from{opacity:0;transform:translateY(14px)}}
+@keyframes g-settle{from{transform:scale(1.06)}}
+.cover img{animation:g-settle 1.2s ease-out both}
+.cover .txt,.ixh{animation:g-in .6s .15s ease-out both}
+.lead,.lede,.glance{animation:g-in .6s .3s ease-out both}
+.ixg li{animation:g-in .5s ease-out both}
+.ixg li:nth-child(1){animation-delay:.2s}.ixg li:nth-child(2){animation-delay:.28s}.ixg li:nth-child(3){animation-delay:.36s}.ixg li:nth-child(n+4){animation-delay:.44s}
+.cov img,.photo img,.more-grid .ph img,.pl-in img{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.cov:hover img,.cov:focus-visible img,.photo:hover img,.photo:focus-visible img,.more-grid a:hover img,.more-grid a:focus-visible img{transform:scale(1.04)}
+}
+@supports(animation-timeline:view()){@media(prefers-reduced-motion:no-preference){
+.item,.facts .box,.more{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 45%}
+}}
+@media(min-width:900px){
+.in{padding-inline:28px}
+.cover{aspect-ratio:auto;height:440px}
+.cover .txt{bottom:30px}
+.g h1.t{font-size:52px;margin:6px 0;max-width:16ch}
+.cover .meta{font-size:15px}
+.lead{font-size:19px;line-height:1.65;max-width:62ch;margin:32px 0 8px}
+.item{grid-template-columns:1.15fr 1fr;grid-template-rows:1fr 1fr;column-gap:40px;align-items:center;padding:36px 0}
+.item .photo{grid-column:1;grid-row:1/3}
+.item .head{grid-column:2;grid-row:1;align-self:end}
+.item p{grid-column:2;grid-row:2;align-self:start;font-size:16.5px;line-height:1.7;margin-top:4px}
+.item:nth-child(even){grid-template-columns:1fr 1.15fr}
+.item:nth-child(even) .photo{grid-column:2}
+.item:nth-child(even) .head,.item:nth-child(even) p{grid-column:1}
+.num{font-size:46px}
+.g h2.name{font-size:30px}
+.ixh{padding:40px 0 8px}
+.ixh h1{font-size:46px}
+.ixh .lead{margin-top:12px}
+.ixg{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:24px}
+.cov{aspect-ratio:4/5}
+.cov h2{font-size:25px}
+.pl{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);grid-template-rows:auto auto auto 1fr;column-gap:56px;margin-top:36px}
+.pl>:not(.facts){grid-column:1}
+.facts{grid-column:2;grid-row:1/5;margin-top:0}
+.lede{font-size:21px}
+.more-grid{gap:14px}
+.more-grid b{font-size:16px}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Restaurant","name":"Bornga","url":"https://yummersapp.com/places/bornga-bkk","description":"Korean BBQ in BKK1, Phnom Penh. Open 11am – 10pm every day. About $12–20 a person. Picked by the yummers team for Korean restaurants in Phnom Penh.","servesCuisine":"Korean BBQ","address":{"@type":"PostalAddress","streetAddress":"Street 352, BKK1, Phnom Penh","addressLocality":"Phnom Penh","addressCountry":"KH"},"geo":{"@type":"GeoCoordinates","latitude":11.5494755,"longitude":104.9261378}}</script>
+</head>
+<body><a class="skip" href="#main">Skip to content</a>
+<header class="header wrap"><a href="/" class="brand" aria-label="yummers home"><img class="brand-image" src="/assets/raccoon.png" alt="" width="58" height="32"><span class="brand-name">yummers<span class="brand-tag"> | Restaurant Lists App</span></span></a>
+<nav aria-label="Main navigation"><a class="nav-status" href="/beta">Join the iPhone beta</a><button type="button" class="theme-toggle" aria-pressed="false" aria-label="Dark mode"></button><button type="button" class="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu"><i></i><i></i><i></i></button></nav></header>
+<div class="menu" id="menu"><ul class="menu-links"><li><a href="/guides">Guides</a></li><li><a href="/blog">Blog</a></li><li><a href="/#preview">How it works</a></li><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/help/import">Help</a></li></ul><div class="menu-side"><p>yummers is a social food diary for Cambodia: rate places, keep lists and share them with friends.</p><div class="menu-extras"></div></div></div>
+<main id="main" class="g">
+<div class="cover"><img src="https://lh3.googleusercontent.com/grass-cs/AABkmLeXEX56yYORED99iw59g34vt12BV3kbrh8AJokIgm4-NEm5nSc3gDFMx5BK0rMveWeaD5p7aIAGQw2U7Jrk95llz7UA6flfRKeLj4stIwXhIGgb0hoGFgrvcEY-RrXzYU6N1E9k=w800-h600-k-no" alt="" loading="eager" referrerpolicy="no-referrer" width="1040" height="780"><div class="txt"><div class="in"><div class="eyebrow">Korean BBQ · BKK1</div><h1 class="t">Bornga</h1><div class="meta">In Korean restaurants in Phnom Penh</div></div></div></div>
+<div class="in"><div class="pl">
+<p class="lede">Table-grilled beef and pork. Best at dinner. $12–20.</p>
+<div class="glance"><span>Korean BBQ</span><span>About $12–20 a person</span><span>Dinner</span></div>
+
+
+
+<a class="dirbtn" href="https://www.google.com/maps/search/?api=1&amp;query=11.5494755%2C104.9261378" rel="noopener">Directions</a>
+<div class="facts"><section class="box"><h2>Find it</h2><div>Street 352, BKK1, Phnom Penh</div></section>
+<section class="box"><h2>Opening hours</h2><dl class="hours"><dt>Monday</dt><dd>11am – 10pm</dd><dt class="today">Tuesday</dt><dd class="today">11am – 10pm</dd><dt>Wednesday</dt><dd>11am – 10pm</dd><dt>Thursday</dt><dd>11am – 10pm</dd><dt>Friday</dt><dd>11am – 10pm</dd><dt>Saturday</dt><dd>11am – 10pm</dd><dt>Sunday</dt><dd>11am – 10pm</dd></dl></section>
+<section class="box"><h2>In these guides</h2><a class="pl-in" href="/guides/korean-restaurants-phnom-penh"><img src="https://lh3.googleusercontent.com/grass-cs/AABkmLePutnYDBHzmwKreBXdtejUwBakWD7xtfkUTTb8mFTZ-Tgx9A__61isueMGzY8mO_E4Kqg-iG3594Hywlfvhw40muVoGdDvadhtQMsecZSUVzKGbDPtR1rzZaGsiFML_JjVSdmSHYufrQs=w800-h600-k-no" alt="" loading="lazy" referrerpolicy="no-referrer" width="112" height="112"><div><b>Korean restaurants in Phnom Penh</b><div class="meta">10 places</div></div></a></section></div>
+<section class="more"><h2>Near here</h2><ul class="more-grid"><li><a href="/places/tbal-khmer-bkk"><span class="ph"><img src="https://lh3.googleusercontent.com/grass-cs/AABkmLe7DRxZV_pQGs1FQCDBncLe62WT5Wh4dUan_q6hakfIuOd-LxYnHWRwvPUCnU2k7vuyIFHY_XzlgHyYN8Wnw1JIMZSc--ruK-1WfZoiqXhR2l4putUNPTt2RXoPhXCV2EqbSYOi=w800-h600-k-no" alt="" loading="lazy" referrerpolicy="no-referrer" width="400" height="300"></span><b>Tbal Khmer</b><span class="m">Khmer · 100 m away</span></a></li><li><a href="/places/uraetei-hanare-bkk-bkk"><span class="ph"><img src="https://lh3.googleusercontent.com/grass-cs/AABkmLdZKBgrfKgA03OZVtejUV5yminGN5FTQ1X-RgXUjxspo17yTso1N5pCWHIWWjlMA7okPkdmboXfb55NLIyXACZ07DGCbK4Kd377-SFoM7cFQ8N0UtkSiypMBS0pG1fQGAn5OoJKEO2zdyw=w800-h600-k-no" alt="" loading="lazy" referrerpolicy="no-referrer" width="400" height="300"></span><b>Uraetei Hanare BKK</b><span class="m">Japanese BBQ · 150 m away</span></a></li><li><a href="/places/gyu-kaku-japanese-bbq-bkk-bkk"><span class="ph"><img src="https://lh3.googleusercontent.com/grass-cs/AABkmLeEvCf6eyG8GWxfoYBke9bQaJBkVUFsWnSgBcv1Ie9dokm0AhHYNad_0_GNuy042HEbC7a4mCH4MBTumRYjNBJ3PJVGCFxrPQMY8ElLUoXE9w4OVjlnzSHoXiEGdjdVrM7xglkw=w800-h600-k-no" alt="" loading="lazy" referrerpolicy="no-referrer" width="400" height="300"></span><b>Gyu-Kaku Japanese BBQ (BKK)</b><span class="m">Japanese BBQ · 200 m away</span></a></li></ul></section>
+<section class="more"><h2>More in Korean restaurants in Phnom Penh</h2><ul class="more-grid"><li><a href="/places/silla-korean-restaurant-toul-kork"><span class="ph"><img src="https://lh3.googleusercontent.com/grass-cs/AABkmLfjr9zcHeLJ2nrFFWFpQ37srf3C1Q3re_d1b4vwqxRIrJWr8PSAfmTMO949ORa_YpfO4isYUwmBgOooCLItk2PEPtv7_wZVyHzKMKSkSQzmbWMdElSr6vq6EBbBE4Gns5OasoGf=w800-h600-k-no" alt="" loading="lazy" referrerpolicy="no-referrer" width="400" height="300"></span><b>Silla Korean Restaurant</b><span class="m">Korean · Boeng Kak 1</span></a></li><li><a href="/places/tk-dae-jang-geum-restaurant-toul-kork"><span class="ph"><img src="https://lh3.googleusercontent.com/grass-cs/AABkmLfPEp5XUWOenrJE9_qFkjuT_k16KMsZWXQWyVBmJkyTO3BfDNtNUO84YIBwOQAf7qcWSl20Nj4kI502dXWLh1p29nz4dTe80KPcoZXlYCNyvRjBWcONfO_5EzAmhH_r2rihxSI=w800-h600-k-no" alt="" loading="lazy" referrerpolicy="no-referrer" width="400" height="300"></span><b>TK Dae Jang Geum</b><span class="m">Korean BBQ · Boeng Kak 2</span></a></li><li><a href="/places/melo-korean-fushion-restaurant-bkk"><span class="ph"><img src="https://lh3.googleusercontent.com/grass-cs/AABkmLeUX4DPN9kKMOyJxuHE0qKtCbaL23WSny2S37CrD0CdyLK7Bf2YEK2Gyi0pyDc8VsRZKF2MdeSEAx-cgcmy9fs5okFVlXkwbnGAuHamQx2CTBF-5kOiiLQ-tstNSao8XXo8a9ZUkA=w800-h600-k-no" alt="" loading="lazy" referrerpolicy="no-referrer" width="400" height="300"></span><b>Melo Korean Fusion</b><span class="m">Korean fusion · BKK1</span></a></li></ul><a class="more-all" href="/guides/korean-restaurants-phnom-penh">See all 10 places →</a></section>
+</div></div>
+</main>
+<footer class="site-footer wrap">
+<div class="footer-brand"><a href="/"><img class="footer-logo" src="/assets/logo-horizontal.svg" alt="yummers" width="170" height="45"></a><p>Rate the places you've eaten, keep lists, share them with friends.</p><div class="footer-follow"><a href="https://www.instagram.com/yummersapp/" target="_blank" rel="noopener" aria-label="yummers on Instagram"><img src="/assets/social/instagram.svg" alt="" width="17" height="17"></a><a href="https://www.facebook.com/profile.php?id=61594898428255" target="_blank" rel="noopener" aria-label="yummers on Facebook"><img src="/assets/social/facebook.svg" alt="" width="17" height="17"></a><a href="https://www.linkedin.com/company/hungryraccoon/" target="_blank" rel="noopener" aria-label="yummers on LinkedIn"><img src="/assets/social/linkedin.svg" alt="" width="17" height="17"></a><a href="https://www.tiktok.com/@hungryraccoonapp" target="_blank" rel="noopener" aria-label="yummers on TikTok"><img src="/assets/social/tiktok.svg" alt="" width="17" height="17"></a></div></div>
+<nav class="footer-links" aria-label="Footer"><div><h2>Explore</h2><ul><li><a href="/guides">Guides</a></li><li><a href="/blog">Blog</a></li><li><a href="/#preview">How it works</a></li></ul></div><div><h2>yummers</h2><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact us</a></li><li><a href="/help/import">Help</a></li><li><a href="/beta">Join the beta</a></li></ul></div><div><h2>Legal</h2><ul><li><a href="/privacy">Privacy policy</a></li><li><a href="/terms">Terms of service</a></li><li><a href="#cookies" role="button" data-cookie-settings>Cookie settings</a></li></ul></div></nav>
+<div class="footer-bottom"><span>© 2026 yummers</span><span class="footer-lang"></span><span>Made in Phnom Penh</span></div>
+</footer>
+<script src="/analytics.js"></script>
+</body>
+</html>
